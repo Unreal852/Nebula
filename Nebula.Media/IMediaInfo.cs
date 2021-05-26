@@ -45,6 +45,11 @@ namespace Nebula.Media
 
         // High res Thumbnail Url
         string HighResThumbnailUrl { get; set; }
+        
+        /// <summary>
+        /// Playlist Specific field
+        /// </summary>
+        bool IsActive { get; set; }
 
         /// <summary>
         /// Media Total Duration

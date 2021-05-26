@@ -74,7 +74,30 @@ namespace Nebula.Core.Providers.Youtube
 
         public async Task<Media.IPlaylist> GetPlaylist(string query, params object[] args)
         {
-            throw new NotImplementedException();
+            YoutubeExplode.Playlists.Playlist youtubePlaylist = await Youtube.Playlists.GetAsync(query);
+            Model.Playlist playlist = new Model.Playlist()
+            {
+                Name = youtubePlaylist.Title, Description = youtubePlaylist.Description, Author = youtubePlaylist.Author?.Title ?? "Unknown",
+                Thumbnail = new Uri(youtubePlaylist.Thumbnails.OrderBy(t => t.Resolution.Area).First().Url), AutoSave = false
+            };
+            await foreach (PlaylistVideo video in Youtube.Playlists.GetVideosAsync(youtubePlaylist.Id))
+                playlist.AddMedia(VideoToMediaInfo(video));
+            playlist.AutoSave = true;
+            return playlist;
+        }
+        
+        public async Task<Model.Playlist> GetPlaylistt(string query, params object[] args)
+        {
+            YoutubeExplode.Playlists.Playlist youtubePlaylist = await Youtube.Playlists.GetAsync(query);
+            Model.Playlist playlist = new Model.Playlist()
+            {
+                Name = youtubePlaylist.Title, Description = youtubePlaylist.Description, Author = youtubePlaylist.Author?.Title ?? "Unknown",
+                Thumbnail = new Uri(youtubePlaylist.Thumbnails.OrderBy(t => t.Resolution.Area).First().Url), AutoSave = false
+            };
+            await foreach (PlaylistVideo video in Youtube.Playlists.GetVideosAsync(youtubePlaylist.Id))
+                playlist.AddMedia(VideoToMediaInfo(video));
+            playlist.AutoSave = true;
+            return playlist;
         }
 
         public async Task<Uri> GetAudioStreamUri(IMediaInfo mediaInfo, params object[] args)

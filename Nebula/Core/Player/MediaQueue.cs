@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Nebula.Media;
+using Nebula.Model;
 
 namespace Nebula.Core.Player
 {
-    public class MediaQueue : IEnumerable<IMediaInfo>
+    public class MediaQueue : IEnumerable<MediaInfo>
     {
-        private static readonly Random Random = new ();
+        private static readonly Random Random = new();
 
         public MediaQueue()
         {
@@ -17,21 +18,25 @@ namespace Nebula.Core.Player
             Clear();
         }
 
-        public  bool             IsEmpty       => Queue.Count == 0;
-        public  int              Count         => Queue.Count;
-        public  MediasCollection Queue         { get; } = new();
-        private MediasCollection RecentDequeue { get; } = new();
+        public  bool                        IsEmpty       => Queue.Count == 0;
+        public  int                         Count         => Queue.Count;
+        public  MediasCollection<MediaInfo> Queue         { get; } = new();
+        private MediasCollection<MediaInfo> RecentDequeue { get; } = new();
+
+        public IEnumerator<MediaInfo> GetEnumerator() => Queue.GetEnumerator();
+        IEnumerator IEnumerable.      GetEnumerator() => GetEnumerator();
+
 
         /// <summary>
         /// Enqueue the specified <see cref="IPlaylist"/>
         /// </summary>
         /// <param name="playlist">The playlist to enqueue</param>
         /// <param name="clear">Clear current queue</param>
-        public void Enqueue(IPlaylist playlist, bool clear = true)
+        public void Enqueue(Playlist playlist, bool clear = true)
         {
             if (clear)
                 Clear();
-            foreach (IMediaInfo mediaInfo in playlist.Medias)
+            foreach (MediaInfo mediaInfo in playlist.Medias)
                 Queue.Add(mediaInfo);
         }
 
@@ -40,7 +45,7 @@ namespace Nebula.Core.Player
         /// </summary>
         /// <param name="mediaInfo">The media to enqueue</param>
         /// <param name="insertIndex">The insert index</param>
-        public void Enqueue(IMediaInfo mediaInfo, int insertIndex = -1)
+        public void Enqueue(MediaInfo mediaInfo, int insertIndex = -1)
         {
             if (insertIndex == -1)
                 Queue.Add(mediaInfo);
@@ -52,7 +57,7 @@ namespace Nebula.Core.Player
         /// Remove the specified <see cref="IMediaInfo"/> from the queue
         /// </summary>
         /// <param name="mediaInfo">The media to remove</param>
-        public void Remove(IMediaInfo mediaInfo)
+        public void Remove(MediaInfo mediaInfo)
         {
             if (Queue.Contains(mediaInfo))
                 Queue.Remove(mediaInfo);
@@ -72,7 +77,7 @@ namespace Nebula.Core.Player
         /// </summary>
         /// <param name="mediaInfo">The media to check</param>
         /// <returns>Returns true if the specified <see cref="IMediaInfo"/> is already queued, false otherwise.</returns>
-        public bool IsQueued(IMediaInfo mediaInfo)
+        public bool IsQueued(MediaInfo mediaInfo)
         {
             return Queue.Contains(mediaInfo);
         }
@@ -82,11 +87,11 @@ namespace Nebula.Core.Player
         /// </summary>
         /// <param name="random">Queue randomly</param>
         /// <returns>Dequeued media info if queue is not empty, null otherwise</returns>
-        public IMediaInfo Dequeue(bool random = false)
+        public MediaInfo Dequeue(bool random = false)
         {
             if (IsEmpty)
                 return default;
-            IMediaInfo mediaInfo = Queue[random ? Random.Next(Queue.Count) : 0];
+            MediaInfo mediaInfo = Queue[random ? Random.Next(Queue.Count) : 0];
             Queue.Remove(mediaInfo);
             RecentDequeue.Add(mediaInfo);
             return mediaInfo;
@@ -96,24 +101,14 @@ namespace Nebula.Core.Player
         /// Rewind a dequeue.
         /// </summary>
         /// <returns>Rewinded Media</returns>
-        public IMediaInfo RewindDequeue()
+        public MediaInfo RewindDequeue()
         {
             if (RecentDequeue.Count == 0)
                 return null;
-            IMediaInfo mediaInfo = RecentDequeue[^1];
+            MediaInfo mediaInfo = RecentDequeue[^1];
             RecentDequeue.Remove(mediaInfo);
             //Enqueue(dequeueInfo.MediaInfo, dequeueInfo.Index);
             return mediaInfo;
-        }
-
-        public IEnumerator<IMediaInfo> GetEnumerator()
-        {
-            return Queue.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

@@ -4,9 +4,12 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using HandyControl.Controls;
 using Nebula.MVVM;
 using Nebula.View.Builder.Attributes;
+using Nebula.View.Views.Dialogs;
+using Nebula.ViewModel.Dialogs;
 using TextBox = HandyControl.Controls.TextBox;
 
 namespace Nebula.View.Builder
@@ -25,9 +28,14 @@ namespace Nebula.View.Builder
             DependencyProperties.Add(type, dependencyProperty);
         }
 
-        public static FrameworkElement BuildDialogViewFromViewModel<T>() where T : BaseViewModel
+        public static ViewCache BuildDialogViewCacheFromViewModel<T>() where T : BaseDialogViewModel, new()
         {
-            throw new NotImplementedException();
+            BaseDialogView view = new BaseDialogView();
+            ViewCache cache = BuildViewCacheFromViewModel<T>();
+            cache.Container = view;
+            cache.Parent.SetValue(Grid.RowProperty, 0);
+            view.Container.Children.Add(cache.Parent);
+            return cache;
         }
 
         public static ViewCache BuildViewCacheFromViewModel<T>() where T : BaseViewModel, new()

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using HandyControl.Controls;
 using HandyControl.Interactivity;
+using Nebula.Core;
 using Nebula.Media;
 using Nebula.Model;
 using Nebula.MVVM;
@@ -10,7 +12,7 @@ using Nebula.MVVM.Commands;
 
 namespace Nebula.ViewModel.Dialogs
 {
-    public class PlaylistCreationDialogViewModel : BaseViewModel
+    public class PlaylistCreationDialogViewModel : BaseDialogViewModel
     {
         private string _playlistName;
         private string _playlistDescription;
@@ -43,8 +45,15 @@ namespace Nebula.ViewModel.Dialogs
 
         private void CreatePlaylist(object obj)
         {
-            NebulaClient.Playlists.AddPlaylist(new Playlist(PlaylistName, PlaylistDescription, PlaylistAuthor, new Uri("https://upload.wikimedia.org/wikipedia/commons/f/fa/Billie_Eilish_2019_by_Glenn_Francis_%28cropped%29_2.jpg"), new List<IMediaInfo>()));
-            ControlCommands.Close.Execute(null, null);
+            NebulaClient.Playlists.AddPlaylist(new Playlist(PlaylistName, PlaylistDescription, PlaylistAuthor,
+                new Uri("https://upload.wikimedia.org/wikipedia/commons/f/fa/Billie_Eilish_2019_by_Glenn_Francis_%28cropped%29_2.jpg"),
+                new List<MediaInfo>()));
+            Close();
+        }
+        
+        protected override void OnConfirm(object param)
+        {
+            Growl.Info("TEST");
         }
     }
 }

@@ -1,7 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Data;
+using System.Windows.Input;
+using HandyControl.Controls;
+using Nebula.Core;
 using Nebula.Media;
+using Nebula.Model;
 using Nebula.MVVM;
+using Nebula.MVVM.Commands;
 
 namespace Nebula.ViewModel
 {
@@ -9,9 +17,11 @@ namespace Nebula.ViewModel
     {
         public PlaylistViewModel()
         {
+            ChangePageCommand = new RelayCommand<int>(ChangePage);
         }
 
-        public IPlaylist Playlist { get; private set; }
+        public Playlist Playlist          { get; private set; }
+        public ICommand ChangePageCommand { get; }
 
         public string Name
         {
@@ -61,15 +71,33 @@ namespace Nebula.ViewModel
             }
         }
 
-        public ObservableCollection<IMediaInfo> Medias => Playlist?.Medias.PageElements;
+        public int CurrentPage
+        {
+            get => Playlist.Medias.CurrentPage;
+            set
+            {
+                Playlist.Medias.CurrentPage = value;
+                Growl.Info(Playlist.Medias.CurrentPage + "");
+                OnPropertiesChanged(nameof(CurrentPage), nameof(Medias));
+            }
+        }
+
+        public int TotalPages => Playlist.Medias.TotalPages;
+
+        public ObservableCollection<MediaInfo> Medias { get; private set; }
 
         public override void OnNavigating(object param)
         {
-            if (param is IPlaylist playlist)
+            if (param is Playlist playlist)
             {
                 Playlist = playlist;
-                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(Medias));
+                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(Medias), nameof(CurrentPage), nameof(TotalPages));
             }
+        }
+
+        private void ChangePage(int page)
+        {
+            CurrentPage = page;
         }
     }
 }

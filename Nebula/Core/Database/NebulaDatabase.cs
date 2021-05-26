@@ -21,36 +21,66 @@ namespace Nebula.Core.Database
             Database.CreateTableAsync<MediaInfo>();
             Database.CreateTableAsync<Playlist>();
             Database.ExecuteAsync(
-                @"create table if not exists PlaylistsMedias (PlaylistId varchar(50) not null, SongId varchar(50) not null, ""Order"" int, IsActive int)");
+                @"create table if not exists PlaylistsMedias (PlaylistId varchar(50) not null, MediaId varchar(50) not null, ""Order"" int, IsActive int)");
             Database.Tracer += OnReceiveTrace;
-            Database.Trace = true;
+            Database.Trace = false;
         }
 
         public SQLiteAsyncConnection Database { get; }
 
-        public async Task<List<MediaInfo>> GetAllMedias()                     => await Database.Table<MediaInfo>().ToListAsync();
-        public async Task<List<Playlist>>  GetAllPlaylists()                  => await Database.Table<Playlist>().ToListAsync();
-        public async Task<IMediaInfo>      GetMediaById(string id)            => await Database.Table<MediaInfo>().FirstAsync(media => media.Id == id);
-        public async Task<IArtistInfo>     GetArtistById(string id)           => await Database.Table<ArtistInfo>().FirstAsync(artist => artist.Id == id);
-        public async Task                  InsertMedia(IMediaInfo mediaInfo)  => await Database.InsertOrReplaceAsync(mediaInfo);
-        public async Task                  InsertPlaylist(IPlaylist playlist) => await Database.InsertAsync(playlist);
+        public async Task<List<MediaInfo>> GetAllMedias()                    => await Database.Table<MediaInfo>().ToListAsync();
+        public async Task<IMediaInfo>      GetMediaById(string id)           => await Database.Table<MediaInfo>().FirstAsync(media => media.Id == id);
+        public async Task<IArtistInfo>     GetArtistById(string id)          => await Database.Table<ArtistInfo>().FirstAsync(artist => artist.Id == id);
+        public async Task                  InsertMedia(IMediaInfo mediaInfo) => await Database.InsertOrReplaceAsync(mediaInfo);
+        public async Task                  InsertPlaylist(Playlist playlist) => await Database.InsertOrReplaceAsync(playlist);
 
-        public async IAsyncEnumerable<IMediaInfo> GetPlaylistMedias(IPlaylist playlist)
+        public async Task InsertWholePlaylist(Playlist playlist)
         {
-            
+            if (playlist == null)
+                return;
+            await Database.RunInTransactionAsync(trans =>
+            {
+                trans.Insert(playlist);
+                if (playlist.MediasCount <= 0)
+                    return;
+                int index = 0;
+                foreach (MediaInfo mediaInfo in playlist.Medias.Elements)
+                {
+                    trans.InsertOrReplace(mediaInfo);
+                    trans.Execute($"insert into PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) values(?,?,?,?)",
+                        playlist.Id, mediaInfo.Id, index++, true);
+                }
+            });
         }
 
-        public async Task InsertPlaylistMedia(IPlaylist playlist, IMediaInfo mediaInfo, int order)
+        public async Task InsertPlaylistMedia(Playlist playlist, MediaInfo mediaInfo, int order = -1)
         {
             if (playlist == null || mediaInfo == null)
                 return;
             await Database.RunInTransactionAsync(async trans =>
             {
-                await Database.InsertOrReplaceAsync(playlist);
-                await Database.InsertOrReplaceAsync(mediaInfo);
-                await Database.ExecuteAsync($"insert into PlaylistsMedias (PlaylistId, SongId, \"Order\", IsActive) values(?,?,?,?)",
-                    playlist.Id, mediaInfo.Id, order, true);
+                trans.InsertOrReplace(playlist);
+                trans.InsertOrReplace(mediaInfo);
+                trans.Execute($"insert into PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) values(?,?,?,?)",
+                    playlist.Id, mediaInfo.Id, order < 0 ? playlist.Medias.Elements.IndexOf(mediaInfo) : order, true);
             });
+        }
+
+        public async Task<List<Playlist>> GetAllPlaylists(bool loadMedias = true)
+        {
+            List<Playlist> playlists = await Database.QueryAsync<Playlist>($"SELECT * FROM Playlists");
+            if (loadMedias)
+            {
+                foreach (Playlist playlist in playlists)
+                    playlist.Medias.SetElements(await GetPlaylistMedias(playlist));
+            }
+
+            return playlists;
+        }
+
+        public async Task<List<MediaInfo>> GetPlaylistMedias(Playlist playlist)
+        {
+            return await Database.QueryAsync<MediaInfo>($"SELECT * FROM Medias WHERE Id IN (SELECT MediaId FROM PlaylistsMedias WHERE PlaylistId={playlist.Id})");
         }
 
         private void OnReceiveTrace(string obj)
@@ -58,13 +88,5 @@ namespace Nebula.Core.Database
             GrowlInfo info = new GrowlInfo {Message = obj, Token = ""};
             Growl.Warning(info);
         }
-    }
-
-    public class PlaylistMediaInfo
-    {
-        public string PlaylistId { get; set; }
-        public string MediaId    { get; set; }
-        public int    Order      { get; set; }
-        public bool   IsActive   { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace Nebula.Utils.Collections
     public class PagesCollection<T> : IEnumerable<T>
     {
         private int _maxElementsPerPage;
+        private int _currentPage;
 
         public PagesCollection(ICollection<T> elements = null, int maxElementsPerPage = 10)
         {
@@ -22,7 +23,6 @@ namespace Nebula.Utils.Collections
         }
 
         public int                     TotalPages                          { get; private set; }
-        public int                     CurrentPage                         { get; private set; }
         public bool                    AutoRefresh                         { get; set; } = true;
         public bool                    InfinitePagesCycle                  { get; set; } = true;
         public bool                    ReturnPageElementsInsteadOfElements { get; set; } = true;
@@ -38,6 +38,25 @@ namespace Nebula.Utils.Collections
             {
                 _maxElementsPerPage = value;
                 Refresh();
+            }
+        }
+
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                int oldPage = CurrentPage;
+                if (CurrentPage > TotalPages)
+                    _currentPage = TotalPages - 1;
+                else if (CurrentPage < 0)
+                    _currentPage = 0;
+                _currentPage = value;
+                if (oldPage != CurrentPage)
+                {
+                    RefreshPage();
+                    PageChanged?.Invoke(this, new PageChangedEventArgs(CurrentPage, TotalPages, MaxElementsPerPage));
+                }
             }
         }
 
@@ -71,20 +90,6 @@ namespace Nebula.Utils.Collections
                 TotalPages = 1;
         }
 
-        public void SetPage(int page)
-        {
-            int oldPage = CurrentPage;
-            if (CurrentPage > TotalPages)
-                CurrentPage = TotalPages - 1;
-            else if (CurrentPage < 1)
-                CurrentPage = 0;
-            if (oldPage != CurrentPage)
-            {
-                RefreshPage();
-                PageChanged?.Invoke(this, new PageChangedEventArgs(CurrentPage, TotalPages, MaxElementsPerPage));
-            }
-        }
-
         public void NextPage()
         {
             if (Elements.Count == 0)
@@ -93,10 +98,10 @@ namespace Nebula.Utils.Collections
             {
                 if (!InfinitePagesCycle)
                     return;
-                SetPage(0);
+                CurrentPage = 0;
             }
             else
-                SetPage(CurrentPage++);
+                CurrentPage++;
         }
 
         public void PreviousPage()
@@ -107,10 +112,10 @@ namespace Nebula.Utils.Collections
             {
                 if (!InfinitePagesCycle)
                     return;
-                SetPage(TotalPages - 1);
+                CurrentPage = TotalPages - 1;
             }
             else
-                SetPage(CurrentPage--);
+                CurrentPage--;
         }
 
         public IEnumerable<T> GetElementsFromPage(int pageIndex = -1)
@@ -124,19 +129,19 @@ namespace Nebula.Utils.Collections
                 yield return Elements[i];
         }
 
-        public void AddRange(params T[] elements)
+        public virtual void AddRange(params T[] elements)
         {
             foreach (T element in elements)
                 Elements.Add(element);
         }
 
-        public void RemoveRange(params T[] elements)
+        public virtual void RemoveRange(params T[] elements)
         {
             foreach (T element in elements)
                 Elements.Remove(element);
         }
 
-        public void SetElements(ICollection<T> collection)
+        public virtual void SetElements(ICollection<T> collection)
         {
             Elements.CollectionChanged -= OnElementsCollectionChanged;
             Elements = new ObservableCollection<T>(collection);
@@ -145,7 +150,7 @@ namespace Nebula.Utils.Collections
                 Refresh();
         }
 
-        private void OnElementsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        protected virtual void OnElementsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (AutoRefresh)
                 Refresh();

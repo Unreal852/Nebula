@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using HandyControl.Controls;
 using Nebula.Media;
+using Nebula.Model;
 using Nebula.ViewModel;
 
 namespace Nebula.View.Views
@@ -17,7 +18,7 @@ namespace Nebula.View.Views
         {
             AddToPlaylist.Items.Clear();
             SearchResultsViewModel viewModel = (SearchResultsViewModel) DataContext;
-            foreach (IPlaylist playlist in NebulaClient.Playlists.Playlists)
+            foreach (Playlist playlist in NebulaClient.Playlists.Playlists)
             {
                 MenuItem menuItem = new MenuItem {Header = playlist.Name, Command = viewModel.AddMediaToPlaylistCommand, CommandParameter = playlist};
                 AddToPlaylist.Items.Add(menuItem);

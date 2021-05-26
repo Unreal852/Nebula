@@ -5,6 +5,7 @@ using HandyControl.Controls;
 using HandyControl.Tools.Extension;
 using Nebula.Media;
 using Nebula.Media.Player;
+using Nebula.Model;
 using Nebula.MVVM;
 using Nebula.MVVM.Commands;
 using Nebula.View.Controls;
@@ -17,8 +18,8 @@ namespace Nebula.ViewModel
         public SearchResultsViewModel()
         {
             ScrollToTopCommand = new RelayCommand(ScrollToTop);
-            AddMediaToQueueCommand = new RelayCommand<IMediaInfo>(AddMediaToQueue);
-            AddMediaToPlaylistCommand = new AsyncRelayCommand<IPlaylist>(AddMediaToPlaylist);
+            AddMediaToQueueCommand = new RelayCommand<MediaInfo>(AddMediaToQueue);
+            AddMediaToPlaylistCommand = new AsyncRelayCommand<Playlist>(AddMediaToPlaylist);
             ShowPlaylistCreationDialogCommand = new AsyncRelayCommand(ShowPlaylistCreationDialog);
             OpenMediaCommand = new AsyncRelayCommand<IMediaInfo>(OpenMedia);
         }
@@ -29,8 +30,8 @@ namespace Nebula.ViewModel
         public ICommand AddMediaToPlaylistCommand         { get; }
         public ICommand ShowPlaylistCreationDialogCommand { get; }
 
-        public IMediaInfo                       CurrentMedia { get; set; }
-        public ObservableCollection<IMediaInfo> Medias       { get; } = new();
+        public MediaInfo                       CurrentMedia { get; set; }
+        public ObservableCollection<MediaInfo> Medias       { get; } = new();
 
         private void ScrollToTop(object obj)
         {
@@ -38,14 +39,14 @@ namespace Nebula.ViewModel
                 listBoxEx.ScrollIntoView(listBoxEx.Items[0]);
         }
 
-        private void AddMediaToQueue(IMediaInfo media)
+        private void AddMediaToQueue(MediaInfo media)
         {
             if (media == null)
                 return;
             NebulaClient.MediaPlayer.MediaQueue.Enqueue(media);
         }
 
-        private async Task AddMediaToPlaylist(IPlaylist playlist)
+        private async Task AddMediaToPlaylist(Playlist playlist)
         {
             if (playlist == null || CurrentMedia == null)
                 return;

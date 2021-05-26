@@ -10,6 +10,7 @@ using HandyControl.Themes;
 using HandyControl.Tools.Extension;
 using Nebula.Media;
 using Nebula.Media.Player;
+using Nebula.Model;
 using Nebula.MVVM;
 using Nebula.MVVM.Commands;
 using Nebula.Utils.Extensions;
@@ -71,7 +72,8 @@ namespace Nebula.ViewModel
 
         private void CreatePlaylist(object obj)
         {
-            Dialog.Show<PlaylistCreationDialogView>().DataContext = new PlaylistCreationDialogViewModel();
+            //Dialog.Show<PlaylistCreationDialogView>().DataContext = new PlaylistCreationDialogViewModel();
+            Dialog.Show(PlaylistImportationDialogViewModel.Cache.Container).DataContext = new PlaylistImportationDialogViewModel();
         }
 
         private async Task Search(string query)
@@ -81,7 +83,7 @@ namespace Nebula.ViewModel
             Navigate(new NavigationInfo(searchView));
             if (searchResultsViewModel == null)
                 throw new NullReferenceException("SearchResultsViewModel missing");
-            await foreach (IMediaInfo mediaInfo in NebulaClient.Providers.SearchMedias(query))
+            await foreach (MediaInfo mediaInfo in NebulaClient.Providers.SearchMedias(query))
             {
                 searchResultsViewModel.Medias.Add(mediaInfo);
                 await Task.Delay(20);

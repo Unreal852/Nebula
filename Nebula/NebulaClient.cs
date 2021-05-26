@@ -38,7 +38,7 @@ namespace Nebula
         public static string GetLang(string key, params object[] format)
         {
             if (format == null || format.Length == 0)
-                return Resources.Nebula.ResourceManager.GetString(key) ?? string.Empty;
+                return Resources.Nebula.ResourceManager.GetString(key) ?? key;
             return string.Format(Resources.Nebula.ResourceManager.GetString(key) ?? $"UNKNOWN_KEY({key})", format);
         }
 

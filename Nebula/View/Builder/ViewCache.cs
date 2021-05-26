@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using Nebula.MVVM;
@@ -15,9 +16,11 @@ namespace Nebula.View.Builder
             Parent = parent;
         }
 
-        public  Type                  ViewType { get; }
-        public  Panel                 Parent   { get; }
-        private List<ViewElementInfo> Elements { get; } = new();
+        public  Type                  ViewType   { get; }
+        public  ContentControl        Container  { get; set; }
+        public  Panel                 Parent     { get; set; }
+        public  PropertyInfo[]        Properties { get; set; }
+        private List<ViewElementInfo> Elements   { get; } = new();
 
         public IEnumerable<FrameworkElement> GetFrameworkElements() => Elements.Select(elementInfo => elementInfo.Element);
 

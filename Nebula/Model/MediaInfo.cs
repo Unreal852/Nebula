@@ -38,6 +38,7 @@ namespace Nebula.Model
         public                       string   HighResThumbnailUrl   { get; set; }
         public                       TimeSpan Duration              { get; set; }
         public                       DateTime CreationDate          { get; set; }
+        public                       bool     IsActive              { get; set; } = true;
 
         public IMediasProvider GetMediaProvider()
         {
