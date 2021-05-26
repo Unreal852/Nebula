@@ -1,0 +1,30 @@
+﻿<Border x:Class="Nebula.View.Views.Dialogs.PlaylistCreationDialogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Nebula.View.Views.Dialogs"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:resx="clr-namespace:Nebula.Resources"
+        xmlns:dialogs="clr-namespace:Nebula.ViewModel.Dialogs"
+        mc:Ignorable="d" CornerRadius="10"
+        Background="{DynamicResource RegionBrush}"
+        Effect="{StaticResource EffectShadow5}">
+    <Border.DataContext>
+        <dialogs:PlaylistCreationDialogViewModel />
+    </Border.DataContext>
+    <StackPanel Orientation="Vertical" Width="250" Margin="5">
+        <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_name}"
+                    hc:InfoElement.RegexPattern="^[a-zA-Z0-9\s\-\,]{5,}.\*?$"
+                    hc:InfoElement.Necessary="True" Text="{Binding PlaylistName}" />
+        <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_description}"
+                    hc:InfoElement.Necessary="false" Text="{Binding PlaylistDescription}" />
+        <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_author}"
+                    hc:InfoElement.Necessary="false" Text="{Binding PlaylistAuthor}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5 5 5 0">
+            <Button Content="Cancel" Command="hc:ControlCommands.Close" />
+            <hc:Divider Orientation="Vertical" />
+            <Button Content="Create" Command="{Binding CreatePlaylistCommand}" />
+        </StackPanel>
+    </StackPanel>
+</Border>

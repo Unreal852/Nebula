@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Colors -->
+    <Color x:Key="SideBarBackgroundColor">#FFF1F1F1</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="Purple" />
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FFF1F1F1" />
+    <SolidColorBrush x:Key="AppForegroundBrush" Color="Black" />
+    <SolidColorBrush x:Key="SideBarUsernameBrush" Color="Black" />
+    <SolidColorBrush x:Key="SideBarCategoryBrush" Color="#8C8C8C" />
+    <SolidColorBrush x:Key="SideBarRadioButtonCheckedBrush" Color="#383737" />
+    <SolidColorBrush x:Key="SideBarRadioButtonUnCheckedBrush" Color="DimGray" />
+    <SolidColorBrush x:Key="SideBarRadioButtonLineBrush" Color="Black" />
+</ResourceDictionary>

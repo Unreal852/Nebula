@@ -1,0 +1,70 @@
+﻿<hc:Window x:Class="Nebula.View.MainWindow"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:local="clr-namespace:Nebula"
+           xmlns:hc="https://handyorg.github.io/handycontrol"
+           xmlns:controls="clr-namespace:Nebula.View.Controls"
+           xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+           xmlns:viewModel="clr-namespace:Nebula.ViewModel"
+           xmlns:views="clr-namespace:Nebula.View.Views"
+           xmlns:converters="clr-namespace:Nebula.View.Converters"
+           mc:Ignorable="d"
+           WindowStartupLocation="CenterScreen"
+           Title="Nebula"
+           Width="1360"
+           Height="760"
+           MinWidth="950"
+           MinHeight="500"
+           fluentWpf:AcrylicWindow.Enabled="True"
+           fluentWpf:AcrylicWindow.AcrylicWindowStyle="None"
+           fluentWpf:AcrylicWindow.ExtendViewIntoTitleBar="true"
+           fluentWpf:AcrylicWindow.TintColor="{DynamicResource SideBarBackgroundColor}"
+           fluentWpf:AcrylicWindow.FallbackColor="{DynamicResource SideBarBackgroundColor}"
+           fluentWpf:AcrylicWindow.NoiseOpacity="0.01"
+           fluentWpf:AcrylicWindow.TintOpacity="0.8"
+           Loaded="OnLoaded">
+    <Window.DataContext>
+        <viewModel:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+    </Window.Resources>
+    <controls:SimpleGrid Columns="250,*" Rows="50,*,50">
+        <views:SideBarView Grid.RowSpan="3" />
+        <controls:SimpleGrid Background="{DynamicResource AppBackgroundBrush}" Grid.Column="1" Grid.Row="0">
+            <hc:SimpleStackPanel Orientation="Horizontal" Margin="10 0 0 0">
+                <hc:SimpleStackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <hc:SearchBar x:Name="SearchBar" hc:InfoElement.Placeholder="Rechercher"
+                                  Command="{Binding SearchCommand}"
+                                  CommandParameter="{Binding ElementName=SearchBar, Path=Text}"
+                                  ShowClearButton=" True"
+                                  Width="350" Height="25" HorizontalAlignment="Left"
+                                  Style="{StaticResource SearchBarPlus}" />
+                    <ProgressBar IsIndeterminate="True" Style="{StaticResource ProgressBarFlat}"
+                                 Visibility="{Binding CanSearch, Converter={StaticResource BoolToVisibility}, ConverterParameter=!}" />
+                </hc:SimpleStackPanel>
+            </hc:SimpleStackPanel>
+            <hc:SimpleStackPanel x:Name="TitleBar" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="Recherche Billie" Command="{Binding SearchCommand}"
+                        CommandParameter="billie eilish" />
+                <Button Content="Switch Theme" Command="{Binding SwitchThemeCommand}" Margin="10" />
+                <Button Content="Create Playlist" Command="{Binding CreatePlaylistCommand}" />
+                <Button Content="Navigate To Playlist" Command="{Binding NavigatePlaylistCommand}" Margin="10" />
+                <ToggleButton Content="Queue" IsChecked="{Binding ElementName=Drawer, Path=IsOpen}" />
+                <Button Click="OnControlBoxClick" Style="{StaticResource MinimizeButton}" />
+                <Button Click="OnControlBoxClick" Style="{StaticResource MaximizeButton}" />
+                <Button Click="OnControlBoxClick" Style="{StaticResource CloseButton}" />
+            </hc:SimpleStackPanel>
+        </controls:SimpleGrid>
+        <controls:SimpleGrid Grid.Column="1" Grid.Row="1" Background="{DynamicResource AppBackgroundBrush}">
+            <ContentPresenter Content="{Binding CurrentPage}" />
+            <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right" hc:Growl.GrowlParent="True" />
+            <hc:Drawer x:Name="Drawer" Dock="Right" MaskCanClose="True" ShowMode="Cover">
+                <controls:ListBoxEx Background="Bisque" Width="250" />
+            </hc:Drawer>
+        </controls:SimpleGrid>
+        <views:MediaPlayerView Grid.Row="2" Grid.ColumnSpan="2" />
+    </controls:SimpleGrid>
+</hc:Window>

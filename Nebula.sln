@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula", "Nebula\Nebula.csproj", "{EAAFB7D4-AB5F-46F5-A8E8-916C0ECE38D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.MVVM", "Nebula.MVVM\Nebula.MVVM.csproj", "{D13846A1-B513-4C65-92C1-75B9BA5B40C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Utils", "Nebula.Utils\Nebula.Utils.csproj", "{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Media", "Nebula.Media\Nebula.Media.csproj", "{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EAAFB7D4-AB5F-46F5-A8E8-916C0ECE38D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAAFB7D4-AB5F-46F5-A8E8-916C0ECE38D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAAFB7D4-AB5F-46F5-A8E8-916C0ECE38D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAAFB7D4-AB5F-46F5-A8E8-916C0ECE38D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D13846A1-B513-4C65-92C1-75B9BA5B40C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D13846A1-B513-4C65-92C1-75B9BA5B40C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D13846A1-B513-4C65-92C1-75B9BA5B40C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D13846A1-B513-4C65-92C1-75B9BA5B40C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
