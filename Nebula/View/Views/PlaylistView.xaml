@@ -46,6 +46,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <hc:Pagination Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" PageIndex="1" MaxPageCount="{Binding TotalPages}" PageUpdated="OnPageUpdated"/>
+        <hc:Pagination Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="50" MaxPageCount="{Binding TotalPages}"
+                       PageUpdated="OnPageUpdated" />
     </controls:SimpleGrid>
 </UserControl>
