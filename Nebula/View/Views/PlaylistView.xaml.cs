@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using HandyControl.Data;
+using Nebula.ViewModel;
 
 namespace Nebula.View.Views
 {
@@ -7,6 +9,12 @@ namespace Nebula.View.Views
         public PlaylistView()
         {
             InitializeComponent();
+        }
+
+        private void OnPageUpdated(object sender, FunctionEventArgs<int> e)
+        {
+            if (DataContext is PlaylistViewModel vm)
+                vm.CurrentPage = e.Info;
         }
     }
 }

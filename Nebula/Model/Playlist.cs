@@ -16,10 +16,11 @@ namespace Nebula.Model
         private const           int   MaxNameLength        = 128;
         private const           int   MaxDescriptionLength = 128;
         private const           int   MaxAuthorLength      = 128;
-        private static readonly Regex SRemLines            = new (@"\t|\n|\r");
-        
+        private static readonly Regex SRemLines            = new(@"\t|\n|\r");
+
         public Playlist()
         {
+            Medias.MaxElementsPerPage = 25;
         }
 
         public Playlist(string name, string description, string author, Uri thumbnail, ICollection<MediaInfo> medias) : this()
