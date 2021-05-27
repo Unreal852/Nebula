@@ -80,7 +80,6 @@ namespace Nebula.ViewModel
             set
             {
                 Playlist.Medias.CurrentPage = value;
-                Growl.Info(Playlist.Medias.CurrentPage + " / " + Playlist.Medias.TotalPages);
                 OnPropertiesChanged(nameof(CurrentPage), nameof(Medias));
             }
         }

@@ -13,7 +13,7 @@ namespace Nebula.Core
     {
         public PlaylistsManager()
         {
-            //LoadPlaylists();
+
         }
 
         public ObservableCollection<Playlist> Playlists { get; } = new();

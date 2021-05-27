@@ -35,7 +35,6 @@ namespace Nebula.ViewModel
             Instance = this;
             SearchCommand = new AsyncRelayCommand<string>(Search);
             SwitchThemeCommand = new RelayCommand(SwitchTheme);
-            NebulaClient.Playlists.LoadPlaylists();
             SearchCommand.CanExecuteChanged += (_, _) => CanSearch = SearchCommand.CanExecute("");
         }
 

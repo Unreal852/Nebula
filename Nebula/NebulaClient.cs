@@ -26,9 +26,9 @@ namespace Nebula
         static NebulaClient()
         {
             Providers = new();
+            Playlists = new PlaylistsManager();
             Database = new NebulaDatabase();
             // Order does not matter below 
-            Playlists = new PlaylistsManager();
             MediaPlayer = new NAudioPlayer();
             CancellationTokenSource = new CancellationTokenSource();
             Task.Run(() => AppTick(CancellationTokenSource.Token, 500));

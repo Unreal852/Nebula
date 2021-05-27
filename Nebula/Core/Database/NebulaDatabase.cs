@@ -18,13 +18,7 @@ namespace Nebula.Core.Database
         public NebulaDatabase()
         {
             Database = new SQLiteAsyncConnection(DatabaseFile);
-            Database.CreateTableAsync<ArtistInfo>();
-            Database.CreateTableAsync<MediaInfo>();
-            Database.CreateTableAsync<Playlist>();
-            Database.ExecuteAsync(
-                @"create table if not exists PlaylistsMedias (PlaylistId varchar(50) not null, MediaId varchar(50) not null, ""Order"" int, IsActive int)");
-            Database.Tracer += OnReceiveTrace;
-            Database.Trace = false;
+            LoadDatabase();
         }
 
         public SQLiteAsyncConnection Database { get; }
@@ -34,6 +28,18 @@ namespace Nebula.Core.Database
         public async Task<IArtistInfo>     GetArtistById(string id)                   => await Database.Table<ArtistInfo>().FirstAsync(artist => artist.Id == id);
         public async Task                  InsertMedia(IMediaInfo mediaInfo)          => await Database.InsertOrReplaceAsync(mediaInfo);
         public async Task                  InsertOrReplacePlaylist(Playlist playlist) => await Database.InsertOrReplaceAsync(playlist);
+
+        private async void LoadDatabase()
+        {
+            await Database.CreateTableAsync<ArtistInfo>();
+            await Database.CreateTableAsync<MediaInfo>();
+            await Database.CreateTableAsync<Playlist>();
+            await Database.ExecuteAsync(
+                @"create table if not exists PlaylistsMedias (PlaylistId varchar(50) not null, MediaId varchar(50) not null, ""Order"" int, IsActive int)");
+            Database.Tracer += OnReceiveTrace;
+            Database.Trace = false;
+            await NebulaClient.Playlists.LoadPlaylists();
+        }
 
         public async Task UpdatePlaylistMedia(Playlist playlist, MediaInfo mediaInfo)
         {

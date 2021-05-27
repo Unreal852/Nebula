@@ -62,7 +62,7 @@ namespace Nebula.Model
             Thumbnail ??= new Uri("https://i.imgur.com/Od5XogD.png");
         }
 
-        public IEnumerator<MediaInfo> GetActiveMedias()
+        public IEnumerable<MediaInfo> GetActiveMedias()
         {
             foreach (MediaInfo mediaInfo in Medias.Elements)
             {
