@@ -5,6 +5,7 @@ using NAudio.Wave;
 using Nebula.Media;
 using Nebula.Media.Player;
 using Nebula.Media.Player.Events;
+using Nebula.Model;
 using Nebula.Utils.Extensions;
 
 namespace Nebula.Core.Player
@@ -157,9 +158,13 @@ namespace Nebula.Core.Player
             Play();
         }
 
-        public Task OpenPlaylist(IPlaylist playlist)
+        public async Task OpenPlaylist(IPlaylist playlist)
         {
-            throw new NotImplementedException();
+            if (playlist == null)
+                return;
+            CurrentPlaylist = playlist;
+            MediaQueue.Enqueue((Playlist) playlist);
+            await OpenMedia(MediaQueue.Dequeue(Shuffle));
         }
 
         public async Task Forward(bool byUser)
@@ -176,6 +181,7 @@ namespace Nebula.Core.Player
         {
             if (IsPaused || !SoundOut.IsReady)
                 return;
+            _stoppedByUSer = false;
             SoundOut.Out.Play();
             StateChanged?.Invoke(this, new PlayerStateChangedEventArgs(State));
         }

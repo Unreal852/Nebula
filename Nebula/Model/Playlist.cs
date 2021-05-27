@@ -25,10 +25,11 @@ namespace Nebula.Model
 
         public Playlist(string name, string description, string author, Uri thumbnail, ICollection<MediaInfo> medias) : this()
         {
-            Name = string.IsNullOrWhiteSpace(name) ? " " : SRemLines.Replace(name, "").Truncate(MaxNameLength);
-            Description = string.IsNullOrWhiteSpace(description) ? " " : SRemLines.Replace(description, "").Truncate(MaxDescriptionLength);
-            Author = string.IsNullOrWhiteSpace(author) ? " " : SRemLines.Replace(author, "").Truncate(MaxAuthorLength);
-            Thumbnail = thumbnail ?? new Uri("https://i.imgur.com/Od5XogD.png");
+            Name = name;
+            Description = description;
+            Author = author;
+            Thumbnail = thumbnail;
+            ValidateFields();
             Medias.SetElements(medias);
         }
 
@@ -52,6 +53,14 @@ namespace Nebula.Model
         public void                   RemoveMedias(params MediaInfo[] medias) => Medias.RemoveRange(medias);
         public IEnumerator<MediaInfo> GetEnumerator()                         => Medias.GetEnumerator();
         IEnumerator IEnumerable.      GetEnumerator()                         => GetEnumerator();
+
+        public void ValidateFields()
+        {
+            Name = string.IsNullOrWhiteSpace(Name) ? " " : SRemLines.Replace(Name, "").Truncate(MaxNameLength);
+            Description = string.IsNullOrWhiteSpace(Description) ? " " : SRemLines.Replace(Description, "").Truncate(MaxDescriptionLength);
+            Author = string.IsNullOrWhiteSpace(Author) ? " " : SRemLines.Replace(Author, "").Truncate(MaxAuthorLength);
+            Thumbnail ??= new Uri("https://i.imgur.com/Od5XogD.png");
+        }
 
         public IEnumerator<MediaInfo> GetActiveMedias()
         {

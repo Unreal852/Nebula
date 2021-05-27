@@ -50,8 +50,6 @@
                 <Button Content="Recherche Billie" Command="{Binding SearchCommand}"
                         CommandParameter="billie eilish" />
                 <Button Content="Switch Theme" Command="{Binding SwitchThemeCommand}" Margin="10" />
-                <Button Content="Create Playlist" Command="{Binding CreatePlaylistCommand}" />
-                <Button Content="Navigate To Playlist" Command="{Binding NavigatePlaylistCommand}" Margin="10" />
                 <ToggleButton Content="Queue" IsChecked="{Binding ElementName=Drawer, Path=IsOpen}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource MinimizeButton}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource MaximizeButton}" />

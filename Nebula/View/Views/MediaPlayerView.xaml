@@ -32,14 +32,14 @@
                 <Button Width="34" Height="34"
                         Foreground="{DynamicResource PrimaryTextBrush}"
                         Style="{StaticResource ButtonIcon}"
-                        hc:IconElement.Geometry="{StaticResource PreviousGeometry}" />
+                        hc:IconElement.Geometry="{StaticResource PreviousGeometry}" Command="{Binding BackwardCommand}" />
                 <ToggleButton Width="34" Height="34"
                               IsChecked="{Binding IsPlaying}"
                               hc:IconSwitchElement.Geometry="{StaticResource PlayGeometry}"
                               hc:IconSwitchElement.GeometrySelected="{StaticResource PauseGeometry}"
                               Style="{StaticResource ToggleButtonIconTransparent}" />
                 <Button Width="34" Height="34" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}"
-                        hc:IconElement.Geometry="{StaticResource NextGeometry}" />
+                        hc:IconElement.Geometry="{StaticResource NextGeometry}" Command="{Binding ForwardCommand}"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding Position, Converter={StaticResource TimeSpanToString}}"

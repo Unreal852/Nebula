@@ -36,7 +36,7 @@ namespace Nebula.Core.Player
         {
             if (clear)
                 Clear();
-            foreach (MediaInfo mediaInfo in playlist.Medias)
+            foreach (MediaInfo mediaInfo in playlist.Medias.Elements)
                 Queue.Add(mediaInfo);
         }
 

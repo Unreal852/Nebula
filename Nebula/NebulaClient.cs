@@ -33,8 +33,8 @@ namespace Nebula
             CancellationTokenSource = new CancellationTokenSource();
             Task.Run(() => AppTick(CancellationTokenSource.Token, 500));
         }
-        
-        
+
+
         public static string GetLang(string key, params object[] format)
         {
             if (format == null || format.Length == 0)

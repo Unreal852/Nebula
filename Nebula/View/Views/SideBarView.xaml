@@ -7,10 +7,16 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
              xmlns:views="clr-namespace:Nebula.View.Views"
+             xmlns:model="clr-namespace:Nebula.Model"
+             xmlns:converters="clr-namespace:Nebula.View.Converters"
+             xmlns:controls="clr-namespace:Nebula.View.Controls"
              mc:Ignorable="d">
     <UserControl.DataContext>
         <viewModel:SideBarViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <hc:SimplePanel>
         <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 15">
             <hc:Gravatar Width="32" Height="32" Id="Test" />
@@ -27,9 +33,34 @@
                 <RadioButton Content="Session Partagée" Style="{StaticResource NavigationRadioButton}" hc:IconElement.Geometry="{StaticResource UsersGeometry}" />
             </hc:SimpleStackPanel>
             <hc:SimpleStackPanel Orientation="Vertical" Margin="0 80 0 0">
-                <TextBlock Text="VOTRE MUSIQUE" Foreground="{DynamicResource SideBarCategoryBrush}" FontSize="18" FontWeight="Bold" />
-                <RadioButton Content="Artistes Suivis" Style="{StaticResource NavigationRadioButton}" />
-                <RadioButton Content="Listes de lecture" Style="{StaticResource NavigationRadioButton}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="VOTRE MUSIQUE" Foreground="{DynamicResource SideBarCategoryBrush}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" />
+                    <Button hc:IconElement.Geometry="{StaticResource PlusGeometry}" Foreground="{DynamicResource SideBarCategoryBrush}"
+                            Style="{StaticResource ButtonIcon}" Command="{Binding CreatePlaylistCommand}" />
+                    <Button hc:IconElement.Geometry="{StaticResource ImportGeometry}" Foreground="{DynamicResource SideBarCategoryBrush}"
+                            Style="{StaticResource ButtonIcon}" Command="{Binding ImportPlaylistCommand}" />
+                </StackPanel>
+                <hc:ButtonGroup ItemsSource="{Binding Playlists}" Orientation="Vertical">
+                    <hc:ButtonGroup.ItemTemplate>
+                        <DataTemplate DataType="model:Playlist">
+                            <RadioButton
+                                Style="{StaticResource NavigationRadioButton}"
+                                Command="{Binding DataContext.NavigateToPlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                CommandParameter="{Binding}">
+                                <controls:SimpleGrid Columns="180,*">
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                               FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
+                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
+                                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                    <Button Grid.Column="1" hc:IconElement.Geometry="{StaticResource PlayGeometry}"
+                                            Foreground="{DynamicResource SideBarCategoryBrush}" Style="{StaticResource ButtonIcon}" Width="32" Height="32"
+                                            Command="{Binding DataContext.PlayPlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding}" />
+                                </controls:SimpleGrid>
+                            </RadioButton>
+                        </DataTemplate>
+                    </hc:ButtonGroup.ItemTemplate>
+                </hc:ButtonGroup>
             </hc:SimpleStackPanel>
         </hc:SimpleStackPanel>
     </hc:SimplePanel>

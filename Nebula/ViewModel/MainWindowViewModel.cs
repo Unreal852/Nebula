@@ -35,16 +35,12 @@ namespace Nebula.ViewModel
             Instance = this;
             SearchCommand = new AsyncRelayCommand<string>(Search);
             SwitchThemeCommand = new RelayCommand(SwitchTheme);
-            CreatePlaylistCommand = new RelayCommand(CreatePlaylist);
-            NavigatePlaylistCommand = new RelayCommand(NavigatePlaylist);
+            NebulaClient.Playlists.LoadPlaylists();
             SearchCommand.CanExecuteChanged += (_, _) => CanSearch = SearchCommand.CanExecute("");
         }
 
-        public ICommand SearchCommand           { get; }
-        public ICommand SwitchThemeCommand      { get; }
-        public ICommand CreatePlaylistCommand   { get; }
-        public ICommand NavigatePlaylistCommand { get; }
-
+        public ICommand SearchCommand      { get; }
+        public ICommand SwitchThemeCommand { get; }
 
         public bool CanSearch
         {
@@ -70,12 +66,6 @@ namespace Nebula.ViewModel
             }
         }
 
-        private void CreatePlaylist(object obj)
-        {
-            //Dialog.Show<PlaylistCreationDialogView>().DataContext = new PlaylistCreationDialogViewModel();
-            Dialog.Show(PlaylistImportationDialogViewModel.Cache.Container).DataContext = new PlaylistImportationDialogViewModel();
-        }
-
         private async Task Search(string query)
         {
             SearchResultsView searchView = new SearchResultsView();
@@ -88,11 +78,6 @@ namespace Nebula.ViewModel
                 searchResultsViewModel.Medias.Add(mediaInfo);
                 await Task.Delay(20);
             }
-        }
-
-        public void NavigatePlaylist(object param)
-        {
-            Navigate(NavigationInfo.Create(typeof(PlaylistView), NebulaClient.Playlists.Playlists[0]));
         }
 
         public void Navigate(object obj)

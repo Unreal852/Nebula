@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Nebula.Media;
 using Nebula.Media.Player;
 using Nebula.MVVM;
+using Nebula.MVVM.Commands;
 
 namespace Nebula.ViewModel
 {
@@ -12,6 +15,8 @@ namespace Nebula.ViewModel
         public MediaPlayerViewModel()
         {
             Instance = this;
+            ForwardCommand = new AsyncRelayCommand(GoForward);
+            BackwardCommand = new AsyncRelayCommand(GoBackward);
             MediaPlayer.MediaChanged += (_, _) =>
             {
                 OnPropertyChanged(nameof(CurrentMedia));
@@ -21,6 +26,9 @@ namespace Nebula.ViewModel
             MediaPlayer.PositionChanged += (_, _) => OnPropertyChanged(nameof(Position));
             MediaPlayer.VolumeChanged += (_, _) => OnPropertyChanged(nameof(Volume));
         }
+
+        public ICommand ForwardCommand  { get; }
+        public ICommand BackwardCommand { get; }
 
         public IMediaPlayer MediaPlayer => NebulaClient.MediaPlayer;
 
@@ -50,5 +58,8 @@ namespace Nebula.ViewModel
             get => MediaPlayer.Volume;
             set => MediaPlayer.Volume = Convert.ToInt32(value);
         }
+
+        private async Task GoForward(object param)  => await MediaPlayer.Forward(true);
+        private async Task GoBackward(object param) => await MediaPlayer.Backward(true);
     }
 }

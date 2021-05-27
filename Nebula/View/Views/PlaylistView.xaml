@@ -9,6 +9,7 @@
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
              xmlns:converters="clr-namespace:Nebula.View.Converters"
              xmlns:model="clr-namespace:Nebula.Model"
+             xmlns:resx="clr-namespace:Nebula.Resources"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
@@ -17,36 +18,46 @@
     <UserControl.Resources>
         <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
         <DataTemplate x:Key="IsActiveTemplate" DataType="model:MediaInfo">
-            <CheckBox IsChecked="{Binding IsActive }" />
+            <CheckBox IsChecked="{Binding IsActive}"
+                      Command="{Binding DataContext.SetIsActiveCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                      CommandParameter="{Binding }" />
+        </DataTemplate>
+        <DataTemplate x:Key="ManageMediaTemplate" DataType="model:MediaInfo">
+            <StackPanel Orientation="Horizontal">
+                <Button hc:IconSwitchElement.Geometry="{StaticResource PlayGeometry}"
+                        Command="{Binding DataContext.PlayMediaCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding}" Style="{StaticResource ButtonDashedSuccess}" />
+                <Button hc:IconSwitchElement.Geometry="{StaticResource TrashGeometry}" Margin="5,0,0,0"
+                        Command="{Binding DataContext.RemoveMediaCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding}" Style="{StaticResource ButtonDashedDanger}" />
+            </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
-    <controls:SimpleGrid Rows="Auto,5,*,Auto,5" Columns="5,*,5">
-        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Background="Brown">
-            <Image Source="{Binding Thumbnail}" Width="150" Height="150" Stretch="UniformToFill" />
+    <controls:SimpleGrid Rows="Auto,5,*,5,Auto,5" Columns="5,*,5">
+        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1">
+            <Grid>
+                <Image Source="{Binding Thumbnail}" Width="150" Height="150" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
             <StackPanel Orientation="Vertical" Margin="10, 0">
-                <TextBlock Text="{Binding Name}" FontSize="24" />
-                <TextBlock Text="{Binding Description}" FontSize="18" />
-                <TextBlock Text="{Binding Author}" FontSize="18" />
+                <TextBlock Text="{Binding Name}" FontSize="24" Foreground="{DynamicResource AppForegroundBrush}" />
+                <TextBlock Text="{Binding Description}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
+                <TextBlock Text="{Binding Author}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
             </StackPanel>
         </hc:SimpleStackPanel>
-        <ListView Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Medias}">
+        <ListView Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Medias}" HorizontalContentAlignment="Stretch">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" />
-                    <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Author}" />
-                    <GridViewColumn Header="Duration" DisplayMemberBinding="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}" />
-                    <GridViewColumn Header="Active" CellTemplate="{StaticResource IsActiveTemplate}" />
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Remove" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                    <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="350" />
+                    <GridViewColumn Header="{x:Static resx:Nebula.media_author}" DisplayMemberBinding="{Binding Author}" />
+                    <GridViewColumn Header="{x:Static resx:Nebula.media_duration}"
+                                    DisplayMemberBinding="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}" />
+                    <GridViewColumn Header="{x:Static resx:Nebula.media_active}" CellTemplate="{StaticResource IsActiveTemplate}" />
+                    <GridViewColumn Header="{x:Static resx:Nebula.media_manage}" CellTemplate="{StaticResource ManageMediaTemplate}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <hc:Pagination Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="50" MaxPageCount="{Binding TotalPages}"
+        <hc:Pagination Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="10"
+                       MaxPageCount="{Binding TotalPages}"
                        PageUpdated="OnPageUpdated" />
     </controls:SimpleGrid>
 </UserControl>

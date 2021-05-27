@@ -20,4 +20,19 @@
     <data name="playlist_creation_description" xml:space="preserve">
         <value>Description</value>
     </data>
+    <data name="media_title" xml:space="preserve">
+        <value>Titre</value>
+    </data>
+    <data name="media_author" xml:space="preserve">
+        <value>Auteur</value>
+    </data>
+    <data name="media_duration" xml:space="preserve">
+        <value>Durée</value>
+    </data>
+    <data name="media_active" xml:space="preserve">
+        <value>Activé</value>
+    </data>
+    <data name="media_manage" xml:space="preserve">
+        <value>Gérer</value>
+    </data>
 </root>

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using HandyControl.Controls;
 using Nebula.Media;
 using Nebula.Model;
@@ -12,12 +13,12 @@ namespace Nebula.Core
     {
         public PlaylistsManager()
         {
-            LoadPlaylists();
+            //LoadPlaylists();
         }
 
         public ObservableCollection<Playlist> Playlists { get; } = new();
 
-        private async void LoadPlaylists()
+        public async Task LoadPlaylists()
         {
             Stopwatch sw = Stopwatch.StartNew();
             List<Playlist> playlists = await NebulaClient.Database.GetAllPlaylists();

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using HandyControl.Controls;
 using Nebula.Model;
 using Nebula.MVVM;
+using Nebula.MVVM.Commands;
 
 namespace Nebula.ViewModel
 {
@@ -10,9 +13,18 @@ namespace Nebula.ViewModel
     {
         public PlaylistViewModel()
         {
+            PlayMediaCommand = new AsyncRelayCommand<MediaInfo>(PlayMedia);
+            RemoveMediaCommand = new AsyncRelayCommand<MediaInfo>(RemoveMedia);
+            SetIsActiveCommand = new AsyncRelayCommand<MediaInfo>(SetIsActive);
         }
 
-        public Playlist Playlist { get; private set; }
+        public Playlist Playlist           { get; private set; }
+        public ICommand PlayMediaCommand   { get; }
+        public ICommand RemoveMediaCommand { get; }
+        public ICommand SetIsActiveCommand { get; }
+
+        public int                             TotalPages => Playlist.Medias.TotalPages - 1;
+        public ObservableCollection<MediaInfo> Medias     => Playlist?.Medias.PageElements;
 
         public string Name
         {
@@ -73,10 +85,6 @@ namespace Nebula.ViewModel
             }
         }
 
-        public int TotalPages => Playlist.Medias.TotalPages - 1;
-
-        public ObservableCollection<MediaInfo> Medias => Playlist?.Medias.PageElements;
-
         public override void OnNavigating(object param)
         {
             if (param is Playlist playlist)
@@ -84,6 +92,28 @@ namespace Nebula.ViewModel
                 Playlist = playlist;
                 OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(Medias), nameof(CurrentPage), nameof(TotalPages));
             }
+        }
+
+        private async Task PlayMedia(MediaInfo mediaInfo)
+        {
+            if (mediaInfo == null)
+                return;
+            await NebulaClient.MediaPlayer.OpenMedia(mediaInfo);
+        }
+
+        private async Task RemoveMedia(MediaInfo mediaInfo)
+        {
+            if (Playlist == null || mediaInfo == null)
+                return;
+            Playlist.Medias.Remove(mediaInfo);
+            await NebulaClient.Database.RemovePlaylistMedia(Playlist, mediaInfo);
+        }
+
+        private async Task SetIsActive(MediaInfo mediaInfo)
+        {
+            if (Playlist == null || mediaInfo == null)
+                return;
+            await NebulaClient.Database.UpdatePlaylistMedia(Playlist, mediaInfo);
         }
     }
 }

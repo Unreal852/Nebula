@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using HandyControl.Controls;
 using HandyControl.Interactivity;
 using Nebula.MVVM;
 using Nebula.MVVM.Commands;
@@ -15,10 +14,7 @@ namespace Nebula.ViewModel.Dialogs
 
         public ICommand ConfirmCommand { get; }
 
-        protected void Close()
-        {
-            ControlCommands.Close.Execute(null, null);
-        }
+        protected void Close() => ControlCommands.Close.Execute(null, null);
 
         protected abstract void OnConfirm(object param);
     }
