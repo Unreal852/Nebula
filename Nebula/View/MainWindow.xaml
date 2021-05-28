@@ -35,7 +35,7 @@
         <views:SideBarView Grid.RowSpan="3" />
         <controls:SimpleGrid Background="{DynamicResource AppBackgroundBrush}" Grid.Column="1" Grid.Row="0">
             <hc:SimpleStackPanel Orientation="Horizontal" Margin="10 0 0 0">
-                <hc:SimpleStackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <hc:SimpleStackPanel x:Name="TitleBar" Orientation="Vertical" VerticalAlignment="Center">
                     <hc:SearchBar x:Name="SearchBar" hc:InfoElement.Placeholder="Rechercher"
                                   Command="{Binding SearchCommand}"
                                   CommandParameter="{Binding ElementName=SearchBar, Path=Text}"
@@ -46,7 +46,7 @@
                                  Visibility="{Binding CanSearch, Converter={StaticResource BoolToVisibility}, ConverterParameter=!}" />
                 </hc:SimpleStackPanel>
             </hc:SimpleStackPanel>
-            <hc:SimpleStackPanel x:Name="TitleBar" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <hc:SimpleStackPanel x:Name="TitleBarButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Content="Recherche Billie" Command="{Binding SearchCommand}"
                         CommandParameter="billie eilish" />
                 <Button Content="Switch Theme" Command="{Binding SwitchThemeCommand}" Margin="10" />

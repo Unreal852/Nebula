@@ -46,11 +46,11 @@ namespace Nebula.ViewModel.Dialogs
         private void CreatePlaylist(object obj)
         {
             NebulaClient.Playlists.AddPlaylist(new Playlist(PlaylistName, PlaylistDescription, PlaylistAuthor,
-                new Uri("https://upload.wikimedia.org/wikipedia/commons/f/fa/Billie_Eilish_2019_by_Glenn_Francis_%28cropped%29_2.jpg"),
+                null,
                 new List<MediaInfo>()));
             Close();
         }
-        
+
         protected override void OnConfirm(object param)
         {
             Growl.Info("TEST");

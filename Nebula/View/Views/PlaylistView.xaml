@@ -33,31 +33,44 @@
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
-    <controls:SimpleGrid Rows="Auto,5,*,5,Auto,5" Columns="5,*,5">
-        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1">
-            <Grid>
+    <controls:SimpleGrid Rows="Auto,5,*,5" Columns="5,*,5">
+        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" >
+            <hc:SimplePanel>
                 <Image Source="{Binding Thumbnail}" Width="150" Height="150" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Grid>
-            <StackPanel Orientation="Vertical" Margin="10, 0">
-                <TextBlock Text="{Binding Name}" FontSize="24" Foreground="{DynamicResource AppForegroundBrush}" />
-                <TextBlock Text="{Binding Description}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
-                <TextBlock Text="{Binding Author}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
-            </StackPanel>
+            </hc:SimplePanel>
+            <controls:SimpleGrid Rows="Auto,*">
+                <hc:SimpleStackPanel Grid.Row="0" Orientation="Vertical" Margin="10, 0">
+                    <TextBlock Text="{Binding Name}" FontSize="24" Foreground="{DynamicResource AppForegroundBrush}" />
+                    <TextBlock Text="{Binding Description}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
+                    <TextBlock Text="{Binding Author}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
+                </hc:SimpleStackPanel>
+                <controls:SimpleGrid Columns="Auto,*" VerticalAlignment="Bottom" Margin="5,0" Grid.Row="1" Background="{Binding ElementName=Bar, Path=Background }">
+                    <ToolBar x:Name="Bar" Grid.Column="0" Padding="5" ToolBarTray.IsLocked="True">
+                        <hc:SearchBar Width="250" hc:InfoElement.Placeholder="Find Music" Style="{StaticResource SearchBarPlus}" />
+                    </ToolBar>
+                    <ToolBar Grid.Column="1" HorizontalAlignment="Right" Padding="5" ToolBarTray.IsLocked="True" >
+                        <Button Content="Edit" />
+                        <Button Content="Delete" />
+                    </ToolBar>
+                </controls:SimpleGrid>
+            </controls:SimpleGrid>
         </hc:SimpleStackPanel>
-        <ListView Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Medias}" HorizontalContentAlignment="Stretch">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="350" />
-                    <GridViewColumn Header="{x:Static resx:Nebula.media_author}" DisplayMemberBinding="{Binding Author}" />
-                    <GridViewColumn Header="{x:Static resx:Nebula.media_duration}"
-                                    DisplayMemberBinding="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}" />
-                    <GridViewColumn Header="{x:Static resx:Nebula.media_active}" CellTemplate="{StaticResource IsActiveTemplate}" />
-                    <GridViewColumn Header="{x:Static resx:Nebula.media_manage}" CellTemplate="{StaticResource ManageMediaTemplate}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <hc:Pagination Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="10"
-                       MaxPageCount="{Binding TotalPages}"
-                       PageUpdated="OnPageUpdated" />
+        <controls:SimpleGrid Grid.Row="2" Grid.Column="1" Rows="*,5,Auto,5">
+            <ListView Grid.Row="0" ItemsSource="{Binding Medias}" HorizontalContentAlignment="Stretch">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="350" />
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_author}" DisplayMemberBinding="{Binding Author}" />
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_duration}"
+                                        DisplayMemberBinding="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}" />
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_active}" CellTemplate="{StaticResource IsActiveTemplate}" />
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_manage}" CellTemplate="{StaticResource ManageMediaTemplate}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <hc:Pagination Grid.Row="2" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="10"
+                           MaxPageCount="{Binding TotalPages}"
+                           PageUpdated="OnPageUpdated" />
+        </controls:SimpleGrid>
     </controls:SimpleGrid>
 </UserControl>

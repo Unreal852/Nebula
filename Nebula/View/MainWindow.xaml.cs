@@ -24,6 +24,8 @@ namespace Nebula.View
         {
             foreach (IInputElement element in TitleBar.Children)
                 WindowChrome.SetIsHitTestVisibleInChrome(element, true);
+            foreach (IInputElement element in TitleBarButtons.Children)
+                WindowChrome.SetIsHitTestVisibleInChrome(element, true);
         }
 
         private void OnControlBoxClick(object sender, RoutedEventArgs e)
