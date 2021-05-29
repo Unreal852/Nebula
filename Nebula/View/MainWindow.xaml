@@ -15,7 +15,7 @@
            Title="Nebula"
            Width="1360"
            Height="760"
-           MinWidth="950"
+           MinWidth="1115"
            MinHeight="500"
            fluentWpf:AcrylicWindow.Enabled="True"
            fluentWpf:AcrylicWindow.AcrylicWindowStyle="None"

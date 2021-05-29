@@ -34,11 +34,11 @@
         </DataTemplate>
     </UserControl.Resources>
     <controls:SimpleGrid Rows="Auto,5,*,5" Columns="5,*,5">
-        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" >
+        <hc:SimpleStackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
             <hc:SimplePanel>
                 <Image Source="{Binding Thumbnail}" Width="150" Height="150" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </hc:SimplePanel>
-            <controls:SimpleGrid Rows="Auto,*">
+            <controls:SimpleGrid Rows="Auto,*" Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}">
                 <hc:SimpleStackPanel Grid.Row="0" Orientation="Vertical" Margin="10, 0">
                     <TextBlock Text="{Binding Name}" FontSize="24" Foreground="{DynamicResource AppForegroundBrush}" />
                     <TextBlock Text="{Binding Description}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
@@ -48,7 +48,7 @@
                     <ToolBar x:Name="Bar" Grid.Column="0" Padding="5" ToolBarTray.IsLocked="True">
                         <hc:SearchBar Width="250" hc:InfoElement.Placeholder="Find Music" Style="{StaticResource SearchBarPlus}" />
                     </ToolBar>
-                    <ToolBar Grid.Column="1" HorizontalAlignment="Right" Padding="5" ToolBarTray.IsLocked="True" >
+                    <ToolBar Grid.Column="1" Padding="5" ToolBarTray.IsLocked="True">
                         <Button Content="Edit" />
                         <Button Content="Delete" />
                     </ToolBar>
