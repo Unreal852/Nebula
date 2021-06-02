@@ -60,7 +60,7 @@
             <ContentPresenter Content="{Binding CurrentPage}" />
             <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right" hc:Growl.GrowlParent="True" />
             <hc:Drawer x:Name="Drawer" Dock="Right" MaskCanClose="True" ShowMode="Cover">
-                <controls:ListBoxEx Background="Bisque" Width="250" />
+                <views:MediasQueueView MinWidth="300" MaxWidth="300" />
             </hc:Drawer>
         </controls:SimpleGrid>
         <views:MediaPlayerView Grid.Row="2" Grid.ColumnSpan="2" />
