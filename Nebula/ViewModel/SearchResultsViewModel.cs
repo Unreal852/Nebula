@@ -2,12 +2,10 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HandyControl.Controls;
-using HandyControl.Tools.Extension;
+using LiteMVVM;
+using LiteMVVM.Command;
 using Nebula.Media;
-using Nebula.Media.Player;
 using Nebula.Model;
-using Nebula.MVVM;
-using Nebula.MVVM.Commands;
 using Nebula.View.Controls;
 using Nebula.View.Views.Dialogs;
 
@@ -17,7 +15,7 @@ namespace Nebula.ViewModel
     {
         public SearchResultsViewModel()
         {
-            ScrollToTopCommand = new RelayCommand(ScrollToTop);
+            ScrollToTopCommand = new RelayCommand<ListBoxEx>(ScrollToTop);
             AddMediaToQueueCommand = new RelayCommand<MediaInfo>(AddMediaToQueue);
             AddMediaToPlaylistCommand = new AsyncRelayCommand<Playlist>(AddMediaToPlaylist);
             ShowPlaylistCreationDialogCommand = new AsyncRelayCommand(ShowPlaylistCreationDialog);
@@ -33,9 +31,9 @@ namespace Nebula.ViewModel
         public MediaInfo                       CurrentMedia { get; set; }
         public ObservableCollection<MediaInfo> Medias       { get; } = new();
 
-        private void ScrollToTop(object obj)
+        private void ScrollToTop(ListBoxEx listBoxEx)
         {
-            if (obj is ListBoxEx listBoxEx && listBoxEx.Items.Count > 0)
+            if (listBoxEx != null && listBoxEx.Items.Count > 0)
                 listBoxEx.ScrollIntoView(listBoxEx.Items[0]);
         }
 
@@ -61,7 +59,7 @@ namespace Nebula.ViewModel
             await NebulaClient.MediaPlayer.OpenMedia(media);
         }
 
-        private async Task ShowPlaylistCreationDialog(object param)
+        private async Task ShowPlaylistCreationDialog()
         {
             Dialog.Show<PlaylistCreationDialogView>();
         }

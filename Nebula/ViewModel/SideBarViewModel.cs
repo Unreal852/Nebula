@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HandyControl.Controls;
-using HandyControl.Tools;
+using LiteMVVM;
+using LiteMVVM.Command;
 using Nebula.Model;
-using Nebula.MVVM;
-using Nebula.MVVM.Commands;
 using Nebula.View;
 using Nebula.View.Views;
 using Nebula.View.Views.Dialogs;
@@ -50,7 +47,8 @@ namespace Nebula.ViewModel
         {
             if (playlist == null)
                 return;
-            MainWindowViewModel.Instance.Navigate(NavigationInfo.Create(typeof(PlaylistView), playlist, true));
+            Messenger.Broadcast(this, NavigationInfo.Create(typeof(PlaylistView), playlist, true));
+            //MainWindowViewModel.Instance.Navigate(NavigationInfo.Create(typeof(PlaylistView), playlist, true));
         }
 
         private void CreatePlaylist(object param)

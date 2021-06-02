@@ -2,14 +2,14 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using HandyControl.Controls;
+using LiteMVVM;
+using LiteMVVM.Command;
+using LiteMVVM.Navigation;
 using Nebula.Model;
-using Nebula.MVVM;
-using Nebula.MVVM.Commands;
 
 namespace Nebula.ViewModel
 {
-    public class PlaylistViewModel : BaseViewModel
+    public class PlaylistViewModel : BaseViewModel, INavigable
     {
         public PlaylistViewModel()
         {
@@ -84,7 +84,7 @@ namespace Nebula.ViewModel
             }
         }
 
-        public override void OnNavigating(object param)
+        public void OnNavigated(object param)
         {
             if (param is Playlist playlist)
             {

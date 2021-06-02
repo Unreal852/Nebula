@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 using HandyControl.Interactivity;
-using Nebula.MVVM;
-using Nebula.MVVM.Commands;
+using LiteMVVM;
+using LiteMVVM.Command;
 
 namespace Nebula.ViewModel.Dialogs
 {
@@ -9,7 +9,7 @@ namespace Nebula.ViewModel.Dialogs
     {
         protected BaseDialogViewModel()
         {
-            ConfirmCommand = new RelayCommand(OnConfirm);
+            ConfirmCommand = new RelayCommand<object>(OnConfirm);
         }
 
         public ICommand ConfirmCommand { get; }

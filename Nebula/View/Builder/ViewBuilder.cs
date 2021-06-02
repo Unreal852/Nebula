@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 using HandyControl.Controls;
-using Nebula.MVVM;
+using LiteMVVM;
 using Nebula.View.Builder.Attributes;
 using Nebula.View.Views.Dialogs;
 using Nebula.ViewModel.Dialogs;
-using TextBox = HandyControl.Controls.TextBox;
 
 namespace Nebula.View.Builder
 {

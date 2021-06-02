@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using HandyControl.Controls;
-using HandyControl.Interactivity;
-using Nebula.Core;
-using Nebula.Media;
+using LiteMVVM.Command;
 using Nebula.Model;
-using Nebula.MVVM;
-using Nebula.MVVM.Commands;
 
 namespace Nebula.ViewModel.Dialogs
 {
@@ -43,7 +37,7 @@ namespace Nebula.ViewModel.Dialogs
             set => Set(ref _playlistAuthor, value);
         }
 
-        private void CreatePlaylist(object obj)
+        private void CreatePlaylist()
         {
             NebulaClient.Playlists.AddPlaylist(new Playlist(PlaylistName, PlaylistDescription, PlaylistAuthor,
                 null,

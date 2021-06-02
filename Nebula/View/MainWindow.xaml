@@ -43,7 +43,7 @@
                                   Width="350" Height="25" HorizontalAlignment="Left"
                                   Style="{StaticResource SearchBarPlus}" />
                     <ProgressBar IsIndeterminate="True" Style="{StaticResource ProgressBarFlat}"
-                                 Visibility="{Binding CanSearch, Converter={StaticResource BoolToVisibility}, ConverterParameter=!}" />
+                                 Visibility="{Binding Path=IsEnabled, ElementName=SearchBar, Converter={StaticResource BoolToVisibility}, ConverterParameter=!}" />
                 </hc:SimpleStackPanel>
             </hc:SimpleStackPanel>
             <hc:SimpleStackPanel x:Name="TitleBarButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">

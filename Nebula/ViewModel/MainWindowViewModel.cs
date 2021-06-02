@@ -1,25 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using HandyControl.Controls;
 using HandyControl.Themes;
-using HandyControl.Tools.Extension;
-using Nebula.Media;
-using Nebula.Media.Player;
+using LiteMVVM;
+using LiteMVVM.Command;
+using LiteMVVM.Navigation;
 using Nebula.Model;
-using Nebula.MVVM;
-using Nebula.MVVM.Commands;
-using Nebula.Utils.Extensions;
-using Nebula.View;
 using Nebula.View.Views;
-using Nebula.View.Views.Dialogs;
-using Nebula.ViewModel.Dialogs;
-using MessageBox = System.Windows.MessageBox;
-using RelayCommand = HandyControl.Tools.Command.RelayCommand;
+using NavigationInfo = Nebula.View.NavigationInfo;
 
 namespace Nebula.ViewModel
 {
@@ -35,6 +24,7 @@ namespace Nebula.ViewModel
             Instance = this;
             SearchCommand = new AsyncRelayCommand<string>(Search);
             SwitchThemeCommand = new RelayCommand(SwitchTheme);
+            Messenger.Subscribe<NavigationInfo>((s, o) => Navigate(o), this);
             SearchCommand.CanExecuteChanged += (_, _) => CanSearch = SearchCommand.CanExecute("");
         }
 
@@ -53,7 +43,7 @@ namespace Nebula.ViewModel
             private set => Set(ref _currentPage, value);
         }
 
-        private void SwitchTheme(object param)
+        private void SwitchTheme()
         {
             if (ThemeManager.Current.ApplicationTheme == ApplicationTheme.Light)
             {
@@ -89,8 +79,8 @@ namespace Nebula.ViewModel
                     if (userControl == null || (userControl.GetType() == CurrentPage?.GetType() && !info.NavigateIfSame))
                         return;
                     CurrentPage = userControl;
-                    if (info.Parameter != null && userControl.DataContext is BaseViewModel viewModel)
-                        viewModel.OnNavigating(info.Parameter);
+                    if (info.Parameter != null && userControl.DataContext is INavigable navigable)
+                        navigable.OnNavigated(info.Parameter);
                     break;
                 }
                 case Type type when Activator.CreateInstance(type) is UserControl control:

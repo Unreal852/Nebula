@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using LiteMVVM;
+using LiteMVVM.Command;
 using Nebula.Media;
 using Nebula.Media.Player;
-using Nebula.MVVM;
-using Nebula.MVVM.Commands;
 
 namespace Nebula.ViewModel
 {
@@ -59,7 +59,7 @@ namespace Nebula.ViewModel
             set => MediaPlayer.Volume = Convert.ToInt32(value);
         }
 
-        private async Task GoForward(object param)  => await MediaPlayer.Forward(true);
-        private async Task GoBackward(object param) => await MediaPlayer.Backward(true);
+        private async Task GoForward()  => await MediaPlayer.Forward(true);
+        private async Task GoBackward() => await MediaPlayer.Backward(true);
     }
 }
