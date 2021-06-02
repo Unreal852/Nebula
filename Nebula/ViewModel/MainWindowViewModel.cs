@@ -24,7 +24,7 @@ namespace Nebula.ViewModel
             Instance = this;
             SearchCommand = new AsyncRelayCommand<string>(Search);
             SwitchThemeCommand = new RelayCommand(SwitchTheme);
-            Messenger.Subscribe<NavigationInfo>((s, o) => Navigate(o), this);
+            Messenger.Subscribe<NavigationInfo>((_, o) => Navigate(o));
             SearchCommand.CanExecuteChanged += (_, _) => CanSearch = SearchCommand.CanExecute("");
         }
 

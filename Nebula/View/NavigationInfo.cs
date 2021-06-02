@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
-using LiteMVVM.Annotations;
+using LiteMVVM;
 
 namespace Nebula.View
 {
