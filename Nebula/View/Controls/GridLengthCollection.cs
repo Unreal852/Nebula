@@ -11,7 +11,6 @@ namespace Nebula.View.Controls
     {
         public GridLengthCollection(IList<GridLength> list) : base(list)
         {
-            
         }
     }
 }

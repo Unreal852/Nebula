@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using HandyControl.Controls;
 using HandyControl.Data;
@@ -56,7 +55,7 @@ namespace Nebula.Core.Database
                 if (playlist.MediasCount <= 0)
                     return;
                 int index = 0;
-                foreach (MediaInfo mediaInfo in playlist.Medias.Elements)
+                foreach (MediaInfo mediaInfo in playlist.Medias)
                 {
                     trans.InsertOrReplace(mediaInfo);
                     trans.Execute($"insert into PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) values(?,?,?,?)",
@@ -74,7 +73,7 @@ namespace Nebula.Core.Database
                 trans.InsertOrReplace(playlist);
                 trans.InsertOrReplace(mediaInfo);
                 trans.Execute($"insert into PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) values(?,?,?,?)",
-                    playlist.Id, mediaInfo.Id, order < 0 ? playlist.Medias.Elements.IndexOf(mediaInfo) : order, true);
+                    playlist.Id, mediaInfo.Id, order < 0 ? playlist.Medias.IndexOf(mediaInfo) : order, true);
             });
         }
 
@@ -91,7 +90,10 @@ namespace Nebula.Core.Database
             if (loadMedias)
             {
                 foreach (Playlist playlist in playlists)
-                    playlist.Medias.SetElements(await GetPlaylistMedias(playlist));
+                {
+                    foreach (MediaInfo mediaInfo in await GetPlaylistMedias(playlist))
+                        playlist.Medias.Add(mediaInfo);
+                }
             }
 
             return playlists;

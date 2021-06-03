@@ -8,7 +8,7 @@ namespace Nebula.Media.Player.Events
         {
             NewState = newState;
         }
-        
+
         public PlayerState NewState { get; }
     }
 }

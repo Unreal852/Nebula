@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace Nebula.View.Converters
             return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
         }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value is string s)
                 return ParseString(s, culture);
@@ -36,14 +35,14 @@ namespace Nebula.View.Converters
 
         private static string ToString(GridLengthCollection value, CultureInfo culture)
         {
-            GridLengthConverter converter = new GridLengthConverter();
+            var converter = new GridLengthConverter();
             return string.Join(",", value.Select(v => converter.ConvertToString(v)));
         }
 
         private static GridLengthCollection ParseString(string s, CultureInfo culture)
         {
-            GridLengthConverter converter = new GridLengthConverter();
-            IEnumerable<GridLength> lengths = s.Split(',').Select(p => (GridLength) converter.ConvertFromString(p.Trim()));
+            var converter = new GridLengthConverter();
+            var lengths = s.Split(',').Select(p => (GridLength) converter.ConvertFromString(p.Trim()));
             return new GridLengthCollection(lengths.ToArray());
         }
     }

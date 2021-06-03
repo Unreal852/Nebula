@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using HandyControl.Controls;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Player;
 using Nebula.Core.Providers;
-using Nebula.Media.Player;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Nebula
 {

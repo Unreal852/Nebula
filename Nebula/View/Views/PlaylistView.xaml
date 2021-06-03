@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Nebula.View.Views"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
@@ -46,7 +45,9 @@
                 </hc:SimpleStackPanel>
                 <controls:SimpleGrid Columns="Auto,*" VerticalAlignment="Bottom" Margin="5,0" Grid.Row="1" Background="{Binding ElementName=Bar, Path=Background }">
                     <ToolBar x:Name="Bar" Grid.Column="0" Padding="5" ToolBarTray.IsLocked="True">
-                        <hc:SearchBar Width="250" hc:InfoElement.Placeholder="Find Music" Style="{StaticResource SearchBarPlus}" />
+                        <hc:SearchBar Width="250" hc:InfoElement.Placeholder="Find Music" Style="{StaticResource SearchBarPlus}"
+                                      Command="{Binding FilterMediasCommand}"
+                                      CommandParameter="{Binding Path=Text ,RelativeSource={RelativeSource Self}}" ShowClearButton="True" />
                     </ToolBar>
                     <ToolBar Grid.Column="1" Padding="5" ToolBarTray.IsLocked="True">
                         <Button Content="Edit" />
@@ -56,7 +57,7 @@
             </controls:SimpleGrid>
         </hc:SimpleStackPanel>
         <controls:SimpleGrid Grid.Row="2" Grid.Column="1" Rows="*,5,Auto,5">
-            <ListView Grid.Row="0" ItemsSource="{Binding Medias}" HorizontalContentAlignment="Stretch">
+            <ListView Grid.Row="0" ItemsSource="{Binding Medias.ObservablePage}" HorizontalContentAlignment="Stretch">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="350" />

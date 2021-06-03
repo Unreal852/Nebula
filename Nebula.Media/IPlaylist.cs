@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Nebula.Media.Events;
-using Nebula.Media.Player;
 
 namespace Nebula.Media
 {

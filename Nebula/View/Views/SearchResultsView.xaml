@@ -3,20 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Nebula.View.Views"
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
-             xmlns:media="clr-namespace:Nebula.Media;assembly=Nebula.Media"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              x:Name="Test"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300" >
+             d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
         <viewModel:SearchResultsViewModel />
     </UserControl.DataContext>
-    <hc:TransitioningContentControl TransitionMode="Bottom2TopWithFade" >
+    <hc:TransitioningContentControl TransitionMode="Bottom2TopWithFade">
         <hc:SimplePanel>
-            <controls:ListBoxEx x:Name="ListBoxMedias" BorderThickness="0" ItemTemplate="{StaticResource MediaInfoCardTemplate}" Style="{DynamicResource WrapPanelHorizontalListBox}"
+            <controls:ListBoxEx x:Name="ListBoxMedias" BorderThickness="0" ItemTemplate="{StaticResource MediaInfoCardTemplate}"
+                                Style="{DynamicResource WrapPanelHorizontalListBox}"
                                 ItemsSource="{Binding Medias}" SelectedItem="{Binding CurrentMedia}" ContextMenuOpening="OnContextMenuOpening">
                 <controls:ListBoxEx.ContextMenu>
                     <ContextMenu>

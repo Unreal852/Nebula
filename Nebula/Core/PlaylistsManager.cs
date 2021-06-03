@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using HandyControl.Controls;
-using Nebula.Media;
 using Nebula.Model;
 
 namespace Nebula.Core
@@ -13,7 +11,6 @@ namespace Nebula.Core
     {
         public PlaylistsManager()
         {
-
         }
 
         public ObservableCollection<Playlist> Playlists { get; } = new();

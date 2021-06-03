@@ -13,12 +13,11 @@ namespace Nebula.Media.Events
         /// <summary>
         /// Modified Playlist.
         /// </summary>
-        public IPlaylist  Playlist   { get; }
-        
+        public IPlaylist Playlist { get; }
+
         /// <summary>
         /// Removed Media.
         /// </summary>
         public IMediaInfo AddedMedia { get; }
-        
     }
 }

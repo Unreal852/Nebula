@@ -1,12 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using HandyControl.Controls;
 using HandyControl.Data;
 using LiteMVVM;
 using LiteMVVM.Command;
 using Nebula.Media;
 using Nebula.Model;
+using Nebula.Utils.Collections.Paging;
 
 namespace Nebula.ViewModel
 {
@@ -17,26 +16,23 @@ namespace Nebula.ViewModel
             RemoveMediaFromQueueCommand = new RelayCommand<MediaInfo>(RemoveMediaFromQueue);
             PlayNowCommand = new AsyncRelayCommand<MediaInfo>(PlayNow);
             PageChangedCommand = new RelayCommand<FunctionEventArgs<int>>(PageChanged);
+            Pager = new ObservableFilterPager<MediaInfo>(NebulaClient.MediaPlayer.MediaQueue.Queue, 1, 10);
+            Pager.TotalPagesChanged += (_, _) => OnPropertyChanged(nameof(TotalPages));
             NebulaClient.MediaPlayer.MediaChanged += (_, _) => { OnPropertiesChanged(nameof(MediaTitle), nameof(MediaAuthor), nameof(MediaThumbnail)); };
-            NebulaClient.MediaPlayer.MediaQueue.Queue.TotalPagesChanged += (_, e) => OnPropertyChanged(nameof(TotalPages));
         }
 
-        public IMediaInfo CurrentMedia => NebulaClient.MediaPlayer.CurrentMedia;
+        public ICommand                         RemoveMediaFromQueueCommand { get; }
+        public ICommand                         PlayNowCommand              { get; }
+        public ICommand                         PageChangedCommand          { get; }
+        public ObservableFilterPager<MediaInfo> Pager                       { get; }
+        public IMediaInfo                       CurrentMedia                => NebulaClient.MediaPlayer.CurrentMedia;
+        public string                           MediaTitle                  => CurrentMedia?.Title ?? "";
+        public string                           MediaAuthor                 => CurrentMedia?.Author ?? "";
+        public string                           MediaThumbnail              => CurrentMedia?.MediumResThumbnailUrl;
+        public int                              TotalPages                  => Pager.TotalPages;
 
-        public ICommand                        RemoveMediaFromQueueCommand { get; }
-        public ICommand                        PlayNowCommand              { get; }
-        public ICommand                        PageChangedCommand          { get; }
-        public string                          MediaTitle                  => CurrentMedia?.Title ?? "";
-        public string                          MediaAuthor                 => CurrentMedia?.Author ?? "";
-        public string                          MediaThumbnail              => CurrentMedia?.MediumResThumbnailUrl;
-        public int                             TotalPages                  => NebulaClient.MediaPlayer.MediaQueue.Queue.TotalPages - 1;
-        public ObservableCollection<MediaInfo> MediasQueue                 => NebulaClient.MediaPlayer.MediaQueue.Queue.PageElements;
 
-        private void PageChanged(FunctionEventArgs<int> e)
-        {
-            NebulaClient.MediaPlayer.MediaQueue.Queue.CurrentPage = e.Info;
-            Growl.Info(NebulaClient.MediaPlayer.MediaQueue.Queue.CurrentPage + "");
-        }
+        private void PageChanged(FunctionEventArgs<int> e) => Pager.CurrentPage = e.Info;
 
         private void RemoveMediaFromQueue(MediaInfo mediaInfo)
         {

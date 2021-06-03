@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 using Nebula.Media;
 using Nebula.Model;
 
@@ -13,15 +13,13 @@ namespace Nebula.Core.Player
 
         public MediaQueue()
         {
-            Queue.AutoRefresh = false;
-            RecentDequeue.AutoRefresh = false;
             Clear();
         }
 
-        public  bool                        IsEmpty       => Queue.Count == 0;
-        public  int                         Count         => Queue.Count;
-        public  MediasCollection<MediaInfo> Queue         { get; } = new();
-        private MediasCollection<MediaInfo> RecentDequeue { get; } = new();
+        public  ObservableCollection<MediaInfo> Queue         { get; } = new();
+        private ObservableCollection<MediaInfo> RecentDequeue { get; } = new();
+        public  bool                            IsEmpty       => Queue.Count == 0;
+        public  int                             Count         => Queue.Count;
 
         public IEnumerator<MediaInfo> GetEnumerator() => Queue.GetEnumerator();
         IEnumerator IEnumerable.      GetEnumerator() => GetEnumerator();
@@ -36,11 +34,8 @@ namespace Nebula.Core.Player
         {
             if (clear)
                 Clear();
-            Queue.AutoRefresh = false;
             foreach (MediaInfo mediaInfo in playlist.GetActiveMedias())
                 Queue.Add(mediaInfo);
-            Queue.AutoRefresh = true;
-            Queue.Refresh();
         }
 
         /// <summary>
@@ -53,7 +48,7 @@ namespace Nebula.Core.Player
             if (insertIndex == -1)
                 Queue.Add(mediaInfo);
             else
-                Queue.Insert(mediaInfo, insertIndex);
+                Queue.Insert(insertIndex, mediaInfo);
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
 ﻿using System;
-using Nebula.Media;
 
 namespace Nebula.Media.Player.Events
 {

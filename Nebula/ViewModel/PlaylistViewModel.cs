@@ -1,30 +1,37 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LiteMVVM;
 using LiteMVVM.Command;
 using LiteMVVM.Navigation;
 using Nebula.Model;
+using Nebula.Utils.Collections.Paging;
 
 namespace Nebula.ViewModel
 {
     public class PlaylistViewModel : BaseViewModel, INavigable
     {
+        private ObservableFilterPager<MediaInfo> _pager;
+
         public PlaylistViewModel()
         {
             PlayMediaCommand = new AsyncRelayCommand<MediaInfo>(PlayMedia);
             RemoveMediaCommand = new AsyncRelayCommand<MediaInfo>(RemoveMedia);
             SetIsActiveCommand = new AsyncRelayCommand<MediaInfo>(SetIsActive);
+            FilterMediasCommand = new RelayCommand<string>(FilterMedias);
+            Medias.PageChanged += (_, _) => OnPropertyChanged(nameof(CurrentPage));
+            Medias.TotalPagesChanged += (_, _) => OnPropertyChanged(nameof(TotalPages));
         }
 
-        public Playlist Playlist           { get; private set; }
-        public ICommand PlayMediaCommand   { get; }
-        public ICommand RemoveMediaCommand { get; }
-        public ICommand SetIsActiveCommand { get; }
+        public Playlist Playlist            { get; private set; }
+        public ICommand PlayMediaCommand    { get; }
+        public ICommand RemoveMediaCommand  { get; }
+        public ICommand SetIsActiveCommand  { get; }
+        public ICommand FilterMediasCommand { get; }
 
-        public int                             TotalPages => Playlist.Medias.TotalPages - 1;
-        public ObservableCollection<MediaInfo> Medias     => Playlist?.Medias.PageElements;
+        public int TotalPages => Medias?.TotalPages ?? 0;
+
+        public ObservableFilterPager<MediaInfo> Medias { get; } = new(null);
 
         public string Name
         {
@@ -76,11 +83,11 @@ namespace Nebula.ViewModel
 
         public int CurrentPage
         {
-            get => Playlist.Medias.CurrentPage;
+            get => Medias.CurrentPage;
             set
             {
-                Playlist.Medias.CurrentPage = value;
-                OnPropertiesChanged(nameof(CurrentPage), nameof(Medias));
+                Medias.CurrentPage = value;
+                OnPropertyChanged();
             }
         }
 
@@ -89,7 +96,8 @@ namespace Nebula.ViewModel
             if (param is Playlist playlist)
             {
                 Playlist = playlist;
-                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(Medias), nameof(CurrentPage), nameof(TotalPages));
+                Medias.SetSource(playlist.Medias);
+                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(CurrentPage), nameof(TotalPages), nameof(Medias));
             }
         }
 
@@ -113,6 +121,28 @@ namespace Nebula.ViewModel
             if (Playlist == null || mediaInfo == null)
                 return;
             await NebulaClient.Database.UpdatePlaylistMedia(Playlist, mediaInfo);
+        }
+
+        private void FilterMedias(string filter)
+        {
+            if (Playlist == null)
+                return;
+            if (string.IsNullOrWhiteSpace(filter))
+                Medias.ResetFilter();
+            else
+            {
+                string loweredFilter = filter.ToLower();
+                string[] split = loweredFilter.Split(':');
+                Predicate<MediaInfo> predicate = split[0] switch
+                {
+                    "by"      => media => media.Author.ToLower().Contains(split[1]),
+                    "active"  => media => media.IsActive,
+                    "nactive" => media => !media.IsActive,
+                    _         => media => media.Title.ToLower().Contains(loweredFilter)
+                };
+
+                Medias.ApplyFilter(predicate);
+            }
         }
     }
 }

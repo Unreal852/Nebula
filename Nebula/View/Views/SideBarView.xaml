@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Nebula.View"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
              xmlns:views="clr-namespace:Nebula.View.Views"
@@ -15,7 +14,6 @@
         <viewModel:SideBarViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
-        <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <hc:SimplePanel>
         <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 15">

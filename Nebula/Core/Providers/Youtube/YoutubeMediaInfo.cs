@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 using Nebula.Media;
 using Nebula.Model;
 using YoutubeExplode.Common;

@@ -58,7 +58,7 @@ namespace Nebula.ViewModel
                 OnPropertyChanged();
             }
         }
-        
+
         public bool Repeat
         {
             get => MediaPlayer.Repeat;

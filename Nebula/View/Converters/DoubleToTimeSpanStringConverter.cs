@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
-using HandyControl.Controls;
 using Nebula.Utils.Extensions;
 
 namespace Nebula.View.Converters

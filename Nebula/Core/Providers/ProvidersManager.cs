@@ -11,7 +11,7 @@ namespace Nebula.Core.Providers
         {
             RegisterProvider(new YoutubeMediaProvider());
         }
-        
+
         private List<IMediasProvider> Providers      { get; } = new();
         public  int                   ProvidersCount => Providers.Count;
 

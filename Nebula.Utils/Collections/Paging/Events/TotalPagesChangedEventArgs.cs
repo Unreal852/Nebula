@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nebula.Utils.Collections.Events
+namespace Nebula.Utils.Collections.Paging.Events
 {
     public class TotalPagesChangedEventArgs : EventArgs
     {
@@ -9,6 +9,7 @@ namespace Nebula.Utils.Collections.Events
             CurrentPage = currentPage;
             TotalPages = totalPages;
         }
+
         public int CurrentPage { get; }
         public int TotalPages  { get; }
     }

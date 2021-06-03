@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using HandyControl.Controls;
 
 namespace Nebula.View.Builder.Attributes
 {

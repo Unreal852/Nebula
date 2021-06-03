@@ -85,7 +85,7 @@ namespace Nebula.Core.Providers.Youtube
             playlist.AutoSave = true;
             return playlist;
         }
-        
+
         public async Task<Model.Playlist> GetPlaylistt(string query, params object[] args)
         {
             YoutubeExplode.Playlists.Playlist youtubePlaylist = await Youtube.Playlists.GetAsync(query);

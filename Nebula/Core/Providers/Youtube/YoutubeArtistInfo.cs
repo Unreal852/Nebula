@@ -12,11 +12,11 @@ namespace Nebula.Core.Providers.Youtube
             Url = url;
             ThumbnailUri = logoUrl;
         }
-        
+
         public string Id { get; }
-        
+
         public string Name { get; }
-        
+
         public string Url { get; }
 
         public string ThumbnailUri { get; }

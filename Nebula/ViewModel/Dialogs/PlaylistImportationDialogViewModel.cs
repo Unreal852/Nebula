@@ -1,6 +1,5 @@
 ﻿using HandyControl.Controls;
 using Nebula.Core.Providers.Youtube;
-using Nebula.Media;
 using Nebula.Model;
 using Nebula.View.Builder;
 using Nebula.View.Builder.Attributes;

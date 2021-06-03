@@ -6,7 +6,6 @@ using Nebula.Media;
 using Nebula.Media.Player;
 using Nebula.Media.Player.Events;
 using Nebula.Model;
-using Nebula.Utils.Extensions;
 
 namespace Nebula.Core.Player
 {
