@@ -5,7 +5,8 @@
 
     <!-- Brushes -->
     <SolidColorBrush x:Key="PrimaryBrush" Color="Purple" />
-    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#FFF1F1F1" />
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#e1e1e1" />
+    <SolidColorBrush x:Key="SecondaryAppBackgroundBrush" Color="#EAEAEA" />
     <SolidColorBrush x:Key="AppForegroundBrush" Color="Black" />
     <SolidColorBrush x:Key="SideBarUsernameBrush" Color="Black" />
     <SolidColorBrush x:Key="SideBarCategoryBrush" Color="#8C8C8C" />

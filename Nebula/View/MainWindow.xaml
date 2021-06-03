@@ -33,7 +33,7 @@
     </Window.Resources>
     <controls:SimpleGrid Columns="250,*" Rows="50,*,50">
         <views:SideBarView Grid.RowSpan="3" />
-        <controls:SimpleGrid Background="{DynamicResource AppBackgroundBrush}" Grid.Column="1" Grid.Row="0">
+        <controls:SimpleGrid Background="{DynamicResource SecondaryAppBackgroundBrush}" Grid.Column="1" Grid.Row="0">
             <hc:SimpleStackPanel Orientation="Horizontal" Margin="10 0 0 0">
                 <hc:SimpleStackPanel x:Name="TitleBar" Orientation="Vertical" VerticalAlignment="Center">
                     <hc:SearchBar x:Name="SearchBar" hc:InfoElement.Placeholder="Rechercher"
@@ -60,7 +60,7 @@
             <ContentPresenter Content="{Binding CurrentPage}" />
             <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right" hc:Growl.GrowlParent="True" />
             <hc:Drawer x:Name="Drawer" Dock="Right" MaskCanClose="True" ShowMode="Cover">
-                <views:MediasQueueView MinWidth="300" MaxWidth="300" />
+                <views:MediasQueueView MinWidth="350" MaxWidth="350" />
             </hc:Drawer>
         </controls:SimpleGrid>
         <views:MediaPlayerView Grid.Row="2" Grid.ColumnSpan="2" />

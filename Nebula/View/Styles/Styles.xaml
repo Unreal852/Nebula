@@ -47,4 +47,17 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <!-- Media Player Toggle Buttons Styles -->
+    <Style x:Key="MediaPlayerToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButtonIcon}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="Azure" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Background" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

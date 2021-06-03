@@ -35,4 +35,10 @@
     <data name="media_manage" xml:space="preserve">
         <value>Gérer</value>
     </data>
+    <data name="media_queue_now_playing" xml:space="preserve">
+        <value>En cours</value>
+    </data>
+    <data name="media_queue_in_queue" xml:space="preserve">
+        <value>En Attente</value>
+    </data>
 </root>

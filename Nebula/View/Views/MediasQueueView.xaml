@@ -7,19 +7,55 @@
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:resx="clr-namespace:Nebula.Resources"
+             xmlns:model="clr-namespace:Nebula.Model"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.DataContext>
         <viewModel:MediasQueueViewModel />
     </UserControl.DataContext>
-    <controls:SimpleGrid Rows="10,*,10" Columns="5,*,5" Background="{DynamicResource AppBackgroundBrush}">
-        <hc:SimpleStackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1">
-            <TextBlock Text="Now Playing" HorizontalAlignment="Center" Foreground="{DynamicResource AppForegroundBrush}" FontSize="25" FontWeight="Bold" />
-            <hc:SimpleStackPanel Orientation="Vertical" Margin="5, 10">
-                <TextBlock Text="{Binding MediaTitle}" FontSize="18" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
-                           Foreground="{DynamicResource AppForegroundBrush}" />
-                <TextBlock Text="{Binding MediaAuthor}" FontSize="14" Foreground="{DynamicResource AppForegroundBrush}" />
+    <UserControl.Resources>
+        <DataTemplate x:Key="ManageMediaTemplate" DataType="model:MediaInfo">
+            <hc:SimpleStackPanel Orientation="Horizontal">
+                <Button hc:IconSwitchElement.Geometry="{StaticResource PlayGeometry}"
+                        Command="{Binding DataContext.PlayNowCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding}" Style="{StaticResource ButtonInfo}" />
+                <Button hc:IconSwitchElement.Geometry="{StaticResource TrashGeometry}" Margin="5, 0"
+                        Command="{Binding DataContext.RemoveMediaFromQueueCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding}" Style="{StaticResource ButtonDashedDanger}" />
             </hc:SimpleStackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <controls:SimpleGrid Rows="10,*,10" Columns="5,*,5" Background="{DynamicResource AppBackgroundBrush}">
+        <hc:SimpleStackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch">
+            <TextBlock Text="{x:Static resx:Nebula.media_queue_now_playing}" HorizontalAlignment="Center" Foreground="{DynamicResource AppForegroundBrush}"
+                       FontSize="25" FontWeight="Bold" />
+            <hc:SimpleStackPanel Orientation="Horizontal" Margin="5,10">
+                <Image Source="{Binding MediaThumbnail}" Width="100" Height="50" />
+                <hc:SimpleStackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding MediaTitle}" FontSize="18" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource AppForegroundBrush}" />
+                    <TextBlock Text="{Binding MediaAuthor}" FontSize="14" Foreground="{DynamicResource AppForegroundBrush}" />
+                </hc:SimpleStackPanel>
+            </hc:SimpleStackPanel>
+            <TextBlock Text="{x:Static resx:Nebula.media_queue_in_queue}" HorizontalAlignment="Center" Foreground="{DynamicResource AppForegroundBrush}"
+                       FontSize="25" FontWeight="Bold" />
+            <ListView ItemsSource="{Binding MediasQueue}" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="205" />
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_manage}" CellTemplate="{StaticResource ManageMediaTemplate}" Width="95" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <hc:Pagination HorizontalAlignment="Center" VerticalAlignment="Bottom" PageIndex="1" MaxPageInterval="2"
+                           MaxPageCount="{Binding TotalPages}" Margin="0 5">
+                <hc:Interaction.Triggers>
+                    <hc:EventTrigger EventName="PageUpdated">
+                        <hc:EventToCommand Command="{Binding PageChangedCommand}" PassEventArgsToCommand="True" />
+                    </hc:EventTrigger>
+                </hc:Interaction.Triggers>
+            </hc:Pagination>
         </hc:SimpleStackPanel>
     </controls:SimpleGrid>
 </UserControl>

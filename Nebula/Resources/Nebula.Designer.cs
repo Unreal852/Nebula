@@ -97,6 +97,24 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In Queue.
+        /// </summary>
+        public static string media_queue_in_queue {
+            get {
+                return ResourceManager.GetString("media_queue_in_queue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Now Playing.
+        /// </summary>
+        public static string media_queue_now_playing {
+            get {
+                return ResourceManager.GetString("media_queue_now_playing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string media_title {

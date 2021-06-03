@@ -36,8 +36,11 @@ namespace Nebula.Core.Player
         {
             if (clear)
                 Clear();
+            Queue.AutoRefresh = false;
             foreach (MediaInfo mediaInfo in playlist.GetActiveMedias())
                 Queue.Add(mediaInfo);
+            Queue.AutoRefresh = true;
+            Queue.Refresh();
         }
 
         /// <summary>

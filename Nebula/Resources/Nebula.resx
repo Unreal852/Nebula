@@ -42,4 +42,10 @@
     <data name="media_manage" xml:space="preserve">
         <value>Manage</value>
     </data>
+    <data name="media_queue_now_playing" xml:space="preserve">
+        <value>Now Playing</value>
+    </data>
+    <data name="media_queue_in_queue" xml:space="preserve">
+        <value>In Queue</value>
+    </data>
 </root>

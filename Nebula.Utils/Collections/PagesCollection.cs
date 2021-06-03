@@ -60,7 +60,8 @@ namespace Nebula.Utils.Collections
             }
         }
 
-        public event EventHandler<PageChangedEventArgs> PageChanged;
+        public event EventHandler<PageChangedEventArgs>       PageChanged;
+        public event EventHandler<TotalPagesChangedEventArgs> TotalPagesChanged;
 
         public T this[int index] => Elements[index];
         public void             Add(T element)               => Elements.Add(element);
@@ -70,7 +71,7 @@ namespace Nebula.Utils.Collections
         public IEnumerator<T>   GetEnumerator()              => ReturnPageElementsInsteadOfElements ? PageElements.GetEnumerator() : Elements.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator()              => GetEnumerator();
 
-        private void Refresh()
+        public void Refresh()
         {
             CalculateTotalPages();
             RefreshPage();
@@ -88,6 +89,7 @@ namespace Nebula.Utils.Collections
             TotalPages = (int) Math.Ceiling((double) Elements.Count / MaxElementsPerPage);
             if (TotalPages == 0)
                 TotalPages = 1;
+            TotalPagesChanged?.Invoke(this, new TotalPagesChangedEventArgs(CurrentPage, TotalPages));
         }
 
         public void NextPage()

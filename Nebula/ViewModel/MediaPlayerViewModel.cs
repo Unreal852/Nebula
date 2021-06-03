@@ -25,6 +25,8 @@ namespace Nebula.ViewModel
             MediaPlayer.StateChanged += (_, _) => OnPropertyChanged(nameof(IsPlaying));
             MediaPlayer.PositionChanged += (_, _) => OnPropertyChanged(nameof(Position));
             MediaPlayer.VolumeChanged += (_, _) => OnPropertyChanged(nameof(Volume));
+            MediaPlayer.ShuffleChanged += (_, _) => OnPropertyChanged(nameof(Shuffle));
+            MediaPlayer.RepeatChanged += (_, _) => OnPropertyChanged(nameof(Repeat));
         }
 
         public ICommand ForwardCommand  { get; }
@@ -44,6 +46,26 @@ namespace Nebula.ViewModel
                     MediaPlayer.Pause();
                 else
                     MediaPlayer.Resume();
+            }
+        }
+
+        public bool Shuffle
+        {
+            get => MediaPlayer.Shuffle;
+            set
+            {
+                MediaPlayer.Shuffle = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool Repeat
+        {
+            get => MediaPlayer.Repeat;
+            set
+            {
+                MediaPlayer.Repeat = value;
+                OnPropertyChanged();
             }
         }
 

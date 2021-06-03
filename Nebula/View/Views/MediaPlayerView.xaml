@@ -26,7 +26,7 @@
                 <TextBlock Text="{Binding CurrentMedia.Author}" FontSize="9" Foreground="{DynamicResource AppForegroundBrush}" />
             </hc:SimpleStackPanel>
         </hc:SimpleStackPanel>
-        <controls:SimpleGrid Grid.Column="1" Columns="Auto,*,Auto">
+        <controls:SimpleGrid Grid.Column="1" Columns="Auto,*,Auto" Background="{DynamicResource SecondaryAppBackgroundBrush}">
             <StackPanel Grid.Column="0" Orientation="Horizontal"
                         VerticalAlignment="Center" HorizontalAlignment="Left">
                 <Button Width="34" Height="34"
@@ -39,7 +39,7 @@
                               hc:IconSwitchElement.GeometrySelected="{StaticResource PauseGeometry}"
                               Style="{StaticResource ToggleButtonIconTransparent}" />
                 <Button Width="34" Height="34" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}"
-                        hc:IconElement.Geometry="{StaticResource NextGeometry}" Command="{Binding ForwardCommand}"/>
+                        hc:IconElement.Geometry="{StaticResource NextGeometry}" Command="{Binding ForwardCommand}" />
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding Position, Converter={StaticResource TimeSpanToString}}"
@@ -59,11 +59,13 @@
             <StackPanel Grid.Column="2" Orientation="Horizontal"
                         VerticalAlignment="Center" HorizontalAlignment="Right">
                 <ToggleButton Width="34" Height="34"
-                              Style="{StaticResource ToggleButtonIcon}"
+                              Style="{StaticResource MediaPlayerToggleButton}"
+                              IsChecked="{Binding Shuffle}"
                               hc:IconSwitchElement.Geometry="{StaticResource ShuffleGeometry}"
                               hc:IconSwitchElement.GeometrySelected="{StaticResource ShuffleGeometry}" />
                 <ToggleButton Width="34" Height="34" Margin="10 0"
-                              Style="{StaticResource ToggleButtonIcon}"
+                              Style="{StaticResource MediaPlayerToggleButton}"
+                              IsChecked="{Binding Repeat}"
                               hc:IconSwitchElement.Geometry="{StaticResource RepeatGeometry}"
                               hc:IconSwitchElement.GeometrySelected="{StaticResource RepeatGeometry}" />
                 <Slider Width="100" Minimum="0" Maximum="100" Margin="0 0 10 0" VerticalAlignment="Center" Value="{Binding Volume}"
