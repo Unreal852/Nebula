@@ -17,7 +17,14 @@ namespace Nebula.Utils.Extensions
             string hours = timeSpan.Hours > 9 ? timeSpan.Hours.ToString() : $"0{timeSpan.Hours}";
             string minutes = timeSpan.Minutes > 9 ? timeSpan.Minutes.ToString() : $"0{timeSpan.Minutes}";
             string seconds = timeSpan.Seconds > 9 ? timeSpan.Seconds.ToString() : $"0{timeSpan.Seconds}";
-            return $"{hours}:{minutes}:{seconds}";
+            string result = $"{hours}:{minutes}:{seconds}";
+            return timeSpan.Days > 0 ? IncludeDays(timeSpan, result) : result;
+        }
+
+        private static string IncludeDays(TimeSpan timeSpan, string formattedStr)
+        {
+            string days = timeSpan.Days > 9 ? timeSpan.Days.ToString() : $"0{timeSpan.Days}";
+            return $"{days}:{formattedStr}";
         }
     }
 }

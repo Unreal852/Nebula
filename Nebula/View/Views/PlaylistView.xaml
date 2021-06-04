@@ -42,6 +42,8 @@
                     <TextBlock Text="{Binding Name}" FontSize="24" Foreground="{DynamicResource AppForegroundBrush}" />
                     <TextBlock Text="{Binding Description}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
                     <TextBlock Text="{Binding Author}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
+                    <TextBlock Text="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}" FontSize="18"
+                               Foreground="{DynamicResource AppForegroundBrush}" />
                 </hc:SimpleStackPanel>
                 <controls:SimpleGrid Columns="Auto,*" VerticalAlignment="Bottom" Margin="5,0" Grid.Row="1" Background="{Binding ElementName=Bar, Path=Background }">
                     <ToolBar x:Name="Bar" Grid.Column="0" Padding="5" ToolBarTray.IsLocked="True">
@@ -51,7 +53,7 @@
                     </ToolBar>
                     <ToolBar Grid.Column="1" Padding="5" ToolBarTray.IsLocked="True">
                         <Button Content="Edit" />
-                        <Button Content="Delete" />
+                        <Button Content="{x:Static resx:Nebula.playlist_delete}" Command="{Binding DeletePlaylistCommand}" />
                     </ToolBar>
                 </controls:SimpleGrid>
             </controls:SimpleGrid>

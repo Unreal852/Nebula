@@ -219,8 +219,13 @@ namespace Nebula.Core.Player
 
         private void OnMediaStopped(object sender, StoppedEventArgs e)
         {
-            if (!_stoppedByUSer && !MediaQueue.IsEmpty)
-                Forward(true);
+            if (!_stoppedByUSer)
+            {
+                if (Repeat)
+                    OpenMedia(CurrentMedia);
+                if (!MediaQueue.IsEmpty)
+                    Forward(true);
+            }
         }
 
         private void OnAppTick(object sender, EventArgs e)

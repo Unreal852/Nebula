@@ -149,5 +149,14 @@ namespace Nebula.Resources {
                 return ResourceManager.GetString("playlist_creation_name", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string playlist_delete {
+            get {
+                return ResourceManager.GetString("playlist_delete", resourceCulture);
+            }
+        }
     }
 }

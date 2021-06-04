@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using HandyControl.Controls;
 using Nebula.Media;
 using Nebula.Media.Events;
 using Nebula.Utils.Extensions;
@@ -19,8 +20,11 @@ namespace Nebula.Model
         private const           int   MaxAuthorLength      = 128;
         private static readonly Regex SRemLines            = new(@"\t|\n|\r");
 
+        private ObservableCollection<MediaInfo> _medias;
+
         public Playlist()
         {
+            Medias = new();
         }
 
         public Playlist(string name, string description, string author, Uri thumbnail, ICollection<MediaInfo> medias) : this()
@@ -34,15 +38,30 @@ namespace Nebula.Model
             Medias.CollectionChanged += OnCollectionChanged;
         }
 
-        [PrimaryKey, AutoIncrement] public int                             Id            { get; set; }
-        public                             string                          Name          { get; set; }
-        public                             string                          Description   { get; set; }
-        public                             string                          Author        { get; set; }
-        public                             Uri                             Thumbnail     { get; set; }
-        [Ignore] public                    bool                            AutoSave      { get; set; } = true;
-        [Ignore] public                    ObservableCollection<MediaInfo> Medias        { get; }      = new();
-        public                             int                             MediasCount   => Medias.Count;
-        public                             TimeSpan                        TotalDuration { get; private set; }
+        [PrimaryKey, AutoIncrement] public int      Id            { get; set; }
+        public                             string   Name          { get; set; }
+        public                             string   Description   { get; set; }
+        public                             string   Author        { get; set; }
+        public                             Uri      Thumbnail     { get; set; }
+        [Ignore] public                    bool     AutoSave      { get; set; } = true;
+        public                             int      MediasCount   => Medias.Count;
+        public                             TimeSpan TotalDuration { get; private set; }
+
+        [Ignore]
+        public ObservableCollection<MediaInfo> Medias
+        {
+            get => _medias;
+            set
+            {
+                if (_medias != null)
+                    _medias.CollectionChanged -= OnCollectionChanged;
+                if (value != null)
+                {
+                    _medias = value;
+                    _medias.CollectionChanged += OnCollectionChanged;
+                }
+            }
+        }
 
         public event EventHandler<PlaylistMediaAddedEventArgs>   MediaAdded;
         public event EventHandler<PlaylistMediaRemovedEventArgs> MediaRemoved;

@@ -6,6 +6,8 @@ using LiteMVVM.Command;
 using LiteMVVM.Navigation;
 using Nebula.Model;
 using Nebula.Utils.Collections.Paging;
+using Nebula.View;
+using Nebula.View.Views;
 
 namespace Nebula.ViewModel
 {
@@ -18,18 +20,21 @@ namespace Nebula.ViewModel
             PlayMediaCommand = new AsyncRelayCommand<MediaInfo>(PlayMedia);
             RemoveMediaCommand = new AsyncRelayCommand<MediaInfo>(RemoveMedia);
             SetIsActiveCommand = new AsyncRelayCommand<MediaInfo>(SetIsActive);
+            DeletePlaylistCommand = new AsyncRelayCommand(DeletePlaylist);
             FilterMediasCommand = new RelayCommand<string>(FilterMedias);
             Medias.PageChanged += (_, _) => OnPropertyChanged(nameof(CurrentPage));
             Medias.TotalPagesChanged += (_, _) => OnPropertyChanged(nameof(TotalPages));
         }
 
-        public Playlist Playlist            { get; private set; }
-        public ICommand PlayMediaCommand    { get; }
-        public ICommand RemoveMediaCommand  { get; }
-        public ICommand SetIsActiveCommand  { get; }
-        public ICommand FilterMediasCommand { get; }
+        public Playlist Playlist              { get; private set; }
+        public ICommand PlayMediaCommand      { get; }
+        public ICommand RemoveMediaCommand    { get; }
+        public ICommand SetIsActiveCommand    { get; }
+        public ICommand FilterMediasCommand   { get; }
+        public ICommand DeletePlaylistCommand { get; }
 
-        public int TotalPages => Medias?.TotalPages ?? 0;
+        public int      TotalPages => Medias?.TotalPages ?? 0;
+        public TimeSpan Duration   => Playlist?.TotalDuration ?? TimeSpan.Zero;
 
         public ObservableFilterPager<MediaInfo> Medias { get; } = new(null);
 
@@ -97,7 +102,8 @@ namespace Nebula.ViewModel
             {
                 Playlist = playlist;
                 Medias.SetSource(playlist.Medias);
-                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(CurrentPage), nameof(TotalPages), nameof(Medias));
+                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(CurrentPage), nameof(TotalPages), nameof(Medias),
+                    nameof(Duration));
             }
         }
 
@@ -121,6 +127,14 @@ namespace Nebula.ViewModel
             if (Playlist == null || mediaInfo == null)
                 return;
             await NebulaClient.Database.UpdatePlaylistMedia(Playlist, mediaInfo);
+        }
+
+        private async Task DeletePlaylist()
+        {
+            if (Playlist == null)
+                return;
+            await NebulaClient.Playlists.DeletePlaylist(Playlist);
+            Messenger.Broadcast(this, NavigationInfo.Create(typeof(TestControl1), null, false));
         }
 
         private void FilterMedias(string filter)

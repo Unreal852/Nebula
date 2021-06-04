@@ -114,6 +114,20 @@ namespace Nebula.Core.Database
             return medias;
         }
 
+        public async Task DeletePlaylist(Playlist playlist)
+        {
+            if (playlist == null)
+                return;
+            Database.Trace = false;
+            await Database.RunInTransactionAsync(trans =>
+            {
+                trans.Execute("DELETE FROM Playlists WHERE Id=?", playlist.Id);
+                trans.Execute("DELETE FROM PlaylistsMedias WHERE PlaylistId=?", playlist.Id);
+                trans.Execute(
+                    "DELETE FROM Medias WHERE Id IN (SELECT Medias.Id FROM Medias LEFT JOIN PlaylistsMedias ON Medias.Id=PlaylistsMedias.MediaId WHERE PlaylistsMedias.MediaId IS NULL)");
+            });
+        }
+
         private void OnReceiveTrace(string obj)
         {
             GrowlInfo info = new GrowlInfo {Message = obj, Token = ""};

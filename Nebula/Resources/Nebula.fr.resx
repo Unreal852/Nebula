@@ -41,4 +41,7 @@
     <data name="media_queue_in_queue" xml:space="preserve">
         <value>En Attente</value>
     </data>
+    <data name="playlist_delete" xml:space="preserve">
+        <value>Supprimer</value>
+    </data>
 </root>

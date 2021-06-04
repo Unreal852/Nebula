@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -32,6 +33,14 @@ namespace Nebula.Core
             Playlists.Add(playlist);
             await NebulaClient.Database.InsertWholePlaylist(playlist);
             Growl.Info("Imported and saved " + playlist.Name + " (" + playlist.MediasCount + ")");
+        }
+
+        public async Task DeletePlaylist(Playlist playlist)
+        {
+            if (!Playlists.Contains(playlist))
+                return;
+            Playlists.Remove(playlist);
+            await NebulaClient.Database.DeletePlaylist(playlist);
         }
     }
 }
