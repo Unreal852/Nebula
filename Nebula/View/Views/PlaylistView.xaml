@@ -49,7 +49,15 @@
                     <ToolBar x:Name="Bar" Grid.Column="0" Padding="5" ToolBarTray.IsLocked="True">
                         <hc:SearchBar Width="250" hc:InfoElement.Placeholder="Find Music" Style="{StaticResource SearchBarPlus}"
                                       Command="{Binding FilterMediasCommand}"
-                                      CommandParameter="{Binding Path=Text ,RelativeSource={RelativeSource Self}}" ShowClearButton="True" />
+                                      CommandParameter="{Binding Path=Text ,RelativeSource={RelativeSource Self}}">
+                            <hc:Interaction.Triggers>
+                                <hc:EventTrigger EventName="TextChanged">
+                                    <hc:EventToCommand Command="{Binding TextChangedCommand}"
+                                                       CommandParameter="{Binding Text ,RelativeSource={RelativeSource AncestorType=hc:SearchBar}}" />
+                                </hc:EventTrigger>
+                            </hc:Interaction.Triggers>
+                        </hc:SearchBar>
+
                     </ToolBar>
                     <ToolBar Grid.Column="1" Padding="5" ToolBarTray.IsLocked="True">
                         <Button Content="Edit" />

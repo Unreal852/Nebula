@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using LiteMVVM;
 using LiteMVVM.Command;
@@ -23,6 +24,7 @@ namespace Nebula.ViewModel
             SetIsActiveCommand = new AsyncRelayCommand<MediaInfo>(SetIsActive);
             DeletePlaylistCommand = new AsyncRelayCommand(DeletePlaylist);
             FilterMediasCommand = new RelayCommand<string>(FilterMedias);
+            TextChangedCommand = new RelayCommand<string>(OnTextChanged);
             Medias.PageChanged += (_, _) => OnPropertyChanged(nameof(CurrentPage));
             Medias.TotalPagesChanged += (_, _) => OnPropertyChanged(nameof(TotalPages));
         }
@@ -32,6 +34,7 @@ namespace Nebula.ViewModel
         public ICommand SetIsActiveCommand    { get; }
         public ICommand FilterMediasCommand   { get; }
         public ICommand DeletePlaylistCommand { get; }
+        public ICommand TextChangedCommand    { get; }
 
         public int      TotalPages => Medias?.TotalPages ?? 0;
         public TimeSpan Duration   => Playlist?.TotalDuration ?? TimeSpan.Zero;
@@ -151,6 +154,12 @@ namespace Nebula.ViewModel
                 return;
             await NebulaClient.Playlists.DeletePlaylist(Playlist);
             Messenger.Broadcast(this, NavigationInfo.Create(typeof(TestControl1), null, false));
+        }
+
+        private void OnTextChanged(string str)
+        {
+            if (string.IsNullOrWhiteSpace(str))
+                FilterMedias(null);
         }
 
         private void FilterMedias(string filter)

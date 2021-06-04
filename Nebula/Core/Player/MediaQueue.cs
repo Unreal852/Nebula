@@ -16,8 +16,8 @@ namespace Nebula.Core.Player
             Clear();
         }
 
-        public  ObservableCollection<MediaInfo> Queue         { get; } = new();
-        private ObservableCollection<MediaInfo> RecentDequeue { get; } = new();
+        public  ObservableCollectionEx<MediaInfo> Queue         { get; } = new();
+        private ObservableCollectionEx<MediaInfo> RecentDequeue { get; } = new();
         public  bool                            IsEmpty       => Queue.Count == 0;
         public  int                             Count         => Queue.Count;
 
@@ -34,8 +34,7 @@ namespace Nebula.Core.Player
         {
             if (clear)
                 Clear();
-            foreach (MediaInfo mediaInfo in playlist.GetActiveMedias())
-                Queue.Add(mediaInfo);
+            Queue.AddRange(playlist.Medias);
         }
 
         /// <summary>
