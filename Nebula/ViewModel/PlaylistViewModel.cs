@@ -14,6 +14,7 @@ namespace Nebula.ViewModel
     public class PlaylistViewModel : BaseViewModel, INavigable
     {
         private ObservableFilterPager<MediaInfo> _pager;
+        private Playlist                         _playlist;
 
         public PlaylistViewModel()
         {
@@ -26,7 +27,6 @@ namespace Nebula.ViewModel
             Medias.TotalPagesChanged += (_, _) => OnPropertyChanged(nameof(TotalPages));
         }
 
-        public Playlist Playlist              { get; private set; }
         public ICommand PlayMediaCommand      { get; }
         public ICommand RemoveMediaCommand    { get; }
         public ICommand SetIsActiveCommand    { get; }
@@ -37,6 +37,19 @@ namespace Nebula.ViewModel
         public TimeSpan Duration   => Playlist?.TotalDuration ?? TimeSpan.Zero;
 
         public ObservableFilterPager<MediaInfo> Medias { get; } = new(null);
+
+        public Playlist Playlist
+        {
+            get => _playlist;
+            set
+            {
+                _playlist = value;
+                if (Playlist != null)
+                    Medias.SetSource(Playlist.Medias);
+                OnPropertyChanged();
+                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(Medias));
+            }
+        }
 
         public string Name
         {
@@ -96,14 +109,17 @@ namespace Nebula.ViewModel
             }
         }
 
-        public void OnNavigated(object param)
+        public async void OnNavigated(object param)
         {
             if (param is Playlist playlist)
             {
                 Playlist = playlist;
-                Medias.SetSource(playlist.Medias);
-                OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(CurrentPage), nameof(TotalPages), nameof(Medias),
-                    nameof(Duration));
+                if (!Playlist.IsLoaded)
+                {
+                    await playlist.Load();
+                }
+
+                OnPropertiesChanged(nameof(Duration), nameof(CurrentPage), nameof(TotalPages));
             }
         }
 

@@ -59,7 +59,8 @@
             </controls:SimpleGrid>
         </hc:SimpleStackPanel>
         <controls:SimpleGrid Grid.Row="2" Grid.Column="1" Rows="*,5,Auto,5">
-            <ListView Grid.Row="0" ItemsSource="{Binding Medias.ObservablePage}" HorizontalContentAlignment="Stretch">
+            <ListView Grid.Row="0" ItemsSource="{Binding Medias.ObservablePage}" HorizontalContentAlignment="Stretch"
+                      Style="{StaticResource EmptyList}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="350" />
@@ -71,7 +72,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <hc:Pagination Grid.Row="2" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="10"
+            <hc:Pagination Grid.Row="2" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="8"
                            MaxPageCount="{Binding TotalPages}"
                            PageUpdated="OnPageUpdated" />
         </controls:SimpleGrid>

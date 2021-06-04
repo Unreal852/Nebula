@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using HandyControl.Controls;
+using Nebula.Core;
+using Nebula.Core.Database;
 using Nebula.Media;
 using Nebula.Media.Events;
 using Nebula.Utils.Extensions;
@@ -15,16 +18,18 @@ namespace Nebula.Model
     [Table("Playlists")]
     public class Playlist : IPlaylist, IEnumerable<MediaInfo>
     {
-        private const           int   MaxNameLength        = 128;
-        private const           int   MaxDescriptionLength = 128;
-        private const           int   MaxAuthorLength      = 128;
-        private static readonly Regex SRemLines            = new(@"\t|\n|\r");
+        private const           int             MaxNameLength        = 128;
+        private const           int             MaxDescriptionLength = 128;
+        private const           int             MaxAuthorLength      = 128;
+        private static readonly Regex           SRemLines            = new(@"\t|\n|\r");
+        private static readonly IPlaylistLoader DefaultLoader        = new DatabasePlaylistLoader();
 
         private ObservableCollection<MediaInfo> _medias;
 
         public Playlist()
         {
             Medias = new();
+            Medias.CollectionChanged += OnCollectionChanged;
         }
 
         public Playlist(string name, string description, string author, Uri thumbnail, ICollection<MediaInfo> medias) : this()
@@ -34,34 +39,25 @@ namespace Nebula.Model
             Author = author;
             Thumbnail = thumbnail;
             ValidateFields();
-            Medias = medias != null ? new(medias) : new();
-            Medias.CollectionChanged += OnCollectionChanged;
-        }
-
-        [PrimaryKey, AutoIncrement] public int      Id            { get; set; }
-        public                             string   Name          { get; set; }
-        public                             string   Description   { get; set; }
-        public                             string   Author        { get; set; }
-        public                             Uri      Thumbnail     { get; set; }
-        [Ignore] public                    bool     AutoSave      { get; set; } = true;
-        public                             int      MediasCount   => Medias.Count;
-        public                             TimeSpan TotalDuration { get; private set; }
-
-        [Ignore]
-        public ObservableCollection<MediaInfo> Medias
-        {
-            get => _medias;
-            set
+            if (medias is {Count: > 0})
             {
-                if (_medias != null)
-                    _medias.CollectionChanged -= OnCollectionChanged;
-                if (value != null)
-                {
-                    _medias = value;
-                    _medias.CollectionChanged += OnCollectionChanged;
-                }
+                foreach (MediaInfo media in medias)
+                    Medias.Add(media);
+                IsLoaded = true;
             }
         }
+
+        [PrimaryKey, AutoIncrement] public int                               Id             { get; set; }
+        public                             string                            Name           { get; set; }
+        public                             string                            Description    { get; set; }
+        public                             string                            Author         { get; set; }
+        public                             Uri                               Thumbnail      { get; set; }
+        [Ignore] public                    bool                              AutoSave       { get; set; }           = true;
+        [Ignore] public                    bool                              IsLoaded       { get; protected set; } = false;
+        [Ignore] public                    ObservableCollectionEx<MediaInfo> Medias         { get; }
+        [Ignore] private                   IPlaylistLoader                   PlaylistLoader { get; set; }
+        public                             int                               MediasCount    => Medias.Count;
+        public                             TimeSpan                          TotalDuration  { get; private set; }
 
         public event EventHandler<PlaylistMediaAddedEventArgs>   MediaAdded;
         public event EventHandler<PlaylistMediaRemovedEventArgs> MediaRemoved;
@@ -78,6 +74,13 @@ namespace Nebula.Model
             Description = string.IsNullOrWhiteSpace(Description) ? " " : SRemLines.Replace(Description, "").Truncate(MaxDescriptionLength);
             Author = string.IsNullOrWhiteSpace(Author) ? " " : SRemLines.Replace(Author, "").Truncate(MaxAuthorLength);
             Thumbnail ??= new Uri("https://i.imgur.com/Od5XogD.png");
+        }
+
+        public virtual async Task Load()
+        {
+            if (IsLoaded)
+                return;
+            IsLoaded = await (PlaylistLoader?.LoadPlaylist(this) ?? DefaultLoader.LoadPlaylist(this));
         }
 
         public IEnumerable<MediaInfo> GetActiveMedias()

@@ -19,10 +19,10 @@ namespace Nebula.Core
         public async Task LoadPlaylists()
         {
             Stopwatch sw = Stopwatch.StartNew();
-            List<Playlist> playlists = await NebulaClient.Database.GetAllPlaylists();
+            List<Playlist> playlists = await NebulaClient.Database.GetPlaylists();
+            sw.Stop();
             foreach (Playlist playlist in playlists)
                 Playlists.Add(playlist);
-            sw.Stop();
             Growl.Info($"Loaded playlists in {sw.Elapsed.TotalMilliseconds}ms");
         }
 

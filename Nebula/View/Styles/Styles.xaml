@@ -60,4 +60,19 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <!-- Empty Listbox Style -->
+    <Style x:Key="EmptyList" TargetType="ListView" BasedOn="{StaticResource {x:Type ListView}}">
+        <Style.Triggers>
+            <Trigger Property="HasItems" Value="False">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <TextBlock Text="Empty" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
