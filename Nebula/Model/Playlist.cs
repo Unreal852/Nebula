@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using HandyControl.Controls;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Media;
