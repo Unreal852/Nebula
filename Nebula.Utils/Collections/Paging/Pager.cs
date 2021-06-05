@@ -9,22 +9,18 @@ namespace Nebula.Utils.Collections.Paging
     {
         public static Pager<T> CreateFor(IList<T> targetCollection, int currentPage = 1, int pageSize = 20) => new(targetCollection, currentPage, pageSize);
 
+        private IList<T> _source;
         private int      _pageSize;
         private int      _currentPage;
         private int      _totalPages;
-        private IList<T> _source;
 
         public Pager(IList<T> source, int currentPage = 1, int pageSize = 20)
         {
-            DisableUpdate = true;
-            Source = source;
-            CurrentPage = currentPage;
-            PageSize = pageSize;
-            DisableUpdate = false;
+            _source = source;
+            _currentPage = currentPage;
+            _pageSize = pageSize;
             Update();
         }
-
-        public bool DisableUpdate { get; set; } = false;
 
         public IList<T> Source
         {
@@ -43,7 +39,7 @@ namespace Nebula.Utils.Collections.Paging
             {
                 _currentPage = value;
                 Update();
-                OnPageChanged();
+                RaisePageChanged();
             }
         }
 
@@ -53,7 +49,7 @@ namespace Nebula.Utils.Collections.Paging
             private set
             {
                 _totalPages = value;
-                OnTotalPagesChanged();
+                RaiseTotalPagesChanged();
             }
         }
 
@@ -67,8 +63,6 @@ namespace Nebula.Utils.Collections.Paging
             }
         }
 
-        public IEnumerable<T> Elements => GetPageElements(CurrentPage);
-
         public IEnumerable<int> Pages
         {
             get
@@ -78,19 +72,21 @@ namespace Nebula.Utils.Collections.Paging
             }
         }
 
+        public IEnumerable<T> Elements => GetPageElements(CurrentPage);
+
         public event EventHandler<PageChangedEventArgs>       PageChanged;
         public event EventHandler<TotalPagesChangedEventArgs> TotalPagesChanged;
 
         public IEnumerator<T>   GetEnumerator() => Elements.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        protected virtual void OnPageChanged()            => PageChanged?.Invoke(this, new PageChangedEventArgs(CurrentPage, TotalPages, PageSize));
-        protected virtual void OnTotalPagesChanged()      => TotalPagesChanged?.Invoke(this, new TotalPagesChangedEventArgs(CurrentPage, TotalPages));
+        protected virtual void RaisePageChanged()         => PageChanged?.Invoke(this, new PageChangedEventArgs(CurrentPage, TotalPages, PageSize));
+        protected virtual void RaiseTotalPagesChanged()   => TotalPagesChanged?.Invoke(this, new TotalPagesChangedEventArgs(CurrentPage, TotalPages));
         public virtual    void SetSource(IList<T> source) => Source = source;
 
-        protected virtual void Update()
+        protected void Update()
         {
-            if (DisableUpdate || Source == null || Source.Count == 0)
+            if (Source is not {Count: > 0})
                 return;
             TotalPages = (int) Math.Ceiling((decimal) Source.Count / PageSize);
 
@@ -108,9 +104,7 @@ namespace Nebula.Utils.Collections.Paging
                     page = CurrentPage;
                 int startIndex = (page - 1) * PageSize;
                 int endIndex = Math.Min(startIndex + PageSize, Source.Count - 1);
-                if (startIndex == endIndex) //This is hacky, when there is only one item this return it.
-                    yield return Source[startIndex];
-                for (int i = startIndex; i < endIndex; i++)
+                for (int i = startIndex; i <= endIndex; i++)
                     yield return Source[i];
             }
         }

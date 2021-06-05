@@ -7,44 +7,48 @@ namespace Nebula.Utils.Collections.Paging
 {
     public class FilterPager<T> : Pager<T>
     {
-        public FilterPager(IList<T> list, Predicate<T> filter = null, int currentPage = 1, int pageSize = 20) : base(list, currentPage, pageSize)
+        public FilterPager(IList<T> list, int currentPage = 1, int pageSize = 20) : base(list, currentPage, pageSize)
         {
-            OriginalSource = list;
-            Filter = filter;
         }
 
-        public    Predicate<T> Filter           { get; set; }
-        protected IList<T>     OriginalSource   { get; private set; }
-        protected List<T>      FilteredElements { get; } = new();
+        public Pager<T> FilteredPager { get; } = new(null);
+
+        public event EventHandler FilterChanged;
+
+        public virtual void RaiseFilterChanged() => FilterChanged?.Invoke(this, new EventArgs());
 
         public void ApplyFilter(Predicate<T> filter)
         {
-            Filter = filter;
-            ApplyFilter();
-        }
-
-        public virtual void ApplyFilter()
-        {
-            if (Filter == null)
+            if (filter == null)
                 return;
-            ResetFilter();
-            foreach (T element in Source)
+            ApplyFilter(source =>
             {
-                if (Filter(element))
-                    FilteredElements.Add(element);
-            }
+                List<T> filteredElements = new List<T>();
+                foreach (T element in source)
+                {
+                    if (filter(element))
+                        filteredElements.Add(element);
+                }
 
-            if (Source != FilteredElements)
-                OriginalSource = Source;
-            SetSource(FilteredElements);
+                return filteredElements;
+            });
         }
 
-        public virtual void ResetFilter()
+        public void ApplyFilter(Func<IList<T>, IList<T>> filterFunc)
         {
-            if (OriginalSource == null)
+            if (filterFunc == null)
                 return;
-            SetSource(OriginalSource);
-            FilteredElements.Clear();
+            FilteredPager.SetSource(filterFunc(Source));
+            RaiseFilterChanged();
+        }
+
+        public void ResetFilter()
+        {
+            if (FilteredPager.Source == null)
+                return;
+            FilteredPager.Source.Clear();
+            FilteredPager.SetSource(null);
+            RaiseFilterChanged();
         }
     }
 }

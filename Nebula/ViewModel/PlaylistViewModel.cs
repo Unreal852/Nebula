@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using HandyControl.Controls;
 using LiteMVVM;
 using LiteMVVM.Command;
 using LiteMVVM.Navigation;
@@ -122,6 +123,7 @@ namespace Nebula.ViewModel
                 if (!Playlist.IsLoaded)
                 {
                     await playlist.Load();
+                    Growl.Info(Medias.Source.Last().Title);
                 }
 
                 OnPropertiesChanged(nameof(Duration), nameof(CurrentPage), nameof(TotalPages));
