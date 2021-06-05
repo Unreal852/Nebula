@@ -45,7 +45,7 @@ namespace Nebula.ViewModel.Dialogs
             Close();
         }
 
-        protected override void OnConfirm(object param)
+        protected override void OnConfirm()
         {
             Growl.Info("TEST");
         }

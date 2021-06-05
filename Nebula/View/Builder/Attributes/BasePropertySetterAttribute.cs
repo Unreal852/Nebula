@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 
 namespace Nebula.View.Builder.Attributes

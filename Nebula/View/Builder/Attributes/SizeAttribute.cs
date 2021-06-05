@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace Nebula.View.Builder.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
     public class SizeAttribute : BasePropertySetterAttribute
     {
         public SizeAttribute(double width = -1, double height = -1)

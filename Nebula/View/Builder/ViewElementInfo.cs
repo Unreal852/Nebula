@@ -1,28 +1,32 @@
 ﻿using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Nebula.View.Builder
 {
     public class ViewElementInfo
     {
-        public ViewElementInfo(FrameworkElement element, DependencyProperty dependencyProperty, string propertyName)
+        public ViewElementInfo(FrameworkElement element, params PropertyBindingInfo[] properties)
         {
             Element = element;
-            DependencyProperty = dependencyProperty;
-            PropertyName = propertyName;
+            Properties = properties;
         }
 
-        public FrameworkElement   Element            { get; }
-        public DependencyProperty DependencyProperty { get; }
-        public string             PropertyName       { get; }
+        public FrameworkElement      Element    { get; }
+        public PropertyBindingInfo[] Properties { get; }
 
         public void SetBinding(object context)
         {
-            Element.SetBinding(DependencyProperty, new Binding
+            if (Properties is not {Length: > 0})
+                return;
+            foreach (PropertyBindingInfo property in Properties)
             {
-                Path = new PropertyPath(PropertyName),
-                Source = context
-            });
+                Element.SetBinding(property.Property, new Binding
+                {
+                    Path = new PropertyPath(property.PropertyInfoName),
+                    Source = context
+                });
+            }
         }
     }
 }

@@ -2,10 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Player;
 using Nebula.Core.Providers;
+using Nebula.ViewModel.Dialogs;
 
 namespace Nebula
 {
@@ -33,9 +36,18 @@ namespace Nebula
 
         public static string GetLang(string key, params object[] format)
         {
-            if (format == null || format.Length == 0)
+            if (format is not {Length: > 0})
                 return Resources.Nebula.ResourceManager.GetString(key) ?? key;
             return string.Format(Resources.Nebula.ResourceManager.GetString(key) ?? $"UNKNOWN_KEY({key})", format);
+        }
+
+        public static Dialog ShowDialog<TDialog, TViewModel>(string token = "") where TDialog : FrameworkElement, new() where TViewModel : BaseDialogViewModel, new()
+        {
+            Dialog dialog = Dialog.Show<TDialog>(token);
+            TViewModel viewModel = new TViewModel();
+            dialog.DataContext = viewModel;
+            viewModel.Dialog = dialog;
+            return dialog;
         }
 
         private static async void AppTick(CancellationToken token, int delay)

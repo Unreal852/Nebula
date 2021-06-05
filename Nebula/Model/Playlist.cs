@@ -51,6 +51,8 @@ namespace Nebula.Model
         public                             string                            Description    { get; set; }
         public                             string                            Author         { get; set; }
         public                             Uri                               Thumbnail      { get; set; }
+        public                             bool                              KeepSync       { get; set; }
+        public                             string                            ProviderName   { get; set; }
         [Ignore] public                    bool                              AutoSave       { get; set; }           = true;
         [Ignore] public                    bool                              IsLoaded       { get; protected set; } = false;
         [Ignore] public                    ObservableCollectionEx<MediaInfo> Medias         { get; }

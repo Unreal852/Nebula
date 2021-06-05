@@ -1,5 +1,7 @@
 ﻿using System.Windows.Input;
+using HandyControl.Controls;
 using HandyControl.Interactivity;
+using HandyControl.Tools.Extension;
 using LiteMVVM;
 using LiteMVVM.Command;
 
@@ -7,15 +9,24 @@ namespace Nebula.ViewModel.Dialogs
 {
     public abstract class BaseDialogViewModel : BaseViewModel
     {
+        private string _dialogTitle;
+
         protected BaseDialogViewModel()
         {
-            ConfirmCommand = new RelayCommand<object>(OnConfirm);
+            ConfirmCommand = new RelayCommand(OnConfirm);
         }
 
         public ICommand ConfirmCommand { get; }
+        public Dialog   Dialog         { get; set; }
 
-        protected void Close() => ControlCommands.Close.Execute(null, null);
+        public string Title
+        {
+            get => _dialogTitle;
+            set => Set(ref _dialogTitle, value);
+        }
 
-        protected abstract void OnConfirm(object param);
+        protected void Close() => Dialog.Close();
+
+        protected abstract void OnConfirm();
     }
 }

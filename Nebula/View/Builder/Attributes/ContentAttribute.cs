@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace Nebula.View.Builder.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class)]
     public class ContentAttribute : BasePropertySetterAttribute
     {
         public ContentAttribute(string contentKey)

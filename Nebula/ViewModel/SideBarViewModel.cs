@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using LiteMVVM;
 using LiteMVVM.Command;
 using Nebula.Model;
@@ -56,9 +57,10 @@ namespace Nebula.ViewModel
             Dialog.Show<PlaylistCreationDialogView>().DataContext = new PlaylistCreationDialogViewModel();
         }
 
-        private void ImportPlaylist(object param)
+        private async void ImportPlaylist(object param)
         {
-            Dialog.Show(PlaylistImportationDialogViewModel.Cache.Container).DataContext = new PlaylistImportationDialogViewModel();
+            //   Dialog.Show<PlaylistImportDialogViewModel>().DataContext = new PlaylistImportDialogViewModel();
+            NebulaClient.ShowDialog<PlaylistImportDialogView, PlaylistImportDialogViewModel>();
         }
 
         private async Task PlayPlaylist(Playlist playlist)
