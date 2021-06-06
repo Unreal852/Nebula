@@ -6,7 +6,6 @@ using HandyControl.Controls;
 using HandyControl.Data;
 using Nebula.Model;
 using SQLite;
-using Playlist = Nebula.Model.Playlist;
 
 namespace Nebula.Core.Database
 {
@@ -37,6 +36,8 @@ namespace Nebula.Core.Database
         }
 
         public async Task<List<Playlist>> GetPlaylists() => await Database.Table<Playlist>().ToListAsync();
+        public async Task                 Vacuum()       => await Database.ExecuteAsync("VACUUM");
+
 
         /// <summary>
         /// Get all <see cref="MediaInfo"/> for the specified <see cref="Playlist"/>
@@ -121,7 +122,6 @@ namespace Nebula.Core.Database
         {
             if (playlist == null)
                 return;
-            Database.Trace = true;
             await Database.RunInTransactionAsync(trans =>
             {
                 trans.Execute("DELETE FROM Playlists WHERE Id=?", playlist.Id);

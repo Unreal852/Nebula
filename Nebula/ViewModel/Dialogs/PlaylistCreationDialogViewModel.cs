@@ -40,7 +40,7 @@ namespace Nebula.ViewModel.Dialogs
         private void CreatePlaylist()
         {
             NebulaClient.Playlists.AddPlaylist(new Playlist(PlaylistName, PlaylistDescription, PlaylistAuthor,
-                null,
+                "", "", "",
                 new List<MediaInfo>()));
             Close();
         }

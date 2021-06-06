@@ -18,7 +18,7 @@
     </UserControl.Resources>
     <controls:SimpleGrid Columns="250,*">
         <hc:SimpleStackPanel Orientation="Horizontal" Margin="5">
-            <Image Source="{Binding CurrentMedia.MediumResThumbnailUrl}" />
+            <Image Source="{Binding CurrentMedia.MediumResThumbnail}" />
             <hc:SimpleStackPanel Orientation="Vertical" Margin="5 0 0 0" Width="168">
                 <TextBlock Text="{Binding CurrentMedia.Title}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
                            Foreground="{DynamicResource AppForegroundBrush}" />

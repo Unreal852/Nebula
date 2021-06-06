@@ -28,7 +28,7 @@ namespace Nebula.ViewModel
         public IMediaInfo                       CurrentMedia                => NebulaClient.MediaPlayer.CurrentMedia;
         public string                           MediaTitle                  => CurrentMedia?.Title ?? "";
         public string                           MediaAuthor                 => CurrentMedia?.Author ?? "";
-        public string                           MediaThumbnail              => CurrentMedia?.MediumResThumbnailUrl;
+        public string                           MediaThumbnail              => CurrentMedia?.AnyThumbnailFromHighest;
         public int                              TotalPages                  => Pager.TotalPages;
 
 

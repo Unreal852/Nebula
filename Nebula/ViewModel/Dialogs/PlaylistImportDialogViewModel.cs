@@ -1,9 +1,5 @@
-﻿using HandyControl.Controls;
-using Nebula.Core.Providers.Youtube;
+﻿using Nebula.Core.Providers.Youtube;
 using Nebula.Model;
-using Nebula.View.Builder;
-using Nebula.View.Builder.Attributes;
-using Nebula.View.Views.Dialogs;
 
 namespace Nebula.ViewModel.Dialogs
 {
@@ -39,7 +35,7 @@ namespace Nebula.ViewModel.Dialogs
         {
             if (string.IsNullOrWhiteSpace(PlaylistPath))
                 return;
-            Playlist playlist = await NebulaClient.Providers.FindProviderByType<YoutubeMediaProvider>().GetPlaylistt(PlaylistPath);
+            Playlist playlist = await NebulaClient.Providers.FindProviderByType<YoutubeMediaProvider>().GetPlaylist(PlaylistPath);
             playlist.ValidateFields();
             NebulaClient.Playlists.AddPlaylist(playlist);
             Close();

@@ -44,7 +44,7 @@ namespace Nebula.Core.Providers
         {
             foreach (IMediasProvider provider in Providers)
             {
-                if (provider.Name == name || (ignoreCase && String.Equals(provider.Name, name, StringComparison.CurrentCultureIgnoreCase)))
+                if (String.Equals(provider.Name, name, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                     return provider;
             }
 

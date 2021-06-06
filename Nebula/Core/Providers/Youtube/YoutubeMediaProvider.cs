@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Nebula.Core.Providers.Youtube.Extensions;
 using Nebula.Media;
 using Nebula.Model;
 using YoutubeExplode;
@@ -11,6 +12,7 @@ using YoutubeExplode.Playlists;
 using YoutubeExplode.Search;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
+using Playlist = Nebula.Model.Playlist;
 
 namespace Nebula.Core.Providers.Youtube
 {
@@ -28,7 +30,7 @@ namespace Nebula.Core.Providers.Youtube
 
         public YoutubeClient Youtube { get; } = new();
 
-        public async IAsyncEnumerable<IMediaInfo> SearchMedias(string query, params object[] args)
+        public async IAsyncEnumerable<MediaInfo> SearchMedias(string query, params object[] args)
         {
             if (string.IsNullOrWhiteSpace(query))
                 throw new ArgumentNullException($"{nameof(query)} is null or empty.");
@@ -55,44 +57,50 @@ namespace Nebula.Core.Providers.Youtube
                 yield return new YoutubeMediaInfo(video); */
         }
 
-        public async IAsyncEnumerable<IMediaInfo> GetArtistMedias(string query, params object[] args)
+        public IAsyncEnumerable<Playlist> SearchPlaylists(string query, params object[] args)
         {
-            await foreach (PlaylistVideo video in Youtube.Channels.GetUploadsAsync(ChannelId.Parse(query)))
-                yield return new YoutubeMediaInfo(video);
+            throw new NotImplementedException();
         }
 
-        public async Task<IMediaInfo> GetMediaInfo(string query, params object[] args)
+        public IAsyncEnumerable<ArtistInfo> SearchArtists(string query, params object[] args)
         {
-            return new YoutubeMediaInfo(await Youtube.Videos.GetAsync(VideoId.Parse(query)));
+            throw new NotImplementedException();
+        }
+
+        public async IAsyncEnumerable<MediaInfo> GetArtistMedias(string query, params object[] args)
+        {
+            await foreach (PlaylistVideo video in Youtube.Channels.GetUploadsAsync(ChannelId.Parse(query)))
+                yield return VideoToMediaInfo(video);
+        }
+
+        public async Task<MediaInfo> GetMediaInfo(string query, params object[] args)
+        {
+            return VideoToMediaInfo(await Youtube.Videos.GetAsync(VideoId.Parse(query)));
         }
 
         public async Task<IArtistInfo> GetArtistInfo(string query, params object[] args)
         {
             Channel channel = await Youtube.Channels.GetAsync(ChannelId.Parse(query));
-            return new YoutubeArtistInfo(channel.Id, channel.Title, channel.Url, channel.Thumbnails.First().Url); // Logo is no longer available why?
+            var thumbnails = channel.Thumbnails.GetThumbnails();
+            return new ArtistInfo(channel.Id, channel.Title, channel.Url, thumbnails.LowRes, thumbnails.MediumRes,
+                thumbnails.HighRes); // Logo is no longer available why?
         }
 
-        public async Task<Media.IPlaylist> GetPlaylist(string query, params object[] args)
+        public async Task<Playlist> GetPlaylist(string query, params object[] args)
         {
             YoutubeExplode.Playlists.Playlist youtubePlaylist = await Youtube.Playlists.GetAsync(query);
-            Model.Playlist playlist = new Model.Playlist()
+            var thumbnails = youtubePlaylist.Thumbnails.GetThumbnails();
+            Playlist playlist = new Playlist
             {
-                Name = youtubePlaylist.Title, Description = youtubePlaylist.Description, Author = youtubePlaylist.Author?.Title ?? "Unknown",
-                Thumbnail = new Uri(youtubePlaylist.Thumbnails.OrderByDescending(t => t.Resolution.Area).First().Url), AutoSave = false
-            };
-            await foreach (PlaylistVideo video in Youtube.Playlists.GetVideosAsync(youtubePlaylist.Id))
-                playlist.AddMedia(VideoToMediaInfo(video));
-            playlist.AutoSave = true;
-            return playlist;
-        }
-
-        public async Task<Model.Playlist> GetPlaylistt(string query, params object[] args)
-        {
-            YoutubeExplode.Playlists.Playlist youtubePlaylist = await Youtube.Playlists.GetAsync(query);
-            Model.Playlist playlist = new Model.Playlist()
-            {
-                Name = youtubePlaylist.Title, Description = youtubePlaylist.Description, Author = youtubePlaylist.Author?.Title ?? "Unknown",
-                Thumbnail = new Uri(youtubePlaylist.Thumbnails.OrderBy(t => t.Resolution.Area).First().Url), AutoSave = false
+                Name = youtubePlaylist.Title,
+                Description = youtubePlaylist.Description,
+                Author = youtubePlaylist.Author?.Title ?? "Unknown",
+                Url = youtubePlaylist.Url,
+                LowResThumbnail = thumbnails.LowRes,
+                MediumResThumbnail = thumbnails.MediumRes,
+                HighResThumbnail = thumbnails.HighRes,
+                AutoSave = false,
+                ProviderName = Name,
             };
             await foreach (PlaylistVideo video in Youtube.Playlists.GetVideosAsync(youtubePlaylist.Id))
                 playlist.AddMedia(VideoToMediaInfo(video));
@@ -121,15 +129,12 @@ namespace Nebula.Core.Providers.Youtube
             return new Uri(streamInfo.Url);
         }
 
-        private static MediaInfo VideoToMediaInfo(IVideo video)
+        private MediaInfo VideoToMediaInfo(IVideo video)
         {
-            Thumbnail[] thumbnails = video.Thumbnails.OrderBy(thumbRes => thumbRes.Resolution.Area).ToArray();
-            string lowResThumbnailUrl = thumbnails[0].Url;
-            string highResThumbnailUrl = thumbnails[^1].Url;
-            string mediumResThumbnailUrl = thumbnails.Length >= 2 ? thumbnails[thumbnails.Length / 2 - 1].Url : highResThumbnailUrl;
+            var thumbnails = video.Thumbnails.GetThumbnails();
             return new MediaInfo(video.Id.Value, video.Author.ChannelId.Value,
-                video.Title, video.Author.Title, "",
-                lowResThumbnailUrl, mediumResThumbnailUrl, highResThumbnailUrl,
+                video.Title, video.Author.Title, "", Name,
+                thumbnails.LowRes, thumbnails.MediumRes, thumbnails.HighRes,
                 video.Duration ?? TimeSpan.Zero, DateTime.MinValue);
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Nebula.Media
 {
-    public interface IArtistInfo
+    public interface IArtistInfo : IThumbnailSource
     {
         /// <summary>
         ///     Artist Id
@@ -18,11 +18,6 @@ namespace Nebula.Media
         ///     Artist Url
         /// </summary>
         public string Url { get; }
-
-        /// <summary>
-        ///     Artist Logo Url
-        /// </summary>
-        public string ThumbnailUri { get; }
 
         /// <summary>
         ///     Returns Artist's Medias

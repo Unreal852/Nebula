@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Nebula.Core.Providers;
 using Nebula.Core.Providers.Youtube;
 using Nebula.Media;
+using Nebula.Media.Extensions;
 using SQLite;
 
 namespace Nebula.Model
@@ -13,32 +15,37 @@ namespace Nebula.Model
         {
         }
 
-        public MediaInfo(string id, string authorId, string title, string author, string description, string lowResThumbnailUrl, string mediumResThumbnailUrl,
-                         string highResThumbnailUrl, TimeSpan duration, DateTime creationDate)
+        public MediaInfo(string id, string authorId, string title, string author, string description, string providerName, string lowResThumbnail,
+                         string mediumResThumbnail, string highResThumbnail, TimeSpan duration, DateTime creationDate)
         {
             Id = id;
             AuthorId = authorId;
             Title = title;
             Author = author;
             Description = description;
-            LowResThumbnailUrl = lowResThumbnailUrl;
-            MediumResThumbnailUrl = mediumResThumbnailUrl;
-            HighResThumbnailUrl = highResThumbnailUrl;
+            ProviderName = providerName;
+            LowResThumbnail = lowResThumbnail;
+            MediumResThumbnail = mediumResThumbnail;
+            HighResThumbnail = highResThumbnail;
             Duration = duration;
             CreationDate = creationDate;
         }
 
-        [Indexed, PrimaryKey] public string   Id                    { get; set; }
-        public                       string   AuthorId              { get; set; }
-        public                       string   Title                 { get; set; }
-        public                       string   Author                { get; set; }
-        public                       string   Description           { get; set; }
-        public                       string   LowResThumbnailUrl    { get; set; }
-        public                       string   MediumResThumbnailUrl { get; set; }
-        public                       string   HighResThumbnailUrl   { get; set; }
-        public                       TimeSpan Duration              { get; set; }
-        public                       DateTime CreationDate          { get; set; }
-        [Ignore] public              bool     IsActive              { get; set; } = true;
+        [Indexed, PrimaryKey] public string   Id                      { get; set; }
+        public                       string   AuthorId                { get; set; }
+        public                       string   Title                   { get; set; }
+        public                       string   Author                  { get; set; }
+        public                       string   Description             { get; set; }
+        public                       string   ProviderName            { get; set; }
+        public                       string   LowResThumbnail         { get; set; }
+        public                       string   MediumResThumbnail      { get; set; }
+        public                       string   HighResThumbnail        { get; set; }
+        public                       string   CustomThumbnail         { get; set; }
+        public                       TimeSpan Duration                { get; set; }
+        public                       DateTime CreationDate            { get; set; }
+        [Ignore] public              bool     IsActive                { get; set; } = true;
+        public                       string   AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
+        public                       string   AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
         public IMediasProvider GetMediaProvider()
         {

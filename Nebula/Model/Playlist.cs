@@ -9,6 +9,7 @@ using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Media;
 using Nebula.Media.Events;
+using Nebula.Media.Extensions;
 using Nebula.Utils.Extensions;
 using SQLite;
 
@@ -31,12 +32,15 @@ namespace Nebula.Model
             Medias.CollectionChanged += OnCollectionChanged;
         }
 
-        public Playlist(string name, string description, string author, Uri thumbnail, ICollection<MediaInfo> medias) : this()
+        public Playlist(string name, string description, string author, string lowResThumbnail, string mediumResThumbnail, string highResThumbnail,
+                        ICollection<MediaInfo> medias) : this()
         {
             Name = name;
             Description = description;
             Author = author;
-            Thumbnail = thumbnail;
+            LowResThumbnail = lowResThumbnail;
+            MediumResThumbnail = mediumResThumbnail;
+            HighResThumbnail = highResThumbnail;
             ValidateFields();
             if (medias is {Count: > 0})
             {
@@ -46,19 +50,25 @@ namespace Nebula.Model
             }
         }
 
-        [PrimaryKey, AutoIncrement] public int                               Id             { get; set; }
-        public                             string                            Name           { get; set; }
-        public                             string                            Description    { get; set; }
-        public                             string                            Author         { get; set; }
-        public                             Uri                               Thumbnail      { get; set; }
-        public                             bool                              KeepSync       { get; set; }
-        public                             string                            ProviderName   { get; set; }
-        [Ignore] public                    bool                              AutoSave       { get; set; }           = true;
-        [Ignore] public                    bool                              IsLoaded       { get; protected set; } = false;
-        [Ignore] public                    ObservableCollectionEx<MediaInfo> Medias         { get; }
-        [Ignore] private                   IPlaylistLoader                   PlaylistLoader { get; set; }
-        public                             int                               MediasCount    => Medias.Count;
-        public                             TimeSpan                          TotalDuration  { get; private set; }
+        [PrimaryKey, AutoIncrement] public int                               Id                      { get; set; }
+        public                             string                            Name                    { get; set; }
+        public                             string                            Description             { get; set; }
+        public                             string                            Url                     { get; set; }
+        public                             string                            Author                  { get; set; }
+        public                             string                            LowResThumbnail         { get; set; }
+        public                             string                            MediumResThumbnail      { get; set; }
+        public                             string                            HighResThumbnail        { get; set; }
+        public                             string                            CustomThumbnail         { get; set; }
+        public                             bool                              KeepSync                { get; set; }
+        public                             string                            ProviderName            { get; set; }
+        [Ignore] public                    bool                              AutoSave                { get; set; }           = true;
+        [Ignore] public                    bool                              IsLoaded                { get; protected set; } = false;
+        [Ignore] public                    ObservableCollectionEx<MediaInfo> Medias                  { get; }
+        [Ignore] private                   IPlaylistLoader                   PlaylistLoader          { get; set; }
+        public                             TimeSpan                          TotalDuration           { get; private set; }
+        public                             int                               MediasCount             => Medias.Count;
+        public                             string                            AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
+        public                             string                            AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
         public event EventHandler<PlaylistMediaAddedEventArgs>   MediaAdded;
         public event EventHandler<PlaylistMediaRemovedEventArgs> MediaRemoved;
@@ -74,7 +84,6 @@ namespace Nebula.Model
             Name = string.IsNullOrWhiteSpace(Name) ? " " : SRemLines.Replace(Name, "").Truncate(MaxNameLength);
             Description = string.IsNullOrWhiteSpace(Description) ? " " : SRemLines.Replace(Description, "").Truncate(MaxDescriptionLength);
             Author = string.IsNullOrWhiteSpace(Author) ? " " : SRemLines.Replace(Author, "").Truncate(MaxAuthorLength);
-            Thumbnail ??= new Uri("https://i.imgur.com/Od5XogD.png");
         }
 
         public virtual async Task Load()

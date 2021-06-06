@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Nebula.Media;
+using Nebula.Model;
 
-namespace Nebula.Media
+namespace Nebula.Core.Providers
 {
+    /// <summary>
+    ///     The base class for a Media provider
+    /// </summary>
     public interface IMediasProvider
     {
         /// <summary>
@@ -29,7 +34,27 @@ namespace Nebula.Media
         /// <returns>
         ///     <see cref="IAsyncEnumerable{T}" />
         /// </returns>
-        IAsyncEnumerable<IMediaInfo> SearchMedias(string query, params object[] args);
+        IAsyncEnumerable<MediaInfo> SearchMedias(string query, params object[] args);
+
+        /// <summary>
+        ///     Search Playlists
+        /// </summary>
+        /// <param name="query">Playlist Query, usually keywords</param>
+        /// <param name="args">Optional Parameters</param>
+        /// <returns>
+        ///     <see cref="IAsyncEnumerable{T}" />
+        /// </returns>
+        IAsyncEnumerable<Playlist> SearchPlaylists(string query, params object[] args);
+
+        /// <summary>
+        ///     Search Artists
+        /// </summary>
+        /// <param name="query">Artists Query, usually keywords</param>
+        /// <param name="args">Optional Parameters</param>
+        /// <returns>
+        ///     <see cref="IAsyncEnumerable{T}" />
+        /// </returns>
+        IAsyncEnumerable<ArtistInfo> SearchArtists(string query, params object[] args);
 
         /// <summary>
         ///     Get Artist's medias
@@ -39,7 +64,7 @@ namespace Nebula.Media
         /// <returns>
         ///     <see cref="IEnumerable{T}" />
         /// </returns>
-        IAsyncEnumerable<IMediaInfo> GetArtistMedias(string query, params object[] args);
+        IAsyncEnumerable<MediaInfo> GetArtistMedias(string query, params object[] args);
 
         /// <summary>
         ///     Get Media info
@@ -49,7 +74,7 @@ namespace Nebula.Media
         /// <returns>
         ///     <see cref="IMediaInfo" />
         /// </returns>
-        Task<IMediaInfo> GetMediaInfo(string query, params object[] args);
+        Task<MediaInfo> GetMediaInfo(string query, params object[] args);
 
         /// <summary>
         ///     Get Artist info
@@ -69,7 +94,7 @@ namespace Nebula.Media
         /// <returns>
         ///     <see cref="IPlaylist" />
         /// </returns>
-        Task<IPlaylist> GetPlaylist(string query, params object[] args);
+        Task<Playlist> GetPlaylist(string query, params object[] args);
 
         /// <summary>
         ///     Get the audio stream from the specified media

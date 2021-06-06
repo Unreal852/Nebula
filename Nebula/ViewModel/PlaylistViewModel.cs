@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
 using HandyControl.Controls;
 using LiteMVVM;
 using LiteMVVM.Command;
 using LiteMVVM.Navigation;
+using Nebula.Media.Extensions;
 using Nebula.Model;
 using Nebula.Utils.Collections.Paging;
 using Nebula.View;
@@ -93,14 +92,14 @@ namespace Nebula.ViewModel
             }
         }
 
-        public Uri Thumbnail
+        public string Thumbnail
         {
-            get => Playlist?.Thumbnail;
+            get => Playlist?.AnyThumbnailFromHighest();
             set
             {
-                if (Playlist == null || Playlist.Thumbnail == value)
+                if (Playlist == null)
                     return;
-                Playlist.Thumbnail = value;
+                Playlist.CustomThumbnail = value;
                 OnPropertyChanged();
             }
         }

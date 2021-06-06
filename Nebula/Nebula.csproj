@@ -40,12 +40,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="LiteMVVM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\LiteMVVM\LiteMVVM.WPF\bin\Release\net5.0-windows\LiteMVVM.dll</HintPath>
-      </Reference>
-      <Reference Include="LiteMVVM.WPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\LiteMVVM\LiteMVVM.WPF\bin\Release\net5.0-windows\LiteMVVM.WPF.dll</HintPath>
-      </Reference>
+        <Reference Include="LiteMVVM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\..\LiteMVVM\LiteMVVM.WPF\bin\Release\net5.0-windows\LiteMVVM.dll</HintPath>
+        </Reference>
+        <Reference Include="LiteMVVM.WPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\..\LiteMVVM\LiteMVVM.WPF\bin\Release\net5.0-windows\LiteMVVM.WPF.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Core\Extensions"/>
     </ItemGroup>
 
 </Project>

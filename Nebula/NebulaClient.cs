@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using HandyControl.Controls;
-using HandyControl.Tools.Extension;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Player;
@@ -41,12 +40,11 @@ namespace Nebula
             return string.Format(Resources.Nebula.ResourceManager.GetString(key) ?? $"UNKNOWN_KEY({key})", format);
         }
 
-        public static Dialog ShowDialog<TDialog, TViewModel>(string token = "") where TDialog : FrameworkElement, new() where TViewModel : BaseDialogViewModel, new()
+        public static Dialog ShowDialog<TDialog>(string token = "") where TDialog : FrameworkElement, new()
         {
             Dialog dialog = Dialog.Show<TDialog>(token);
-            TViewModel viewModel = new TViewModel();
-            dialog.DataContext = viewModel;
-            viewModel.Dialog = dialog;
+            if (dialog.Content is TDialog {DataContext: BaseDialogViewModel baseDialogViewModel})
+                baseDialogViewModel.Dialog = dialog;
             return dialog;
         }
 

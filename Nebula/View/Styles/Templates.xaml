@@ -6,7 +6,7 @@
     <DataTemplate x:Key="MediaInfoCardTemplate" DataType="model:MediaInfo">
         <hc:Card Width="350" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="7" Footer="{Binding Author}" Cursor="Hand">
             <Border CornerRadius="4,4,0,0" Background="Black">
-                <Image Source="{Binding HighResThumbnailUrl}" Stretch="Uniform">
+                <Image Source="{Binding AnyThumbnailFromHighest}" Stretch="Uniform">
                     <Image.CacheMode>
                         <BitmapCache />
                     </Image.CacheMode>

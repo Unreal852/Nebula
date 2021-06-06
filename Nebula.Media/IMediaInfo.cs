@@ -6,7 +6,7 @@ namespace Nebula.Media
     /// <summary>
     ///     Provide Media infos to implement by media provider results.
     /// </summary>
-    public interface IMediaInfo
+    public interface IMediaInfo : IThumbnailSource
     {
         /// <summary>
         ///     Media ID
@@ -34,19 +34,6 @@ namespace Nebula.Media
         string Description { get; set; }
 
         /// <summary>
-        ///     Low res Thumbnail Url
-        /// </summary>
-        string LowResThumbnailUrl { get; set; }
-
-        /// <summary>
-        ///     Medium res thumbnail Url
-        /// </summary>
-        string MediumResThumbnailUrl { get; set; }
-
-        // High res Thumbnail Url
-        string HighResThumbnailUrl { get; set; }
-
-        /// <summary>
         ///     Playlist Specific field
         /// </summary>
         bool IsActive { get; set; }
@@ -60,12 +47,6 @@ namespace Nebula.Media
         ///     Media Creation Date
         /// </summary>
         DateTime CreationDate { get; }
-
-        /// <summary>
-        ///     Media Provider
-        /// </summary>
-        /// <returns>Media Provider</returns>
-        IMediasProvider GetMediaProvider();
 
         /// <summary>
         ///     Returns media's artist's info

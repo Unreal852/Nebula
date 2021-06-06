@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -26,12 +25,13 @@ namespace Nebula.Utils.Collections.Paging
         private void ObservableCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Update();
+            Debug.Print(e.Action + "");
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add when e.NewItems != null:
                 {
-                    foreach (T oldItem in e.NewItems)
-                        ObservablePage.Add(oldItem);
+                    foreach (T newItem in e.NewItems)
+                        ObservablePage.Add(newItem);
                     break;
                 }
                 case NotifyCollectionChangedAction.Remove when e.OldItems != null:
