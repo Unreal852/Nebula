@@ -51,4 +51,85 @@
     <data name="playlist_delete" xml:space="preserve">
         <value>Delete</value>
     </data>
+    <data name="playlist_import_title" xml:space="preserve">
+        <value>Import Playlist</value>
+    </data>
+    <data name="dialog_cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="dialog_confirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="playlist_import_path" xml:space="preserve">
+        <value>Playlist Path/Url</value>
+    </data>
+    <data name="dialog_no" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="dialog_yes" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="dialog_ok" xml:space="preserve">
+        <value>Ok</value>
+    </data>
+    <data name="dialog_delete_playlist" xml:space="preserve">
+        <value>Do you want to delete this playlist ?</value>
+    </data>
+    <data name="dialog_title_info" xml:space="preserve">
+        <value>Information</value>
+    </data>
+    <data name="dialog_title_error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="dialog_title_warning" xml:space="preserve">
+        <value>Warning</value>
+    </data>
+    <data name="playlist_importing" xml:space="preserve">
+        <value>A playlist is being imported, This may take a while.</value>
+    </data>
+    <data name="playlist_imported" xml:space="preserve">
+        <value>The playlist '{0}' has been sucessfully imported.</value>
+    </data>
+    <data name="playlist_by" xml:space="preserve">
+        <value>By {0}</value>
+    </data>
+    <data name="playlist_duration" xml:space="preserve">
+        <value>Duration {0}</value>
+    </data>
+    <data name="global_search" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="playlist_edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="global_hour" xml:space="preserve">
+        <value>Hour</value>
+    </data>
+    <data name="global_hours" xml:space="preserve">
+        <value>Hours</value>
+    </data>
+    <data name="global_minute" xml:space="preserve">
+        <value>Minute</value>
+    </data>
+    <data name="global_minutes" xml:space="preserve">
+        <value>Minutes</value>
+    </data>
+    <data name="global_second" xml:space="preserve">
+        <value>Second</value>
+    </data>
+    <data name="global_seconds" xml:space="preserve">
+        <value>Seconds</value>
+    </data>
+    <data name="global_day" xml:space="preserve">
+        <value>Day</value>
+    </data>
+    <data name="global_days" xml:space="preserve">
+        <value>Days</value>
+    </data>
+    <data name="playlist_create_title" xml:space="preserve">
+        <value>Create Playlist</value>
+    </data>
+    <data name="dialog_delete_playlist_media" xml:space="preserve">
+        <value>Do you want to remove this music from the playlist ?</value>
+    </data>
 </root>

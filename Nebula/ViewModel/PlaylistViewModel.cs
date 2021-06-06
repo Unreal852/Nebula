@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using LiteMVVM;
 using LiteMVVM.Command;
 using LiteMVVM.Navigation;
@@ -120,11 +120,7 @@ namespace Nebula.ViewModel
             {
                 Playlist = playlist;
                 if (!Playlist.IsLoaded)
-                {
                     await playlist.Load();
-                    Growl.Info(Medias.Source.Last().Title);
-                }
-
                 OnPropertiesChanged(nameof(Duration), nameof(CurrentPage), nameof(TotalPages));
             }
         }
@@ -139,6 +135,10 @@ namespace Nebula.ViewModel
         private async Task RemoveMedia(MediaInfo mediaInfo)
         {
             if (Playlist == null || mediaInfo == null)
+                return;
+            Dialog dialog = NebulaClient.ShowWarningNoYes("dialog_delete_playlist_media");
+            var result = await dialog.GetResultAsync<bool>();
+            if (!result)
                 return;
             Playlist.Medias.Remove(mediaInfo);
             await NebulaClient.Database.RemovePlaylistMedia(Playlist, mediaInfo);
@@ -155,6 +155,10 @@ namespace Nebula.ViewModel
         {
             if (Playlist == null)
                 return;
+            Dialog dialog = NebulaClient.ShowWarningNoYes("dialog_delete_playlist");
+            var result = await dialog.GetResultAsync<bool>();
+            if (!result)
+                return;
             await NebulaClient.Playlists.DeletePlaylist(Playlist);
             Messenger.Broadcast(this, NavigationInfo.Create(typeof(TestControl1), null, false));
         }
@@ -170,7 +174,9 @@ namespace Nebula.ViewModel
             if (Playlist == null)
                 return;
             if (string.IsNullOrWhiteSpace(filter))
+            {
                 Medias.ResetFilter();
+            }
             else
             {
                 string loweredFilter = filter.ToLower();

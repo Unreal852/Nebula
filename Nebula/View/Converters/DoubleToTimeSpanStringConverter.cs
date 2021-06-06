@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Nebula.Utils.Extensions;
+using Nebula.Core.Extensions;
 
 namespace Nebula.View.Converters
 {
@@ -10,7 +10,7 @@ namespace Nebula.View.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is double dValue)
-                return TimeSpan.FromSeconds(dValue).ToFormattedHuman();
+                return TimeSpan.FromSeconds(dValue).ToSimpleFormattedHuman();
             return string.Empty;
         }
 

@@ -61,6 +61,177 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string dialog_cancel {
+            get {
+                return ResourceManager.GetString("dialog_cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string dialog_confirm {
+            get {
+                return ResourceManager.GetString("dialog_confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to delete this playlist ?.
+        /// </summary>
+        public static string dialog_delete_playlist {
+            get {
+                return ResourceManager.GetString("dialog_delete_playlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to remove this music from the playlist ?.
+        /// </summary>
+        public static string dialog_delete_playlist_media {
+            get {
+                return ResourceManager.GetString("dialog_delete_playlist_media", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string dialog_no {
+            get {
+                return ResourceManager.GetString("dialog_no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string dialog_ok {
+            get {
+                return ResourceManager.GetString("dialog_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string dialog_title_error {
+            get {
+                return ResourceManager.GetString("dialog_title_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string dialog_title_info {
+            get {
+                return ResourceManager.GetString("dialog_title_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string dialog_title_warning {
+            get {
+                return ResourceManager.GetString("dialog_title_warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string dialog_yes {
+            get {
+                return ResourceManager.GetString("dialog_yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        public static string global_day {
+            get {
+                return ResourceManager.GetString("global_day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Days.
+        /// </summary>
+        public static string global_days {
+            get {
+                return ResourceManager.GetString("global_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hour.
+        /// </summary>
+        public static string global_hour {
+            get {
+                return ResourceManager.GetString("global_hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hours.
+        /// </summary>
+        public static string global_hours {
+            get {
+                return ResourceManager.GetString("global_hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minute.
+        /// </summary>
+        public static string global_minute {
+            get {
+                return ResourceManager.GetString("global_minute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minutes.
+        /// </summary>
+        public static string global_minutes {
+            get {
+                return ResourceManager.GetString("global_minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string global_search {
+            get {
+                return ResourceManager.GetString("global_search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second.
+        /// </summary>
+        public static string global_second {
+            get {
+                return ResourceManager.GetString("global_second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seconds.
+        /// </summary>
+        public static string global_seconds {
+            get {
+                return ResourceManager.GetString("global_seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
         public static string media_active {
@@ -124,6 +295,24 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By {0}.
+        /// </summary>
+        public static string playlist_by {
+            get {
+                return ResourceManager.GetString("playlist_by", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Playlist.
+        /// </summary>
+        public static string playlist_create_title {
+            get {
+                return ResourceManager.GetString("playlist_create_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Author.
         /// </summary>
         public static string playlist_creation_author {
@@ -156,6 +345,60 @@ namespace Nebula.Resources {
         public static string playlist_delete {
             get {
                 return ResourceManager.GetString("playlist_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration {0}.
+        /// </summary>
+        public static string playlist_duration {
+            get {
+                return ResourceManager.GetString("playlist_duration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string playlist_edit {
+            get {
+                return ResourceManager.GetString("playlist_edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist Path/Url.
+        /// </summary>
+        public static string playlist_import_path {
+            get {
+                return ResourceManager.GetString("playlist_import_path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Playlist.
+        /// </summary>
+        public static string playlist_import_title {
+            get {
+                return ResourceManager.GetString("playlist_import_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The playlist &apos;{0}&apos; has been sucessfully imported..
+        /// </summary>
+        public static string playlist_imported {
+            get {
+                return ResourceManager.GetString("playlist_imported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A playlist is being imported, This may take a while..
+        /// </summary>
+        public static string playlist_importing {
+            get {
+                return ResourceManager.GetString("playlist_importing", resourceCulture);
             }
         }
     }

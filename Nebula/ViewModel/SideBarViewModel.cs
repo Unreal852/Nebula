@@ -48,7 +48,6 @@ namespace Nebula.ViewModel
             if (playlist == null)
                 return;
             Messenger.Broadcast(this, NavigationInfo.Create(typeof(PlaylistView), playlist, true));
-            //MainWindowViewModel.Instance.Navigate(NavigationInfo.Create(typeof(PlaylistView), playlist, true));
         }
 
         private void CreatePlaylist(object param)

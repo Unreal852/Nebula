@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Nebula.Core;
 using Nebula.Core.Database;
+using Nebula.Core.Extensions;
 using Nebula.Media;
 using Nebula.Media.Events;
 using Nebula.Media.Extensions;
-using Nebula.Utils.Extensions;
 using SQLite;
 
 namespace Nebula.Model
@@ -19,7 +19,7 @@ namespace Nebula.Model
     public class Playlist : IPlaylist, IEnumerable<MediaInfo>
     {
         private const           int             MaxNameLength        = 128;
-        private const           int             MaxDescriptionLength = 128;
+        private const           int             MaxDescriptionLength = 92;
         private const           int             MaxAuthorLength      = 128;
         private static readonly Regex           SRemLines            = new(@"\t|\n|\r");
         private static readonly IPlaylistLoader DefaultLoader        = new DatabasePlaylistLoader();
@@ -61,10 +61,10 @@ namespace Nebula.Model
         public                             string                            CustomThumbnail         { get; set; }
         public                             bool                              KeepSync                { get; set; }
         public                             string                            ProviderName            { get; set; }
-        [Ignore] public                    bool                              AutoSave                { get; set; }           = true;
-        [Ignore] public                    bool                              IsLoaded                { get; protected set; } = false;
+        [Ignore] public                    bool                              AutoSave                { get; set; } = true;
+        [Ignore] public                    bool                              IsLoaded                { get; set; } = false;
         [Ignore] public                    ObservableCollectionEx<MediaInfo> Medias                  { get; }
-        [Ignore] private                   IPlaylistLoader                   PlaylistLoader          { get; set; }
+        [Ignore] public                    IPlaylistLoader                   PlaylistLoader          { get; set; }
         public                             TimeSpan                          TotalDuration           { get; private set; }
         public                             int                               MediasCount             => Medias.Count;
         public                             string                            AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();

@@ -1,10 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:hc="https://handyorg.github.io/handycontrol"
-                    xmlns:model="clr-namespace:Nebula.Model">
+                    xmlns:model="clr-namespace:Nebula.Model"
+                    xmlns:converters="clr-namespace:Nebula.View.Converters"
+                    xmlns:resx="clr-namespace:Nebula.Resources"
+                    xmlns:controls="clr-namespace:Nebula.View.Controls">
     <!--Template for medias search results -->
     <DataTemplate x:Key="MediaInfoCardTemplate" DataType="model:MediaInfo">
-        <hc:Card Width="350" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="7" Footer="{Binding Author}" Cursor="Hand">
+        <DataTemplate.Resources>
+            <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
+        </DataTemplate.Resources>
+        <hc:Card Width="350" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="7" Footer="{Binding }" Cursor="Hand">
             <Border CornerRadius="4,4,0,0" Background="Black">
                 <Image Source="{Binding AnyThumbnailFromHighest}" Stretch="Uniform">
                     <Image.CacheMode>
@@ -14,26 +20,28 @@
             </Border>
             <hc:Card.FooterTemplate>
                 <DataTemplate>
-                    <StackPanel Margin="5" Width="260">
-                        <!--Card First-level content-->
-                        <TextBlock TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" FontWeight="Bold" FontSize="14"
-                                   Text="{Binding DataContext.Title,RelativeSource={RelativeSource AncestorType=hc:Card}}"
-                                   HorizontalAlignment="Left" />
-                        <!--Card Secondary content-->
-                        <TextBlock TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis" FontSize="9"
-                                   Text="{Binding}" Margin="0,6,0,0"
-                                   HorizontalAlignment="Left" />
-                        <hc:SimpleStackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <controls:SimpleGrid Rows="Auto,Auto" Columns="*,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" FontWeight="Bold" FontSize="14"
+                                   Text="{Binding Title}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 5" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis"
+                                   FontSize="14"
+                                   Text="{Binding Author, StringFormat={x:Static resx:Nebula.playlist_by}}"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 0 0 0" />
+                        <hc:SimpleStackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right"
+                                             VerticalAlignment="Bottom">
                             <Button Width="30" Height="30"
                                     Foreground="{DynamicResource PrimaryTextBrush}"
                                     Style="{DynamicResource ButtonIcon}"
+                                    Command="{Binding DataContext.OpenMediaCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}"
                                     hc:IconElement.Geometry="{StaticResource PlayGeometry}" />
                             <Button Width="30" Height="30"
                                     Foreground="{DynamicResource PrimaryTextBrush}"
                                     Style="{DynamicResource ButtonIcon}"
-                                    hc:IconElement.Geometry="{StaticResource PlayGeometry}" />
+                                    hc:IconElement.Geometry="{StaticResource PlusGeometry}" />
                         </hc:SimpleStackPanel>
-                    </StackPanel>
+                    </controls:SimpleGrid>
                 </DataTemplate>
             </hc:Card.FooterTemplate>
         </hc:Card>

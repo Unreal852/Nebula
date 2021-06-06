@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Nebula.Core;
 using Nebula.Core.Providers;
 using Nebula.Core.Providers.Youtube;
 using Nebula.Media;
@@ -29,28 +30,24 @@ namespace Nebula.Model
             HighResThumbnail = highResThumbnail;
             Duration = duration;
             CreationDate = creationDate;
+            Title = Validator.ValidateMediaTitle(this);
         }
 
-        [Indexed, PrimaryKey] public string   Id                      { get; set; }
-        public                       string   AuthorId                { get; set; }
-        public                       string   Title                   { get; set; }
-        public                       string   Author                  { get; set; }
-        public                       string   Description             { get; set; }
-        public                       string   ProviderName            { get; set; }
-        public                       string   LowResThumbnail         { get; set; }
-        public                       string   MediumResThumbnail      { get; set; }
-        public                       string   HighResThumbnail        { get; set; }
-        public                       string   CustomThumbnail         { get; set; }
-        public                       TimeSpan Duration                { get; set; }
-        public                       DateTime CreationDate            { get; set; }
-        [Ignore] public              bool     IsActive                { get; set; } = true;
-        public                       string   AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
-        public                       string   AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
-
-        public IMediasProvider GetMediaProvider()
-        {
-            throw new NotImplementedException();
-        }
+        [Indexed] [PrimaryKey] public string   Id                      { get; set; }
+        public                        string   AuthorId                { get; set; }
+        public                        string   Title                   { get; set; }
+        public                        string   Author                  { get; set; }
+        public                        string   Description             { get; set; }
+        public                        string   ProviderName            { get; set; }
+        public                        string   LowResThumbnail         { get; set; }
+        public                        string   MediumResThumbnail      { get; set; }
+        public                        string   HighResThumbnail        { get; set; }
+        public                        string   CustomThumbnail         { get; set; }
+        public                        TimeSpan Duration                { get; set; }
+        public                        DateTime CreationDate            { get; set; }
+        [Ignore] public               bool     IsActive                { get; set; } = true;
+        public                        string   AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
+        public                        string   AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
         public Task<IArtistInfo> GetArtistInfo()
         {
@@ -72,6 +69,14 @@ namespace Nebula.Model
             throw new NotImplementedException();
         }
 
-        public override string ToString() => Title;
+        public IMediasProvider GetMediaProvider()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }

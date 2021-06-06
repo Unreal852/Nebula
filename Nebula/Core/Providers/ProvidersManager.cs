@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Nebula.Core.Providers.Youtube;
-using Nebula.Media;
+using Nebula.Model;
 
 namespace Nebula.Core.Providers
 {
@@ -32,10 +32,8 @@ namespace Nebula.Core.Providers
         public T FindProviderByType<T>()
         {
             foreach (IMediasProvider provider in Providers)
-            {
                 if (provider is T type)
                     return type;
-            }
 
             return default;
         }
@@ -43,21 +41,17 @@ namespace Nebula.Core.Providers
         public IMediasProvider FindProviderByName(string name, bool ignoreCase = true)
         {
             foreach (IMediasProvider provider in Providers)
-            {
-                if (String.Equals(provider.Name, name, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
+                if (string.Equals(provider.Name, name, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
                     return provider;
-            }
 
             return default;
         }
 
-        public async IAsyncEnumerable<IMediaInfo> SearchMedias(string query, params object[] args)
+        public async IAsyncEnumerable<MediaInfo> SearchMedias(string query, params object[] args)
         {
             foreach (IMediasProvider mediasProvider in Providers)
-            {
-                await foreach (IMediaInfo mediaInfo in mediasProvider.SearchMedias(query, args))
-                    yield return mediaInfo;
-            }
+            await foreach (MediaInfo mediaInfo in mediasProvider.SearchMedias(query, args))
+                yield return mediaInfo;
         }
     }
 }

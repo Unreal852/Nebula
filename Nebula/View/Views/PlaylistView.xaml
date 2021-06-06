@@ -32,22 +32,25 @@
             </hc:SimpleStackPanel>
         </DataTemplate>
     </UserControl.Resources>
-    <controls:SimpleGrid Rows="Auto,5,*,5" Columns="5,*,5">
-        <hc:SimpleStackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+    <controls:SimpleGrid Rows="5,Auto,5,*,5" Columns="5,*,5">
+        <hc:SimpleStackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <Grid Width="150" Height="150">
-                <Image Source="{Binding Thumbnail}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"  />
+                <Image Source="{Binding Thumbnail}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" />
             </Grid>
             <controls:SimpleGrid Rows="Auto,*" Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}">
                 <hc:SimpleStackPanel Grid.Row="0" Orientation="Vertical" Margin="10, 0">
                     <TextBlock Text="{Binding Name}" FontSize="24" Foreground="{DynamicResource AppForegroundBrush}" />
                     <TextBlock Text="{Binding Description}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
-                    <TextBlock Text="{Binding Author}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
-                    <TextBlock Text="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}" FontSize="18"
+                    <TextBlock Text="{Binding Author, StringFormat={x:Static resx:Nebula.playlist_by}}" FontSize="18"
                                Foreground="{DynamicResource AppForegroundBrush}" />
+                    <TextBlock
+                        Text="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}, ConverterParameter=txt, StringFormat={x:Static resx:Nebula.playlist_duration}}"
+                        FontSize="18"
+                        Foreground="{DynamicResource AppForegroundBrush}" />
                 </hc:SimpleStackPanel>
-                <controls:SimpleGrid Columns="Auto,*" VerticalAlignment="Bottom" Margin="5,0" Grid.Row="1" Background="{Binding ElementName=Bar, Path=Background }">
+                <controls:SimpleGrid Columns="Auto,*" VerticalAlignment="Bottom" Margin="5,0" Grid.Row="2" Background="{Binding ElementName=Bar, Path=Background }">
                     <ToolBar x:Name="Bar" Grid.Column="0" Padding="5" ToolBarTray.IsLocked="True">
-                        <hc:SearchBar Width="250" hc:InfoElement.Placeholder="Find Music" Style="{StaticResource SearchBarPlus}"
+                        <hc:SearchBar Width="250" hc:InfoElement.Placeholder="{x:Static resx:Nebula.global_search}" Style="{StaticResource SearchBarPlus}"
                                       Command="{Binding FilterMediasCommand}"
                                       CommandParameter="{Binding Path=Text ,RelativeSource={RelativeSource Self}}">
                             <hc:Interaction.Triggers>
@@ -57,16 +60,13 @@
                                 </hc:EventTrigger>
                             </hc:Interaction.Triggers>
                         </hc:SearchBar>
-
-                    </ToolBar>
-                    <ToolBar Grid.Column="1" Padding="5" ToolBarTray.IsLocked="True">
-                        <Button Content="Edit" />
+                        <Button Content="{x:Static resx:Nebula.playlist_edit}" Margin="5 0 " />
                         <Button Content="{x:Static resx:Nebula.playlist_delete}" Command="{Binding DeletePlaylistCommand}" />
                     </ToolBar>
                 </controls:SimpleGrid>
             </controls:SimpleGrid>
         </hc:SimpleStackPanel>
-        <controls:SimpleGrid Grid.Row="2" Grid.Column="1" Rows="*,5,Auto,5">
+        <controls:SimpleGrid Grid.Row="3" Grid.Column="1" Rows="*,5,Auto">
             <ListView Grid.Row="0" ItemsSource="{Binding Medias.ObservablePage}" HorizontalContentAlignment="Stretch"
                       Style="{StaticResource EmptyList}">
                 <ListView.View>
@@ -82,7 +82,7 @@
             </ListView>
             <hc:Pagination Grid.Row="2" HorizontalAlignment="Center" PageIndex="1" MaxPageInterval="8"
                            MaxPageCount="{Binding TotalPages}"
-                           PageUpdated="OnPageUpdated" />
+                           PageUpdated="OnPageUpdated" Margin="0 0 0 5" />
         </controls:SimpleGrid>
     </controls:SimpleGrid>
 </UserControl>

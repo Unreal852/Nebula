@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Nebula.Utils.Extensions
+namespace Nebula.Core.Extensions
 {
     /// <summary>
     /// Provide extensions for <see cref="string"/>
@@ -28,7 +28,7 @@ namespace Nebula.Utils.Extensions
         {
             if (string.IsNullOrEmpty(value))
                 return string.Empty;
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength - 3) + "...";
         }
     }
 }

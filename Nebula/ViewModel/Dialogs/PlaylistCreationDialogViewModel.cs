@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Input;
-using HandyControl.Controls;
-using LiteMVVM.Command;
 using Nebula.Model;
 
 namespace Nebula.ViewModel.Dialogs
@@ -14,10 +11,8 @@ namespace Nebula.ViewModel.Dialogs
 
         public PlaylistCreationDialogViewModel()
         {
-            CreatePlaylistCommand = new RelayCommand(CreatePlaylist);
+            Title = NebulaClient.GetLang("playlist_create_title");
         }
-
-        public ICommand CreatePlaylistCommand { get; }
 
         public string PlaylistName
         {
@@ -37,17 +32,12 @@ namespace Nebula.ViewModel.Dialogs
             set => Set(ref _playlistAuthor, value);
         }
 
-        private void CreatePlaylist()
+        protected override void OnConfirm()
         {
             NebulaClient.Playlists.AddPlaylist(new Playlist(PlaylistName, PlaylistDescription, PlaylistAuthor,
                 "", "", "",
                 new List<MediaInfo>()));
             Close();
-        }
-
-        protected override void OnConfirm()
-        {
-            Growl.Info("TEST");
         }
     }
 }

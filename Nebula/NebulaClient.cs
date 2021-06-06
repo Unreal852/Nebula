@@ -2,28 +2,22 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using HandyControl.Controls;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Player;
 using Nebula.Core.Providers;
+using Nebula.View.Views.Dialogs;
 using Nebula.ViewModel.Dialogs;
 
 namespace Nebula
 {
     public static class NebulaClient
     {
-        public static   ProvidersManager        Providers               { get; }
-        public static   NAudioPlayer            MediaPlayer             { get; }
-        public static   NebulaDatabase          Database                { get; }
-        public static   PlaylistsManager        Playlists               { get; }
-        internal static CancellationTokenSource CancellationTokenSource { get; }
-
-        public static event EventHandler Tick;
-
         static NebulaClient()
         {
-            Providers = new();
+            Providers = new ProvidersManager();
             Playlists = new PlaylistsManager();
             Database = new NebulaDatabase();
             // Order does not matter below 
@@ -32,20 +26,78 @@ namespace Nebula
             Task.Run(() => AppTick(CancellationTokenSource.Token, 500));
         }
 
+        public static   ProvidersManager        Providers               { get; }
+        public static   NAudioPlayer            MediaPlayer             { get; }
+        public static   NebulaDatabase          Database                { get; }
+        public static   PlaylistsManager        Playlists               { get; }
+        internal static CancellationTokenSource CancellationTokenSource { get; }
+
+        public static event EventHandler Tick;
+
+        public static Dialog ShowError(string message, string title = "dialog_title_error")
+        {
+            return ShowMessage(message, title, MessageDialog.Ok, "#D00606");
+        }
+
+        public static Dialog ShowInfo(string message, string title = "dialog_title_info")
+        {
+            return ShowMessage(message, title, MessageDialog.Ok, "#349fff");
+        }
+
+        public static Dialog ShowInfoCancelConfirm(string message, string title = "dialog_title_info")
+        {
+            return ShowMessage(message, title, MessageDialog.CancelConfirm, "#349fff");
+        }
+
+        public static Dialog ShowInfoNoYes(string message, string title = "dialog_title_info")
+        {
+            return ShowMessage(message, title, MessageDialog.NoYes, "#349fff");
+        }
+
+        public static Dialog ShowWarning(string message, string title = "dialog_title_warning")
+        {
+            return ShowMessage(message, title, MessageDialog.Ok, "#Df6316");
+        }
+
+        public static Dialog ShowWarningCancelConfirm(string message, string title = "dialog_title_warning")
+        {
+            return ShowMessage(message, title, MessageDialog.CancelConfirm, "#Df6316");
+        }
+
+        public static Dialog ShowWarningNoYes(string message, string title = "dialog_title_warning")
+        {
+            return ShowMessage(message, title, MessageDialog.NoYes, "#Df6316");
+        }
+
+        public static Dialog ShowDialog<TDialog>(string token = "") where TDialog : FrameworkElement, new()
+        {
+            var dialog = Dialog.Show<TDialog>(token);
+            if (dialog.Content is TDialog {DataContext: BaseDialogViewModel baseDialogViewModel})
+                baseDialogViewModel.Dialog = dialog;
+            return dialog;
+        }
+
+        public static Dialog ShowMessage(string message, string title, MessageDialog messageDialog = MessageDialog.CancelConfirm, string titleHexColor = "")
+        {
+            var dialog = ShowDialog<MessageDialogView>();
+            if (dialog.Content is MessageDialogView {DataContext: MessageDialogViewModel messageDialogViewModel})
+            {
+                messageDialogViewModel.Dialog = dialog;
+                messageDialogViewModel.Title = GetLang(title);
+                messageDialogViewModel.Message = GetLang(message);
+                messageDialogViewModel.DialogType = messageDialog;
+                if (!string.IsNullOrWhiteSpace(titleHexColor))
+                    messageDialogViewModel.TitleBrush = new SolidColorBrush((Color) ColorConverter.ConvertFromString(titleHexColor));
+            }
+
+            return dialog;
+        }
 
         public static string GetLang(string key, params object[] format)
         {
             if (format is not {Length: > 0})
                 return Resources.Nebula.ResourceManager.GetString(key) ?? key;
             return string.Format(Resources.Nebula.ResourceManager.GetString(key) ?? $"UNKNOWN_KEY({key})", format);
-        }
-
-        public static Dialog ShowDialog<TDialog>(string token = "") where TDialog : FrameworkElement, new()
-        {
-            Dialog dialog = Dialog.Show<TDialog>(token);
-            if (dialog.Content is TDialog {DataContext: BaseDialogViewModel baseDialogViewModel})
-                baseDialogViewModel.Dialog = dialog;
-            return dialog;
         }
 
         private static async void AppTick(CancellationToken token, int delay)
@@ -66,7 +118,7 @@ namespace Nebula
         }
 
         /// <summary>
-        /// Invoke on main thread
+        ///     Invoke on main thread
         /// </summary>
         /// <param name="action">Action to perform</param>
         public static void Invoke(Action action)
@@ -75,7 +127,7 @@ namespace Nebula
         }
 
         /// <summary>
-        /// Invoke on main thread
+        ///     Invoke on main thread
         /// </summary>
         /// <param name="action">Action to perform</param>
         public static void BeginInvoke(Action action)

@@ -6,24 +6,41 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:resx="clr-namespace:Nebula.Resources"
         xmlns:dialogs="clr-namespace:Nebula.ViewModel.Dialogs"
+        xmlns:controls="clr-namespace:Nebula.View.Controls"
+        xmlns:converters="clr-namespace:Nebula.View.Converters"
         mc:Ignorable="d" CornerRadius="10"
-        Background="{DynamicResource RegionBrush}"
+        Background="{DynamicResource SecondaryAppBackgroundBrush}"
         Effect="{StaticResource EffectShadow5}">
     <Border.DataContext>
         <dialogs:PlaylistCreationDialogViewModel />
     </Border.DataContext>
-    <StackPanel Orientation="Vertical" Width="250" Margin="5">
-        <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_name}"
-                    hc:InfoElement.RegexPattern="^[a-zA-Z0-9\s\-\,]{5,}.\*?$"
-                    hc:InfoElement.Necessary="True" Text="{Binding PlaylistName}" />
-        <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_description}"
-                    hc:InfoElement.Necessary="false" Text="{Binding PlaylistDescription}" />
-        <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_author}"
-                    hc:InfoElement.Necessary="false" Text="{Binding PlaylistAuthor}" />
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5 5 5 0">
-            <Button Content="Cancel" Command="hc:ControlCommands.Close" />
-            <hc:Divider Orientation="Vertical" />
-            <Button Content="Create" Command="{Binding CreatePlaylistCommand}" />
+    <Border.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Border.Resources>
+    <controls:SimpleGrid Rows="30,Auto,50">
+        <Border Grid.Row="0" Background="DodgerBlue" CornerRadius="10 10 0 0">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Text="{Binding Title}"
+                       Foreground="{DynamicResource AppForegroundBrush}" FontWeight="Bold" FontSize="18" />
+        </Border>
+        <StackPanel Grid.Row="1" Orientation="Vertical" Width="250" Margin="5">
+            <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_name}"
+                        hc:InfoElement.RegexPattern="^[a-zA-Z0-9\s\-\,]{5,}.\*?$"
+                        hc:InfoElement.Necessary="True" Text="{Binding PlaylistName}" />
+            <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_description}"
+                        hc:InfoElement.Necessary="false" Text="{Binding PlaylistDescription}" />
+            <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.playlist_creation_author}"
+                        hc:InfoElement.Necessary="false" Text="{Binding PlaylistAuthor}" />
         </StackPanel>
-    </StackPanel>
+        <DockPanel Grid.Row="2" HorizontalAlignment="Center">
+            <Button DockPanel.Dock="Left"
+                    Content="{Binding CancelButtonText}"
+                    Command="hc:ControlCommands.Close"
+                    Visibility="{Binding CancelButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <Button DockPanel.Dock="Right"
+                    Content="{Binding ConfirmButtonText}"
+                    Command="{Binding ConfirmCommand}"
+                    Visibility="{Binding ConfirmButtonVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+        </DockPanel>
+    </controls:SimpleGrid>
 </Border>

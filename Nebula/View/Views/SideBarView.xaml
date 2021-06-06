@@ -15,7 +15,7 @@
     </UserControl.DataContext>
     <UserControl.Resources>
     </UserControl.Resources>
-    <controls:SimpleGrid Rows="Auto,*,50">
+    <controls:SimpleGrid x:Name="MainGrid" Rows="Auto,*,50">
         <hc:SimpleStackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 15">
             <hc:Gravatar Width="32" Height="32" Id="Test" />
             <hc:SimpleText Margin="10 0 0 0" VerticalAlignment="Center" Text="Unreal852" FontSize="12" Foreground="{DynamicResource SideBarUsernameBrush}"
@@ -38,9 +38,7 @@
                     <Button hc:IconElement.Geometry="{StaticResource ImportGeometry}" Foreground="{DynamicResource SideBarCategoryBrush}"
                             Style="{StaticResource ButtonIcon}" Command="{Binding ImportPlaylistCommand}" />
                 </StackPanel>
-                <Grid Background="Beige">
-                    <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                                     Height="{Binding Path=Height, RelativeSource={RelativeSource AncestorType=Grid}}">
+                <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="300">
                         <hc:ButtonGroup ItemsSource="{Binding Playlists}" Orientation="Vertical">
                             <hc:ButtonGroup.ItemTemplate>
                                 <DataTemplate DataType="model:Playlist">
@@ -63,7 +61,6 @@
                             </hc:ButtonGroup.ItemTemplate>
                         </hc:ButtonGroup>
                     </hc:ScrollViewer>
-                </Grid>
             </hc:SimpleStackPanel>
         </hc:SimpleStackPanel>
     </controls:SimpleGrid>

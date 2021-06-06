@@ -1,4 +1,6 @@
-﻿using Nebula.Core.Providers.Youtube;
+﻿using HandyControl.Controls;
+using HandyControl.Data;
+using Nebula.Core.Providers.Youtube;
 using Nebula.Model;
 
 namespace Nebula.ViewModel.Dialogs
@@ -10,7 +12,7 @@ namespace Nebula.ViewModel.Dialogs
 
         public PlaylistImportDialogViewModel()
         {
-            Title = NebulaClient.GetLang("Create Playlist");
+            Title = NebulaClient.GetLang("playlist_import_title");
         }
 
         public string PlaylistPath
@@ -35,10 +37,20 @@ namespace Nebula.ViewModel.Dialogs
         {
             if (string.IsNullOrWhiteSpace(PlaylistPath))
                 return;
+            Close();
+            Growl.Info(new GrowlInfo
+            {
+                Message = NebulaClient.GetLang("playlist_importing"),
+                ShowDateTime = false
+            });
             Playlist playlist = await NebulaClient.Providers.FindProviderByType<YoutubeMediaProvider>().GetPlaylist(PlaylistPath);
             playlist.ValidateFields();
             NebulaClient.Playlists.AddPlaylist(playlist);
-            Close();
+            Growl.Success(new GrowlInfo
+            {
+                Message = NebulaClient.GetLang("playlist_imported", playlist.Name),
+                ShowDateTime = false
+            });
         }
     }
 }

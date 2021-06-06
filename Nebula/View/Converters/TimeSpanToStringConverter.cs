@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Nebula.Utils.Extensions;
+using Nebula.Core.Extensions;
 
 namespace Nebula.View.Converters
 {
@@ -10,7 +10,7 @@ namespace Nebula.View.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is TimeSpan timeSpan && targetType == typeof(string))
-                return timeSpan.ToFormattedHuman();
+                return parameter is "txt" ? timeSpan.ToFormattedHuman() : timeSpan.ToSimpleFormattedHuman();
             return TimeSpan.Zero;
         }
 

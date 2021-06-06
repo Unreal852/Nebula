@@ -20,21 +20,17 @@ namespace Nebula.Core.Providers.Youtube
     {
         private const int MaxVideos = 50;
 
-        public YoutubeMediaProvider()
-        {
-        }
+        public YoutubeClient Youtube { get; } = new();
 
         public string Url         { get; } = "https://www.youtube.com/";
         public string Name        { get; } = "Youtube";
         public string NameColorEx { get; } = "#ff0000";
 
-        public YoutubeClient Youtube { get; } = new();
-
         public async IAsyncEnumerable<MediaInfo> SearchMedias(string query, params object[] args)
         {
             if (string.IsNullOrWhiteSpace(query))
                 throw new ArgumentNullException($"{nameof(query)} is null or empty.");
-            int totalVideos = 0;
+            var totalVideos = 0;
             await foreach (Batch<ISearchResult> batch in Youtube.Search.GetResultBatchesAsync(query))
             {
                 foreach (ISearchResult result in batch.Items)
@@ -81,7 +77,7 @@ namespace Nebula.Core.Providers.Youtube
         public async Task<IArtistInfo> GetArtistInfo(string query, params object[] args)
         {
             Channel channel = await Youtube.Channels.GetAsync(ChannelId.Parse(query));
-            var thumbnails = channel.Thumbnails.GetThumbnails();
+            (string LowRes, string MediumRes, string HighRes) thumbnails = channel.Thumbnails.GetThumbnails();
             return new ArtistInfo(channel.Id, channel.Title, channel.Url, thumbnails.LowRes, thumbnails.MediumRes,
                 thumbnails.HighRes); // Logo is no longer available why?
         }
@@ -89,8 +85,8 @@ namespace Nebula.Core.Providers.Youtube
         public async Task<Playlist> GetPlaylist(string query, params object[] args)
         {
             YoutubeExplode.Playlists.Playlist youtubePlaylist = await Youtube.Playlists.GetAsync(query);
-            var thumbnails = youtubePlaylist.Thumbnails.GetThumbnails();
-            Playlist playlist = new Playlist
+            (string LowRes, string MediumRes, string HighRes) thumbnails = youtubePlaylist.Thumbnails.GetThumbnails();
+            var playlist = new Playlist
             {
                 Name = youtubePlaylist.Title,
                 Description = youtubePlaylist.Description,
@@ -100,10 +96,11 @@ namespace Nebula.Core.Providers.Youtube
                 MediumResThumbnail = thumbnails.MediumRes,
                 HighResThumbnail = thumbnails.HighRes,
                 AutoSave = false,
-                ProviderName = Name,
+                ProviderName = Name
             };
             await foreach (PlaylistVideo video in Youtube.Playlists.GetVideosAsync(youtubePlaylist.Id))
                 playlist.AddMedia(VideoToMediaInfo(video));
+            playlist.IsLoaded = true;
             playlist.AutoSave = true;
             return playlist;
         }
@@ -131,7 +128,7 @@ namespace Nebula.Core.Providers.Youtube
 
         private MediaInfo VideoToMediaInfo(IVideo video)
         {
-            var thumbnails = video.Thumbnails.GetThumbnails();
+            (string LowRes, string MediumRes, string HighRes) thumbnails = video.Thumbnails.GetThumbnails();
             return new MediaInfo(video.Id.Value, video.Author.ChannelId.Value,
                 video.Title, video.Author.Title, "", Name,
                 thumbnails.LowRes, thumbnails.MediumRes, thumbnails.HighRes,
