@@ -10,7 +10,7 @@ namespace Nebula.Media.Player.Events
         }
 
         /// <summary>
-        /// True if shuffle is enabled, false otherwise.
+        ///     True if shuffle is enabled, false otherwise.
         /// </summary>
         public bool Shuffle { get; }
     }

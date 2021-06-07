@@ -12,17 +12,17 @@ namespace Nebula.Media.Player.Events
         }
 
         /// <summary>
-        /// Currently Played <see cref="IPlaylist"/>. This can be null if no playlist is being played.
+        ///     Currently Played <see cref="IPlaylist" />. This can be null if no playlist is being played.
         /// </summary>
         public IPlaylist Playlist { get; }
 
         /// <summary>
-        /// Previous media <see cref="IMediaInfo"/>. This can be null if there was no previous media.
+        ///     Previous media <see cref="IMediaInfo" />. This can be null if there was no previous media.
         /// </summary>
         public IMediaInfo OldMedia { get; }
 
         /// <summary>
-        /// The new <see cref="IMediaInfo"/> being played. This can't be null.
+        ///     The new <see cref="IMediaInfo" /> being played. This can't be null.
         /// </summary>
         public IMediaInfo NewMedia { get; }
     }

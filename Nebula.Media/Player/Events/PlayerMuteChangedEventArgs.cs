@@ -10,7 +10,7 @@ namespace Nebula.Media.Player.Events
         }
 
         /// <summary>
-        /// True if the sound is muted, false otherwise.
+        ///     True if the sound is muted, false otherwise.
         /// </summary>
         public bool IsMuted { get; }
     }

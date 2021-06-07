@@ -11,12 +11,12 @@ namespace Nebula.Media.Player.Events
         }
 
         /// <summary>
-        /// Previous volume value.
+        ///     Previous volume value.
         /// </summary>
         public int OldVolume { get; }
 
         /// <summary>
-        /// New volume value.
+        ///     New volume value.
         /// </summary>
         public int NewVolume { get; }
     }

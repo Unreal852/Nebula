@@ -11,12 +11,12 @@ namespace Nebula.Media.Player.Events
         }
 
         /// <summary>
-        /// The old <see cref="IPlaylist"/>, this can be null
+        ///     The old <see cref="IPlaylist" />, this can be null
         /// </summary>
         public IPlaylist OldPlaylist { get; }
 
         /// <summary>
-        /// The new <see cref="IPlaylist"/>
+        ///     The new <see cref="IPlaylist" />
         /// </summary>
         public IPlaylist NewPlaylist { get; }
     }

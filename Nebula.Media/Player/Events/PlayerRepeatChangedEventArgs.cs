@@ -10,7 +10,7 @@ namespace Nebula.Media.Player.Events
         }
 
         /// <summary>
-        /// True if repeat is enabled, false otherwise
+        ///     True if repeat is enabled, false otherwise
         /// </summary>
         public bool Repeat { get; }
     }

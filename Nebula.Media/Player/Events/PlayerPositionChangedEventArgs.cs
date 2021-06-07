@@ -11,17 +11,17 @@ namespace Nebula.Media.Player.Events
         }
 
         /// <summary>
-        /// The current player position
+        ///     The current player position
         /// </summary>
         public TimeSpan Position { get; }
 
         /// <summary>
-        /// The current player total duration
+        ///     The current player total duration
         /// </summary>
         public TimeSpan Duration { get; }
 
         /// <summary>
-        /// The remaining time 
+        ///     The remaining time
         /// </summary>
         public TimeSpan Remaining => Duration - Position;
     }
