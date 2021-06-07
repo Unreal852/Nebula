@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Nebula.View.Views.NotifyIconView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Nebula.View.Views"
+             xmlns:controls="clr-namespace:Nebula.View.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:viewModel="clr-namespace:Nebula.ViewModel"
+             xmlns:resx="clr-namespace:Nebula.Resources"
+             mc:Ignorable="d"
+             DataContext="{Binding Path=MediaPlayerViewModel, Source={StaticResource Locator}}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <controls:SimpleGrid Rows="*,Auto" Width="Auto" Height="Auto" Background="{DynamicResource AppBackgroundBrush}">
+        <controls:SimpleGrid Grid.Row="0" Columns="*,Auto">
+            <hc:SimpleStackPanel Grid.Column="0" Height="50" Orientation="Horizontal" Margin="5">
+                <Image Source="{Binding CurrentMedia.MediumResThumbnail}" />
+                <hc:SimpleStackPanel Orientation="Vertical" Margin="5 0 0 0">
+                    <TextBlock Text="{Binding CurrentMedia.Title}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource AppForegroundBrush}" />
+                    <TextBlock Text="{Binding CurrentMedia.Author}" FontSize="9" Foreground="{DynamicResource AppForegroundBrush}" />
+                </hc:SimpleStackPanel>
+            </hc:SimpleStackPanel>
+            <controls:SimpleGrid Grid.Column="1" Rows="Auto,Auto" Margin="10 0">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Button Width="34" Height="34"
+                            Foreground="{DynamicResource PrimaryTextBrush}"
+                            Style="{StaticResource ButtonIcon}"
+                            hc:IconElement.Geometry="{StaticResource PreviousGeometry}" Command="{Binding BackwardCommand}" />
+                    <ToggleButton Width="34" Height="34"
+                                  IsChecked="{Binding IsPlaying}"
+                                  hc:IconSwitchElement.Geometry="{StaticResource PlayGeometry}"
+                                  hc:IconSwitchElement.GeometrySelected="{StaticResource PauseGeometry}"
+                                  Style="{StaticResource ToggleButtonIconTransparent}" />
+                    <Button Width="34" Height="34" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}"
+                            hc:IconElement.Geometry="{StaticResource NextGeometry}" Command="{Binding ForwardCommand}" />
+                    <ToggleButton Width="34" Height="34"
+                                  Style="{StaticResource MediaPlayerToggleButton}"
+                                  IsChecked="{Binding Shuffle}"
+                                  hc:IconSwitchElement.Geometry="{StaticResource ShuffleGeometry}"
+                                  hc:IconSwitchElement.GeometrySelected="{StaticResource ShuffleGeometry}" />
+                    <ToggleButton Width="34" Height="34" Margin="10 0"
+                                  Style="{StaticResource MediaPlayerToggleButton}"
+                                  IsChecked="{Binding Repeat}"
+                                  hc:IconSwitchElement.Geometry="{StaticResource RepeatGeometry}"
+                                  hc:IconSwitchElement.GeometrySelected="{StaticResource RepeatGeometry}" />
+                </StackPanel>
+                <Slider Grid.Row="1" Minimum="0" Maximum="100" Margin="0 0 10 0" VerticalAlignment="Center" Value="{Binding Volume}"
+                        hc:TipElement.Visibility="Visible"
+                        hc:TipElement.Placement="Top"
+                        hc:TipElement.StringFormat="##" />
+            </controls:SimpleGrid>
+        </controls:SimpleGrid>
+        <Grid Grid.Row="2" Margin="5 0 5 5">
+            <Button Content="{x:Static resx:Nebula.global_exit}" HorizontalAlignment="Left" Command="hc:ControlCommands.ShutdownApp" />
+            <Button Content="{x:Static resx:Nebula.global_show}" HorizontalAlignment="Right" Command="hc:ControlCommands.PushMainWindow2Top" />
+        </Grid>
+    </controls:SimpleGrid>
+</UserControl>

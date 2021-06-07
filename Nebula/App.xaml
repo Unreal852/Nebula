@@ -2,6 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:view="clr-namespace:Nebula.View"
+             xmlns:liteMvvm="clr-namespace:LiteMVVM;assembly=LiteMVVM"
+             xmlns:viewModel="clr-namespace:Nebula.ViewModel"
              StartupUri="View/MainWindow.xaml"
              Startup="OnAppStart" Exit="OnAppExit">
     <Application.Resources>
@@ -19,6 +22,7 @@
                 <ResourceDictionary Source="pack://application:,,,/View/Styles/Geometry.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/View/Styles/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <view:ViewModelsLocator x:Key="Locator" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -32,6 +32,7 @@ namespace Nebula.Core.Database
             await Database.CreateTablesAsync<MediaInfo, ArtistInfo, Playlist, PlaylistMediaInfo>();
             Database.Tracer += OnReceiveTrace;
             Database.Trace = false;
+            await Vacuum();
             await NebulaClient.Playlists.LoadPlaylists();
         }
 
@@ -43,7 +44,7 @@ namespace Nebula.Core.Database
         /// Get all <see cref="MediaInfo"/> for the specified <see cref="Playlist"/>
         /// </summary>
         /// <param name="playlist">Playlist</param>
-        /// <returns>Playlist Medias</returns>
+        /// <returns><see cref="List{T}"/></returns>
         public async Task<List<MediaInfo>> GetPlaylistMedias(Playlist playlist)
         {
             if (playlist == null)
@@ -129,6 +130,7 @@ namespace Nebula.Core.Database
                 trans.Execute(
                     "DELETE FROM Medias WHERE Id IN (SELECT Medias.Id FROM Medias LEFT JOIN PlaylistsMedias ON Medias.Id=PlaylistsMedias.MediaId WHERE PlaylistsMedias.MediaId IS NULL)");
             });
+            await Vacuum();
         }
 
         private void OnReceiveTrace(string obj)

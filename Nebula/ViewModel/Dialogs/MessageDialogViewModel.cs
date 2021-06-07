@@ -33,7 +33,6 @@ namespace Nebula.ViewModel.Dialogs
                     {
                         CancelButtonText = NebulaClient.GetLang("dialog_no");
                         ConfirmButtonText = NebulaClient.GetLang("dialog_yes");
-                        ConfirmButtonText = NebulaClient.GetLang("dialog_yes");
                         break;
                     }
                     case MessageDialog.Ok:

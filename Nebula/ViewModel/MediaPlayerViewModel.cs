@@ -17,6 +17,7 @@ namespace Nebula.ViewModel
             Instance = this;
             ForwardCommand = new AsyncRelayCommand(GoForward);
             BackwardCommand = new AsyncRelayCommand(GoBackward);
+            PlayPauseCommand = new RelayCommand(() => IsPlaying = !MediaPlayer.IsPlaying);
             MediaPlayer.MediaChanged += (_, _) =>
             {
                 OnPropertyChanged(nameof(CurrentMedia));
@@ -29,8 +30,9 @@ namespace Nebula.ViewModel
             MediaPlayer.RepeatChanged += (_, _) => OnPropertyChanged(nameof(Repeat));
         }
 
-        public ICommand ForwardCommand  { get; }
-        public ICommand BackwardCommand { get; }
+        public ICommand ForwardCommand   { get; }
+        public ICommand BackwardCommand  { get; }
+        public ICommand PlayPauseCommand { get; }
 
         public IMediaPlayer MediaPlayer => NebulaClient.MediaPlayer;
 

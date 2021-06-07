@@ -107,4 +107,10 @@
     <data name="dialog_delete_playlist_media" xml:space="preserve">
         <value>Voulez-vous vraiment supprimer cette musique de la playlist ?</value>
     </data>
+    <data name="global_exit" xml:space="preserve">
+        <value>Quitter</value>
+    </data>
+    <data name="global_show" xml:space="preserve">
+        <value>Afficher</value>
+    </data>
 </root>

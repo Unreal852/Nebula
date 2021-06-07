@@ -16,6 +16,8 @@
            Height="760"
            MinWidth="1115"
            MinHeight="500"
+           Icon="../Resources/nebula_icon.ico"
+           DataContext="{Binding Path=MainWindowViewModel, Source={StaticResource Locator}}"
            fluentWpf:AcrylicWindow.Enabled="True"
            fluentWpf:AcrylicWindow.AcrylicWindowStyle="None"
            fluentWpf:AcrylicWindow.ExtendViewIntoTitleBar="true"
@@ -24,13 +26,48 @@
            fluentWpf:AcrylicWindow.NoiseOpacity="0.01"
            fluentWpf:AcrylicWindow.TintOpacity="0.8"
            Loaded="OnLoaded">
-    <Window.DataContext>
-        <viewModel:MainWindowViewModel />
-    </Window.DataContext>
     <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
     </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo>
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfo Command="{Binding DataContext.BackwardCommand, ElementName=PlayerView}">
+                    <ThumbButtonInfo.ImageSource>
+                        <DrawingImage>
+                            <DrawingImage.Drawing>
+                                <GeometryDrawing Brush="White" Geometry="{StaticResource PreviousGeometry}" />
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                    </ThumbButtonInfo.ImageSource>
+                </ThumbButtonInfo>
+                <ThumbButtonInfo Command="{Binding Path=DataContext.PlayPauseCommand, ElementName=PlayerView}">
+                    <ThumbButtonInfo.ImageSource>
+                        <DrawingImage>
+                            <DrawingImage.Drawing>
+                                <GeometryDrawing Brush="White" Geometry="{StaticResource PlayGeometry}" />
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                    </ThumbButtonInfo.ImageSource>
+                </ThumbButtonInfo>
+                <ThumbButtonInfo Command="{Binding DataContext.ForwardCommand, ElementName=PlayerView}">
+                    <ThumbButtonInfo.ImageSource>
+                        <DrawingImage>
+                            <DrawingImage.Drawing>
+                                <GeometryDrawing Brush="White" Geometry="{StaticResource NextGeometry}" />
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                    </ThumbButtonInfo.ImageSource>
+                </ThumbButtonInfo>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
     <controls:SimpleGrid Columns="250,*" Rows="50,*,50">
+        <hc:NotifyIcon Text="Nebula" Icon="../Resources/nebula_icon.ico">
+            <hc:NotifyIcon.ContextContent>
+                <views:NotifyIconView />
+            </hc:NotifyIcon.ContextContent>
+        </hc:NotifyIcon>
         <views:SideBarView Grid.RowSpan="3" />
         <controls:SimpleGrid Background="{DynamicResource SecondaryAppBackgroundBrush}" Grid.Column="1" Grid.Row="0">
             <hc:SimpleStackPanel Orientation="Horizontal" Margin="10 0 0 0">
@@ -61,6 +98,6 @@
                 <views:MediasQueueView MinWidth="350" MaxWidth="350" />
             </hc:Drawer>
         </controls:SimpleGrid>
-        <views:MediaPlayerView Grid.Row="2" Grid.ColumnSpan="2" />
+        <views:MediaPlayerView x:Name="PlayerView" Grid.Row="2" Grid.ColumnSpan="2" />
     </controls:SimpleGrid>
 </hc:Window>

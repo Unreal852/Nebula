@@ -43,8 +43,11 @@ namespace Nebula.View
                     WindowState = WindowState.Maximized;
                     break;
                 case "x":
-                    Close();
+                {
+                    Visibility = Visibility.Collapsed;
+                    // Close();
                     break;
+                }
             }
         }
     }

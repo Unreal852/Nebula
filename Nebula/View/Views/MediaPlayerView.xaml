@@ -7,10 +7,8 @@
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:converters="clr-namespace:Nebula.View.Converters"
+             DataContext="{Binding Path=MediaPlayerViewModel, Source={StaticResource Locator}}"
              mc:Ignorable="d">
-    <UserControl.DataContext>
-        <viewModel:MediaPlayerViewModel />
-    </UserControl.DataContext>
     <UserControl.Resources>
         <converters:TimeSpanToStringConverter x:Key="TimeSpanToString" />
         <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDouble" />

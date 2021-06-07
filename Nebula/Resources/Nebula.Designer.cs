@@ -169,6 +169,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string global_exit {
+            get {
+                return ResourceManager.GetString("global_exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hour.
         /// </summary>
         public static string global_hour {
@@ -228,6 +237,15 @@ namespace Nebula.Resources {
         public static string global_seconds {
             get {
                 return ResourceManager.GetString("global_seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        public static string global_show {
+            get {
+                return ResourceManager.GetString("global_show", resourceCulture);
             }
         }
         

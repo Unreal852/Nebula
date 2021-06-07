@@ -55,7 +55,6 @@ namespace Nebula.ViewModel
         {
             if (media == null)
                 return;
-            Growl.Info(CurrentMedia?.Title);
             await NebulaClient.MediaPlayer.OpenMedia(media);
         }
 

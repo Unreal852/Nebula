@@ -132,4 +132,10 @@
     <data name="dialog_delete_playlist_media" xml:space="preserve">
         <value>Do you want to remove this music from the playlist ?</value>
     </data>
+    <data name="global_exit" xml:space="preserve">
+        <value>Exit</value>
+    </data>
+    <data name="global_show" xml:space="preserve">
+        <value>Show</value>
+    </data>
 </root>
