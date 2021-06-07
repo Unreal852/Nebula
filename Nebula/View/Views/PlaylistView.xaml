@@ -15,7 +15,6 @@
         <viewModel:PlaylistViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
-        <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
         <DataTemplate x:Key="IsActiveTemplate" DataType="model:MediaInfo">
             <CheckBox IsChecked="{Binding IsActive}"
                       Command="{Binding DataContext.SetIsActiveCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"

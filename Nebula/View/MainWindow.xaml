@@ -25,9 +25,6 @@
            fluentWpf:AcrylicWindow.NoiseOpacity="0.01"
            fluentWpf:AcrylicWindow.TintOpacity="0.8"
            Loaded="OnLoaded">
-    <Window.Resources>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-    </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
@@ -82,7 +79,7 @@
                                   Width="350" Height="25" HorizontalAlignment="Left"
                                   Style="{StaticResource SearchBarPlus}" />
                     <ProgressBar IsIndeterminate="True" Style="{StaticResource ProgressBarFlat}"
-                                 Visibility="{Binding Path=IsEnabled, ElementName=SearchBar, Converter={StaticResource BoolToVisibility}, ConverterParameter=!}" />
+                                 Visibility="{Binding Path=IsEnabled, ElementName=SearchBar, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=!}" />
                 </hc:SimpleStackPanel>
             </hc:SimpleStackPanel>
             <hc:SimpleStackPanel x:Name="TitleBarButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">

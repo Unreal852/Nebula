@@ -55,7 +55,7 @@ namespace Nebula.ViewModel
             Dialog.Show<PlaylistCreationDialogView>().DataContext = new PlaylistCreationDialogViewModel();
         }
 
-        private async void ImportPlaylist(object param)
+        private void ImportPlaylist(object param)
         {
             //   Dialog.Show<PlaylistImportDialogViewModel>().DataContext = new PlaylistImportDialogViewModel();
             NebulaClient.ShowDialog<PlaylistImportDialogView>();

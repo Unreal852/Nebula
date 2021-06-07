@@ -17,8 +17,8 @@ namespace Nebula.ViewModel
         {
             ScrollToTopCommand = new RelayCommand<ListBoxEx>(ScrollToTop);
             AddMediaToQueueCommand = new RelayCommand<MediaInfo>(AddMediaToQueue);
-            AddMediaToPlaylistCommand = new AsyncRelayCommand<Playlist>(AddMediaToPlaylist);
-            ShowPlaylistCreationDialogCommand = new AsyncRelayCommand(ShowPlaylistCreationDialog);
+            AddMediaToPlaylistCommand = new RelayCommand<Playlist>(AddMediaToPlaylist);
+            ShowPlaylistCreationDialogCommand = new RelayCommand(ShowPlaylistCreationDialog);
             OpenMediaCommand = new AsyncRelayCommand<IMediaInfo>(OpenMedia);
         }
 
@@ -44,7 +44,7 @@ namespace Nebula.ViewModel
             NebulaClient.MediaPlayer.MediaQueue.Enqueue(media);
         }
 
-        private async Task AddMediaToPlaylist(Playlist playlist)
+        private void AddMediaToPlaylist(Playlist playlist)
         {
             if (playlist == null || CurrentMedia == null)
                 return;
@@ -58,7 +58,7 @@ namespace Nebula.ViewModel
             await NebulaClient.MediaPlayer.OpenMedia(media);
         }
 
-        private async Task ShowPlaylistCreationDialog()
+        private void ShowPlaylistCreationDialog()
         {
             Dialog.Show<PlaylistCreationDialogView>();
         }

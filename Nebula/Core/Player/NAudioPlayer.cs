@@ -7,6 +7,8 @@ using Nebula.Media.Player;
 using Nebula.Media.Player.Events;
 using Nebula.Model;
 
+#pragma warning disable 4014
+
 namespace Nebula.Core.Player
 {
     public class NAudioPlayer : IMediaPlayer

@@ -16,8 +16,7 @@ namespace Nebula.ViewModel
 {
     public class PlaylistViewModel : BaseViewModel, INavigable
     {
-        private ObservableFilterPager<MediaInfo> _pager;
-        private Playlist                         _playlist;
+        private Playlist _playlist;
 
         public PlaylistViewModel()
         {

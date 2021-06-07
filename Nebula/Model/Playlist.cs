@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -23,8 +22,6 @@ namespace Nebula.Model
         private const           int             MaxAuthorLength      = 128;
         private static readonly Regex           SRemLines            = new(@"\t|\n|\r");
         private static readonly IPlaylistLoader DefaultLoader        = new DatabasePlaylistLoader();
-
-        private ObservableCollection<MediaInfo> _medias;
 
         public Playlist()
         {
@@ -70,14 +67,14 @@ namespace Nebula.Model
         public                             string                            AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
         public                             string                            AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
-        public event EventHandler<PlaylistMediaAddedEventArgs>   MediaAdded;
-        public event EventHandler<PlaylistMediaRemovedEventArgs> MediaRemoved;
-
         public MediaInfo this[int index] => Medias[index];
         public IMediaInfo             GetMedia(int index)           => Medias[index];
         public bool                   Contains(MediaInfo mediaInfo) => Medias.Contains(mediaInfo);
         public IEnumerator<MediaInfo> GetEnumerator()               => Medias.GetEnumerator();
         IEnumerator IEnumerable.      GetEnumerator()               => GetEnumerator();
+
+        public event EventHandler<PlaylistMediaAddedEventArgs>   MediaAdded;
+        public event EventHandler<PlaylistMediaRemovedEventArgs> MediaRemoved;
 
         public void ValidateFields()
         {
@@ -110,6 +107,7 @@ namespace Nebula.Model
                 Medias.Insert(insertIndex, mediaInfo);
             if (AutoSave)
                 NebulaClient.Database.InsertPlaylistMedia(this, mediaInfo, insertIndex < 0 ? MediasCount - 1 : insertIndex);
+            MediaAdded?.Invoke(this, new PlaylistMediaAddedEventArgs(this, mediaInfo, insertIndex < 0 ? MediasCount - 1 : insertIndex));
         }
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

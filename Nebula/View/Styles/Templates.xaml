@@ -7,9 +7,6 @@
                     xmlns:controls="clr-namespace:Nebula.View.Controls">
     <!--Template for medias search results -->
     <DataTemplate x:Key="MediaInfoCardTemplate" DataType="model:MediaInfo">
-        <DataTemplate.Resources>
-            <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
-        </DataTemplate.Resources>
         <hc:Card Width="350" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="7" Footer="{Binding }" Cursor="Hand">
             <Border CornerRadius="4,4,0,0" Background="Black">
                 <Image Source="{Binding AnyThumbnailFromHighest}" Stretch="Uniform">

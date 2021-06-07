@@ -9,11 +9,6 @@
              xmlns:converters="clr-namespace:Nebula.View.Converters"
              DataContext="{Binding Path=MediaPlayerViewModel, Source={StaticResource Locator}}"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <converters:TimeSpanToStringConverter x:Key="TimeSpanToString" />
-        <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDouble" />
-        <converters:DoubleToTimeSpanStringConverter x:Key="DoubleToTimeSpanString" />
-    </UserControl.Resources>
     <controls:SimpleGrid Columns="250,*">
         <hc:SimpleStackPanel Orientation="Horizontal" Margin="5">
             <Image Source="{Binding CurrentMedia.MediumResThumbnail}" />
@@ -39,18 +34,18 @@
                         hc:IconElement.Geometry="{StaticResource NextGeometry}" Command="{Binding ForwardCommand}" />
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="{Binding Position, Converter={StaticResource TimeSpanToString}}"
+                <TextBlock Text="{Binding Position, Converter={StaticResource TimeSpanToStringConverter}}"
                            Foreground="{DynamicResource AppForegroundBrush}" />
                 <hc:PreviewSlider Width="450" Minimum="0" Margin="10 0" IsMoveToPointEnabled="True"
                                   Maximum="{Binding CurrentMedia.Duration.TotalSeconds}"
-                                  Value="{Binding Position, Converter={StaticResource TimeSpanToDouble}}">
+                                  Value="{Binding Position, Converter={StaticResource TimeSpanToDoubleConverter}}">
                     <hc:PreviewSlider.PreviewContent>
                         <Label Style="{StaticResource LabelPrimary}"
                                Content="{Binding Path=(hc:PreviewSlider.PreviewPosition),
-                               RelativeSource={RelativeSource Self}, Converter={StaticResource DoubleToTimeSpanString}}" />
+                               RelativeSource={RelativeSource Self}, Converter={StaticResource DoubleToTimeSpanStringConverter}}" />
                     </hc:PreviewSlider.PreviewContent>
                 </hc:PreviewSlider>
-                <TextBlock Text="{Binding Duration, Converter={StaticResource TimeSpanToString}}"
+                <TextBlock Text="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}"
                            Foreground="{DynamicResource AppForegroundBrush}" />
             </StackPanel>
             <StackPanel Grid.Column="2" Orientation="Horizontal"

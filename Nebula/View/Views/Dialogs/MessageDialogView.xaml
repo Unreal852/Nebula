@@ -6,7 +6,6 @@
         xmlns:controls="clr-namespace:Nebula.View.Controls"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:dialogs="clr-namespace:Nebula.ViewModel.Dialogs"
-        xmlns:converters="clr-namespace:Nebula.View.Converters"
         mc:Ignorable="d"
         CornerRadius="10"      
         Background="{DynamicResource SecondaryAppBackgroundBrush}"
@@ -14,9 +13,6 @@
     <Border.DataContext>
         <dialogs:MessageDialogViewModel />
     </Border.DataContext>
-    <Border.Resources>
-        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    </Border.Resources>
     <controls:SimpleGrid Rows="30,Auto,50">
         <Border Grid.Row="0" Background="{Binding TitleBrush}" CornerRadius="10 10 0 0">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"

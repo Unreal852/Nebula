@@ -5,6 +5,7 @@
              xmlns:view="clr-namespace:Nebula.View"
              xmlns:liteMvvm="clr-namespace:LiteMVVM;assembly=LiteMVVM"
              xmlns:viewModel="clr-namespace:Nebula.ViewModel"
+             xmlns:converters="clr-namespace:Nebula.View.Converters"
              StartupUri="View/MainWindow.xaml"
              Startup="OnAppStart" Exit="OnAppExit">
     <Application.Resources>
@@ -23,6 +24,10 @@
                 <ResourceDictionary Source="pack://application:,,,/View/Styles/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <view:ViewModelsLocator x:Key="Locator" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:DoubleToTimeSpanStringConverter x:Key="DoubleToTimeSpanStringConverter" />
+            <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter" />
+            <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

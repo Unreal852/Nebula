@@ -18,7 +18,7 @@ namespace Nebula
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
         }
 
-        private async void OnAppExit(object sender, ExitEventArgs e)
+        private void OnAppExit(object sender, ExitEventArgs e)
         {
         }
     }
