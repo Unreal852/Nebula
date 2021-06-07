@@ -6,7 +6,6 @@
            xmlns:hc="https://handyorg.github.io/handycontrol"
            xmlns:controls="clr-namespace:Nebula.View.Controls"
            xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-           xmlns:viewModel="clr-namespace:Nebula.ViewModel"
            xmlns:views="clr-namespace:Nebula.View.Views"
            xmlns:converters="clr-namespace:Nebula.View.Converters"
            mc:Ignorable="d"
@@ -67,6 +66,11 @@
             <hc:NotifyIcon.ContextContent>
                 <views:NotifyIconView />
             </hc:NotifyIcon.ContextContent>
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="MouseDoubleClick">
+                    <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
         </hc:NotifyIcon>
         <views:SideBarView Grid.RowSpan="3" />
         <controls:SimpleGrid Background="{DynamicResource SecondaryAppBackgroundBrush}" Grid.Column="1" Grid.Row="0">
