@@ -13,7 +13,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <controls:SimpleGrid Rows="*,Auto" Width="Auto" Height="Auto" Background="{DynamicResource AppBackgroundBrush}">
         <controls:SimpleGrid Grid.Row="0" Columns="*,Auto">
-            <hc:SimpleStackPanel Grid.Column="0" Height="50" Orientation="Horizontal" Margin="5">
+            <hc:SimpleStackPanel Grid.Column="0" Height="50" Orientation="Horizontal" Margin="5" Visibility="Collapsed">
                 <Image Source="{Binding CurrentMedia.MediumResThumbnail}" />
                 <hc:SimpleStackPanel Orientation="Vertical" Margin="5 0 0 0">
                     <TextBlock Text="{Binding CurrentMedia.Title}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
