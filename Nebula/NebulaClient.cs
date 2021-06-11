@@ -69,6 +69,22 @@ namespace Nebula
             return ShowMessage(message, title, MessageDialog.NoYes, "#Df6316");
         }
 
+        public static Dialog ShowDialog<TDialog, TViewModel>(string token = "") where TDialog : FrameworkElement, new() where TViewModel : BaseDialogViewModel, new()
+        {
+            var dialog = Dialog.Show<TDialog>(token);
+            TViewModel viewModel = new() {Dialog = dialog};
+            dialog.DataContext = viewModel;
+            return dialog;
+        }
+
+        public static Dialog ShowDialog(object content, string token = "")
+        {
+            var dialog = Dialog.Show(content, token);
+            if (dialog.Content is FrameworkElement {DataContext: BaseDialogViewModel baseDialogViewModel})
+                baseDialogViewModel.Dialog = dialog;
+            return dialog;
+        }
+
         public static Dialog ShowDialog<TDialog>(string token = "") where TDialog : FrameworkElement, new()
         {
             var dialog = Dialog.Show<TDialog>(token);

@@ -8,11 +8,9 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:resx="clr-namespace:Nebula.Resources"
              xmlns:model="clr-namespace:Nebula.Model"
+             DataContext="{Binding Path=MediasQueueViewModel, Source={StaticResource Locator}}"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.DataContext>
-        <viewModel:MediasQueueViewModel />
-    </UserControl.DataContext>
     <UserControl.Resources>
         <DataTemplate x:Key="ManageMediaTemplate" DataType="model:MediaInfo">
             <hc:SimpleStackPanel Orientation="Horizontal">

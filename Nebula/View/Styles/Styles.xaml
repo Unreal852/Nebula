@@ -62,7 +62,21 @@
     </Style>
 
     <!-- Empty Listbox Style -->
-    <Style x:Key="EmptyList" TargetType="ListView" BasedOn="{StaticResource {x:Type ListView}}">
+    <Style x:Key="EmptyListView" TargetType="ListView" BasedOn="{StaticResource {x:Type ListView}}">
+        <Style.Triggers>
+            <Trigger Property="HasItems" Value="False">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <TextBlock Text="Empty" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="EmptyListBox" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
         <Style.Triggers>
             <Trigger Property="HasItems" Value="False">
                 <Setter Property="Template">

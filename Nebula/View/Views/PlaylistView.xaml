@@ -67,7 +67,7 @@
         </hc:SimpleStackPanel>
         <controls:SimpleGrid Grid.Row="3" Grid.Column="1" Rows="*,5,Auto">
             <ListView Grid.Row="0" ItemsSource="{Binding Medias.ObservablePage}" HorizontalContentAlignment="Stretch"
-                      Style="{StaticResource EmptyList}">
+                      Style="{StaticResource EmptyListView}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="350" />

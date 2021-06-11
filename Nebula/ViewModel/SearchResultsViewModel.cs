@@ -2,12 +2,14 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using LiteMVVM;
 using LiteMVVM.Command;
 using Nebula.Media;
 using Nebula.Model;
 using Nebula.View.Controls;
 using Nebula.View.Views.Dialogs;
+using Nebula.ViewModel.Dialogs;
 
 namespace Nebula.ViewModel
 {
@@ -19,6 +21,7 @@ namespace Nebula.ViewModel
             AddMediaToQueueCommand = new RelayCommand<MediaInfo>(AddMediaToQueue);
             AddMediaToPlaylistCommand = new RelayCommand<Playlist>(AddMediaToPlaylist);
             ShowPlaylistCreationDialogCommand = new RelayCommand(ShowPlaylistCreationDialog);
+            AddToCommand = new AsyncRelayCommand<MediaInfo>(AddTo);
             OpenMediaCommand = new AsyncRelayCommand<IMediaInfo>(OpenMedia);
         }
 
@@ -26,6 +29,7 @@ namespace Nebula.ViewModel
         public ICommand OpenMediaCommand                  { get; }
         public ICommand AddMediaToQueueCommand            { get; }
         public ICommand AddMediaToPlaylistCommand         { get; }
+        public ICommand AddToCommand                      { get; }
         public ICommand ShowPlaylistCreationDialogCommand { get; }
 
         public MediaInfo                       CurrentMedia { get; set; }
@@ -61,6 +65,13 @@ namespace Nebula.ViewModel
         private void ShowPlaylistCreationDialog()
         {
             Dialog.Show<PlaylistCreationDialogView>();
+        }
+
+        private async Task AddTo(IMediaInfo mediaInfo)
+        {
+            Dialog dialog = NebulaClient.ShowDialog<ElementSelectorDialogView, LocalPlaylistSelectorViewModel>();
+            var result = await dialog.GetResultAsync<Playlist>();
+            result?.AddMedia((MediaInfo) mediaInfo);
         }
     }
 }
