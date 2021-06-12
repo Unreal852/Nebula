@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
 
 namespace Nebula.Utils.Collections.Paging
 {
@@ -25,7 +24,6 @@ namespace Nebula.Utils.Collections.Paging
         private void ObservableCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Update();
-            Debug.Print(e.Action + "");
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add when e.NewItems != null:

@@ -1,7 +1,12 @@
-﻿using HandyControl.Controls;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using HandyControl.Controls;
 using HandyControl.Data;
+using HandyControl.Tools.Extension;
+using LiteMVVM.Command;
 using Nebula.Core.Providers.Youtube;
 using Nebula.Model;
+using Nebula.View.Views.Dialogs;
 
 namespace Nebula.ViewModel.Dialogs
 {
@@ -13,7 +18,10 @@ namespace Nebula.ViewModel.Dialogs
         public PlaylistImportDialogViewModel()
         {
             Title = NebulaClient.GetLang("playlist_import_title");
+            SearchPlaylistCommand = new AsyncRelayCommand(SearchPlaylist);
         }
+
+        public ICommand SearchPlaylistCommand { get; }
 
         public string PlaylistPath
         {
@@ -51,6 +59,15 @@ namespace Nebula.ViewModel.Dialogs
                 Message = NebulaClient.GetLang("playlist_imported", playlist.Name),
                 ShowDateTime = false
             });
+        }
+
+        private async Task SearchPlaylist()
+        {
+            Dialog dialog = NebulaClient.ShowDialog<ElementSelectorDialogView, ImportPlaylistSearchSelectorViewModel>();
+            var result = await dialog.GetResultAsync<Playlist>();
+            if (result == null)
+                return;
+            PlaylistPath = result.Url;
         }
     }
 }

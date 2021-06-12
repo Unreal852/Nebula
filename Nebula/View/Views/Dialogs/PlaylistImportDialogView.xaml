@@ -27,7 +27,8 @@
                 <Button VerticalAlignment="Bottom" Foreground="{DynamicResource AppForegroundBrush}" hc:IconElement.Geometry="{StaticResource FileImportGeometry}"
                         Style="{StaticResource ButtonIcon}" Visibility="Collapsed" />
                 <Button VerticalAlignment="Bottom" Foreground="{DynamicResource AppForegroundBrush}" hc:IconElement.Geometry="{StaticResource SearchGeometry}"
-                        Style="{StaticResource ButtonIcon}" Visibility="Collapsed" />
+                        Command="{Binding SearchPlaylistCommand}"
+                        Style="{StaticResource ButtonIcon}" />
             </hc:SimpleStackPanel>
             <CheckBox Content="Keep Synchronized" HorizontalAlignment="Left" Margin="5"
                       IsChecked="{Binding KeepSync}"

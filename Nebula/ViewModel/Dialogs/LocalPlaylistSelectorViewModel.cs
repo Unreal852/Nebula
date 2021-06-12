@@ -7,7 +7,7 @@ namespace Nebula.ViewModel.Dialogs
 {
     public class LocalPlaylistSelectorViewModel : BaseElementSelectorDialogViewModel<Playlist>
     {
-        public LocalPlaylistSelectorViewModel() : base()
+        public LocalPlaylistSelectorViewModel()
         {
             Pager.SetSource(NebulaClient.Playlists.Playlists);
             Title = NebulaClient.GetLang("Select Playlist");
@@ -23,15 +23,19 @@ namespace Nebula.ViewModel.Dialogs
             Close();
         }
 
-        protected override async Task Search(string value)
+        protected override Task Search(string value)
         {
             if (string.IsNullOrWhiteSpace(value) || value.Length == 0)
+            {
                 Pager.ResetFilter();
+            }
             else
             {
                 value = value.ToLower();
                 Pager.ApplyFilter(playlist => playlist.Name.ToLower().Contains(value));
             }
+
+            return null;
         }
     }
 }

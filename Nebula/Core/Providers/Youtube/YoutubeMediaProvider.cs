@@ -26,36 +26,43 @@ namespace Nebula.Core.Providers.Youtube
         public string Name        { get; } = "Youtube";
         public string NameColorEx { get; } = "#ff0000";
 
-        public async IAsyncEnumerable<MediaInfo> SearchMedias(string query, params object[] args)
+        public async IAsyncEnumerable<T> Search<T>(string query, params object[] args)
         {
             if (string.IsNullOrWhiteSpace(query))
                 throw new ArgumentNullException($"{nameof(query)} is null or empty.");
-            var totalVideos = 0;
+            var totalElements = 0;
             await foreach (Batch<ISearchResult> batch in Youtube.Search.GetResultBatchesAsync(query))
             {
                 foreach (ISearchResult result in batch.Items)
                 {
-                    if (totalVideos >= MaxVideos)
+                    if (totalElements >= MaxVideos)
                         break;
-                    if (result is VideoSearchResult video)
+                    if (result is T element)
                     {
-                        totalVideos++;
-                        yield return VideoToMediaInfo(video);
+                        totalElements++;
+                        yield return element;
                     }
                 }
 
-                if (totalVideos >= MaxVideos)
+                if (totalElements >= MaxVideos)
                     break;
             }
+        }
+
+        public async IAsyncEnumerable<MediaInfo> SearchMedias(string query, params object[] args)
+        {
+            await foreach (VideoSearchResult videoSearchResult in Search<VideoSearchResult>(query, args))
+                yield return VideoToMediaInfo(videoSearchResult);
 
             /*
             await foreach (VideoSearchResult video in Youtube.Search.GetVideosAsync(query))
                 yield return new YoutubeMediaInfo(video); */
         }
 
-        public IAsyncEnumerable<Playlist> SearchPlaylists(string query, params object[] args)
+        public async IAsyncEnumerable<Playlist> SearchPlaylists(string query, params object[] args)
         {
-            throw new NotImplementedException();
+            await foreach (PlaylistSearchResult playlistResult in Search<PlaylistSearchResult>(query, args))
+                yield return YoutubePlaylistToPlaylist(playlistResult);
         }
 
         public IAsyncEnumerable<ArtistInfo> SearchArtists(string query, params object[] args)
@@ -133,6 +140,23 @@ namespace Nebula.Core.Providers.Youtube
                 video.Title, video.Author.Title, "", Name,
                 thumbnails.LowRes, thumbnails.MediumRes, thumbnails.HighRes,
                 video.Duration ?? TimeSpan.Zero, DateTime.MinValue);
+        }
+
+        private Playlist YoutubePlaylistToPlaylist(PlaylistSearchResult playlistSearchResult)
+        {
+            (string LowRes, string MediumRes, string HighRes) thumbnails = playlistSearchResult.Thumbnails.GetThumbnails();
+            var playlist = new Playlist
+            {
+                Name = playlistSearchResult.Title,
+                Author = playlistSearchResult.Author?.Title ?? "Unknown",
+                Url = playlistSearchResult.Url,
+                LowResThumbnail = thumbnails.LowRes,
+                MediumResThumbnail = thumbnails.MediumRes,
+                HighResThumbnail = thumbnails.HighRes,
+                AutoSave = false,
+                ProviderName = Name
+            };
+            return playlist;
         }
     }
 }

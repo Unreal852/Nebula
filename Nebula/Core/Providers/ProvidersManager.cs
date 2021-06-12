@@ -53,5 +53,12 @@ namespace Nebula.Core.Providers
             await foreach (MediaInfo mediaInfo in mediasProvider.SearchMedias(query, args))
                 yield return mediaInfo;
         }
+
+        public async IAsyncEnumerable<Playlist> SearchPlaylists(string query, params object[] args)
+        {
+            foreach (IMediasProvider mediasProvider in Providers)
+            await foreach (Playlist playlist in mediasProvider.SearchPlaylists(query, args))
+                yield return playlist;
+        }
     }
 }
