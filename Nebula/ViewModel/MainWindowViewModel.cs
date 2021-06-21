@@ -7,8 +7,8 @@ using LiteMVVM;
 using LiteMVVM.Command;
 using LiteMVVM.Navigation;
 using Nebula.Model;
+using Nebula.View;
 using Nebula.View.Views;
-using NavigationInfo = Nebula.View.NavigationInfo;
 
 namespace Nebula.ViewModel
 {
@@ -59,7 +59,7 @@ namespace Nebula.ViewModel
         {
             SearchResultsView searchView = new SearchResultsView();
             SearchResultsViewModel searchResultsViewModel = searchView.DataContext as SearchResultsViewModel;
-            Navigate(new NavigationInfo(searchView));
+            Navigate(new NavigationInfo(searchView, null, true));
             if (searchResultsViewModel == null)
                 throw new NullReferenceException("SearchResultsViewModel missing");
             await foreach (MediaInfo mediaInfo in NebulaClient.Providers.SearchMedias(query))

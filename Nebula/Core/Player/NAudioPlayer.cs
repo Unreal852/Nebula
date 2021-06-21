@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HandyControl.Controls;
 using NAudio.Wave;
+using Nebula.Core.Extensions;
 using Nebula.Media;
 using Nebula.Media.Player;
 using Nebula.Media.Player.Events;
@@ -184,6 +185,7 @@ namespace Nebula.Core.Player
                 return;
             _stoppedByUSer = false;
             SoundOut.Out.Play();
+            NebulaClient.Discord.SetActivity((MediaInfo) CurrentMedia, Position);
             StateChanged?.Invoke(this, new PlayerStateChangedEventArgs(State));
         }
 
@@ -217,6 +219,7 @@ namespace Nebula.Core.Player
             if (!SoundOut.IsReady)
                 return;
             SoundOut.Reader.CurrentTime = TimeSpan.FromSeconds(position);
+            NebulaClient.Discord.SetActivity((MediaInfo) CurrentMedia, TimeSpan.FromSeconds(position));
         }
 
         private void OnMediaStopped(object sender, StoppedEventArgs e)

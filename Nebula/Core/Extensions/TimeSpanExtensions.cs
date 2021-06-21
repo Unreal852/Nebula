@@ -40,6 +40,12 @@ namespace Nebula.Core.Extensions
             return timeSpan.Days > 0 ? SimpleIncludeDays(timeSpan, result) : result;
         }
 
+        public static ulong ToUnixMilliseconds(this TimeSpan timeSpan)
+        {
+            var now = DateTime.UtcNow + timeSpan;
+            return Convert.ToUInt64((now - DateTime.UnixEpoch).TotalMilliseconds);
+        }
+
         private static string SimpleIncludeDays(TimeSpan timeSpan, string formattedStr)
         {
             string days = timeSpan.Days > 9 ? timeSpan.Days.ToString() : $"0{timeSpan.Days}";

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using Nebula.ViewModel;
-using Nebula.ViewModel.Dialogs;
 
 namespace Nebula.View
 {
@@ -11,11 +10,10 @@ namespace Nebula.View
         private MediaPlayerViewModel _mediaPlayerViewModel;
         private MediasQueueViewModel _mediasQueueViewModel;
 
-        private DependencyObject               Dummy                                { get; } = new();
-        public  MainWindowViewModel            MainWindowViewModel                  => _mainWindowViewModel ??= new MainWindowViewModel();
-        public  MediaPlayerViewModel           MediaPlayerViewModel                 => _mediaPlayerViewModel ??= new MediaPlayerViewModel();
-        public  MediasQueueViewModel           MediasQueueViewModel                 => _mediasQueueViewModel ??= new MediasQueueViewModel();
-        public  LocalPlaylistSelectorViewModel LocalPlaylistSelectorDialogViewModel => new();
-        public  bool                           IsDesignMode                         => DesignerProperties.GetIsInDesignMode(Dummy);
+        private DependencyObject     Dummy                { get; } = new();
+        public  MainWindowViewModel  MainWindowViewModel  => _mainWindowViewModel ??= new MainWindowViewModel();
+        public  MediaPlayerViewModel MediaPlayerViewModel => _mediaPlayerViewModel ??= new MediaPlayerViewModel();
+        public  MediasQueueViewModel MediasQueueViewModel => _mediasQueueViewModel ??= new MediasQueueViewModel();
+        public  bool                 IsDesignMode         => DesignerProperties.GetIsInDesignMode(Dummy);
     }
 }
