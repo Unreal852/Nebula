@@ -1,4 +1,4 @@
-﻿namespace Nebula.Core.Discord
+﻿namespace Nebula.Discord.SDK
 {
     public partial class ActivityManager
     {

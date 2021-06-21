@@ -28,18 +28,6 @@
         <EmbeddedResource Update="Resources\Nebula.en.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
-        <EmbeddedResource Include="discord_game_sdk.dll">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="discord_game_sdk.dll.lib">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="discord_game_sdk.dylib">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="discord_game_sdk.so">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </EmbeddedResource>
         <None Remove="Resources\nebula_icon.ico"/>
         <Resource Include="Resources\nebula_icon.ico"/>
         <None Remove="Resources\discord_game_sdk.dll.lib"/>
@@ -47,9 +35,6 @@
         <None Remove="Resources\discord_game_sdk.dylib"/>
         <None Remove="Resources\discord_game_sdk.bundle"/>
         <None Remove="Resources\discord_game_sdk.dll"/>
-        <EmbeddedResource Include="discord_game_sdk.bundle">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -61,6 +46,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Nebula.Discord\Nebula.Discord.csproj"/>
         <ProjectReference Include="..\Nebula.Media\Nebula.Media.csproj" />
     </ItemGroup>
 

@@ -1,6 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-
-namespace Nebula.Core.Discord
+﻿namespace Nebula.Discord.SDK
 {
     internal static class Constants
     {

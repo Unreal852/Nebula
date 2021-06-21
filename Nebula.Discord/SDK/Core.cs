@@ -2,8 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-// ReSharper disable once CheckNamespace
-namespace Nebula.Core.Discord
+namespace Nebula.Discord.SDK
 {
     public enum Result
     {
@@ -1573,10 +1572,12 @@ namespace Nebula.Core.Discord
             callback(result);
         }
 
+        private static FFIMethods.UpdateActivityCallback staticActivityCallback = UpdateActivityCallbackImpl; // FIX for callback getting garbage collected...
+
         public void UpdateActivity(Activity activity, UpdateActivityHandler callback)
         {
             GCHandle wrapped = GCHandle.Alloc(callback);
-            Methods.UpdateActivity(MethodsPtr, ref activity, GCHandle.ToIntPtr(wrapped), UpdateActivityCallbackImpl);
+            Methods.UpdateActivity(MethodsPtr, ref activity, GCHandle.ToIntPtr(wrapped), staticActivityCallback);
         }
 
         [MonoPInvokeCallback]

@@ -1,12 +1,12 @@
 ﻿using System;
-using Nebula.Core.Discord;
+using Nebula.Discord.SDK;
 using Nebula.Model;
 
 namespace Nebula.Core.Extensions
 {
     public static class DiscordExtensions
     {
-        public static bool SetActivity(this Discord.Discord discord, MediaInfo mediaInfo, TimeSpan currentPosition = default)
+        public static bool SetActivity(this Discord.SDK.Discord discord, MediaInfo mediaInfo, TimeSpan currentPosition = default)
         {
             Activity activity = new Activity
             {

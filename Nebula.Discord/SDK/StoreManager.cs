@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
-namespace Nebula.Core.Discord
+namespace Nebula.Discord.SDK
 {
     public partial class StoreManager
     {

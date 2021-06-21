@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-// ReSharper disable once CheckNamespace
-namespace Nebula.Core.Discord
+namespace Nebula.Discord.SDK
 {
     public partial class LobbyManager
     {
