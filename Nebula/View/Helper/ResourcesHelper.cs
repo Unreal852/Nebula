@@ -2,7 +2,7 @@
 
 namespace Nebula.View.Helper
 {
-    public class ResourcesHelper
+    public static class ResourcesHelper
     {
         public static T GetResource<T>(string resourceName) where T : class
         {
