@@ -20,6 +20,15 @@
         <EmbeddedResource Include="discord_game_sdk.so">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Remove="obj\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="obj\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="obj\**"/>
     </ItemGroup>
 
 </Project>
