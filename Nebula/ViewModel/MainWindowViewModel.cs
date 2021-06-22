@@ -84,8 +84,12 @@ namespace Nebula.ViewModel
                     break;
                 }
                 case Type type when Activator.CreateInstance(type) is UserControl control:
+                {
                     CurrentPage = control;
+                    if (control.DataContext is INavigable navigable)
+                        navigable.OnNavigated(null);
                     break;
+                }
             }
         }
     }

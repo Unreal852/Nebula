@@ -138,4 +138,13 @@
     <data name="global_show" xml:space="preserve">
         <value>Show</value>
     </data>
+    <data name="global_explore" xml:space="preserve">
+        <value>Explore</value>
+    </data>
+    <data name="global_radio" xml:space="preserve">
+        <value>Radio</value>
+    </data>
+    <data name="global_shared_session" xml:space="preserve">
+        <value>Shared Session</value>
+    </data>
 </root>

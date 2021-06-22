@@ -48,6 +48,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Nebula.Discord\Nebula.Discord.csproj"/>
         <ProjectReference Include="..\Nebula.Media\Nebula.Media.csproj" />
+        <ProjectReference Include="..\Nebula.Net\Nebula.Net.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

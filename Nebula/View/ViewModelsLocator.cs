@@ -6,14 +6,16 @@ namespace Nebula.View
 {
     public class ViewModelsLocator
     {
-        private MainWindowViewModel  _mainWindowViewModel;
-        private MediaPlayerViewModel _mediaPlayerViewModel;
-        private MediasQueueViewModel _mediasQueueViewModel;
+        private MainWindowViewModel    _mainWindowViewModel;
+        private MediaPlayerViewModel   _mediaPlayerViewModel;
+        private MediasQueueViewModel   _mediasQueueViewModel;
+        private OnlineSessionViewModel _onlineSessionViewModel;
 
-        private DependencyObject     Dummy                { get; } = new();
-        public  MainWindowViewModel  MainWindowViewModel  => _mainWindowViewModel ??= new MainWindowViewModel();
-        public  MediaPlayerViewModel MediaPlayerViewModel => _mediaPlayerViewModel ??= new MediaPlayerViewModel();
-        public  MediasQueueViewModel MediasQueueViewModel => _mediasQueueViewModel ??= new MediasQueueViewModel();
-        public  bool                 IsDesignMode         => DesignerProperties.GetIsInDesignMode(Dummy);
+        private DependencyObject       Dummy                  { get; } = new();
+        public  MainWindowViewModel    MainWindowViewModel    => _mainWindowViewModel ??= new MainWindowViewModel();
+        public  MediaPlayerViewModel   MediaPlayerViewModel   => _mediaPlayerViewModel ??= new MediaPlayerViewModel();
+        public  MediasQueueViewModel   MediasQueueViewModel   => _mediasQueueViewModel ??= new MediasQueueViewModel();
+        public  OnlineSessionViewModel OnlineSessionViewModel => _onlineSessionViewModel ??= new OnlineSessionViewModel();
+        public  bool                   IsDesignMode           => DesignerProperties.GetIsInDesignMode(Dummy);
     }
 }

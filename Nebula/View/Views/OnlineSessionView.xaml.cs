@@ -2,9 +2,9 @@
 
 namespace Nebula.View.Views
 {
-    public partial class TestControl1 : UserControl
+    public partial class OnlineSessionView : UserControl
     {
-        public TestControl1()
+        public OnlineSessionView()
         {
             InitializeComponent();
         }

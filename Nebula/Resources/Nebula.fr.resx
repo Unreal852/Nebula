@@ -113,4 +113,7 @@
     <data name="global_show" xml:space="preserve">
         <value>Afficher</value>
     </data>
+    <data name="global_shared_session" xml:space="preserve">
+        <value>Session Partagée</value>
+    </data>
 </root>

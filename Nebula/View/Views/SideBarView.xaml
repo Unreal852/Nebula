@@ -9,6 +9,7 @@
              xmlns:model="clr-namespace:Nebula.Model"
              xmlns:converters="clr-namespace:Nebula.View.Converters"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
+             xmlns:resx="clr-namespace:Nebula.Resources"
              mc:Ignorable="d">
     <UserControl.DataContext>
         <viewModel:SideBarViewModel />
@@ -24,11 +25,15 @@
         <hc:SimpleStackPanel Grid.Row="1" Orientation="Vertical" Margin="25 150 0 0">
             <hc:SimpleStackPanel Orientation="Vertical">
                 <hc:SimpleText Text="NEBULA" Foreground="{DynamicResource SideBarCategoryBrush}" FontSize="18" FontWeight="Bold" />
-                <RadioButton Content="Explorer" Command="{Binding NavigateCommand}" CommandParameter="{x:Type views:TestControl1}"
+                <RadioButton Content="{x:Static resx:Nebula.global_explore}"
+                             Command="{Binding NavigateCommand}" CommandParameter=""
                              Style="{StaticResource NavigationRadioButton}" hc:IconElement.Geometry="{StaticResource HomeGeometry}" />
-                <RadioButton Content="Radio" Command="{Binding NavigateCommand}" CommandParameter="{x:Type views:TestControl2}"
+                <RadioButton Content="{x:Static resx:Nebula.global_radio}"
+                             Command="{Binding NavigateCommand}" CommandParameter=""
                              Style="{StaticResource NavigationRadioButton}" hc:IconElement.Geometry="{StaticResource RadioGeometry}" />
-                <RadioButton Content="Session Partagée" Style="{StaticResource NavigationRadioButton}" hc:IconElement.Geometry="{StaticResource UsersGeometry}" />
+                <RadioButton Content="{x:Static resx:Nebula.global_shared_session}"
+                             Command="{Binding NavigateOnlineSessionCommand}"
+                             Style="{StaticResource NavigationRadioButton}" hc:IconElement.Geometry="{StaticResource UsersGeometry}" />
             </hc:SimpleStackPanel>
             <hc:SimpleStackPanel Orientation="Vertical" Margin="0 80 0 0">
                 <StackPanel Orientation="Horizontal">
@@ -39,28 +44,28 @@
                             Style="{StaticResource ButtonIcon}" Command="{Binding ImportPlaylistCommand}" />
                 </StackPanel>
                 <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="300">
-                        <hc:ButtonGroup ItemsSource="{Binding Playlists}" Orientation="Vertical">
-                            <hc:ButtonGroup.ItemTemplate>
-                                <DataTemplate DataType="model:Playlist">
-                                    <RadioButton
-                                        Style="{StaticResource NavigationRadioButton}"
-                                        Command="{Binding DataContext.NavigateToPlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                        CommandParameter="{Binding}">
-                                        <controls:SimpleGrid Columns="180,*">
-                                            <TextBlock Grid.Column="0" Text="{Binding Name}"
-                                                       FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
-                                                       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
-                                                       TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="5 0 0 0" />
-                                            <Button Grid.Column="1" hc:IconElement.Geometry="{StaticResource PlayGeometry}"
-                                                    Foreground="{DynamicResource SideBarCategoryBrush}" Style="{StaticResource ButtonIcon}" Width="32" Height="32"
-                                                    Command="{Binding DataContext.PlayPlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding}" />
-                                        </controls:SimpleGrid>
-                                    </RadioButton>
-                                </DataTemplate>
-                            </hc:ButtonGroup.ItemTemplate>
-                        </hc:ButtonGroup>
-                    </hc:ScrollViewer>
+                    <hc:ButtonGroup ItemsSource="{Binding Playlists}" Orientation="Vertical">
+                        <hc:ButtonGroup.ItemTemplate>
+                            <DataTemplate DataType="model:Playlist">
+                                <RadioButton
+                                    Style="{StaticResource NavigationRadioButton}"
+                                    Command="{Binding DataContext.NavigateToPlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding}">
+                                    <controls:SimpleGrid Columns="180,*">
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                                   FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
+                                                   TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="5 0 0 0" />
+                                        <Button Grid.Column="1" hc:IconElement.Geometry="{StaticResource PlayGeometry}"
+                                                Foreground="{DynamicResource SideBarCategoryBrush}" Style="{StaticResource ButtonIcon}" Width="32" Height="32"
+                                                Command="{Binding DataContext.PlayPlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding}" />
+                                    </controls:SimpleGrid>
+                                </RadioButton>
+                            </DataTemplate>
+                        </hc:ButtonGroup.ItemTemplate>
+                    </hc:ButtonGroup>
+                </hc:ScrollViewer>
             </hc:SimpleStackPanel>
         </hc:SimpleStackPanel>
     </controls:SimpleGrid>

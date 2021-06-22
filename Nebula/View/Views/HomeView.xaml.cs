@@ -2,9 +2,9 @@
 
 namespace Nebula.View.Views
 {
-    public partial class TestControl2 : UserControl
+    public partial class HomeView : UserControl
     {
-        public TestControl2()
+        public HomeView()
         {
             InitializeComponent();
         }

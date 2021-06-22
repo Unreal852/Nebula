@@ -23,19 +23,21 @@ namespace Nebula.ViewModel
         {
             Instance = this;
             NavigateCommand = new RelayCommand(MainWindowViewModel.Instance.Navigate);
-            NavigateToPlaylistCommand = new HandyControl.Tools.Command.RelayCommand<Playlist>(NavigateToPlaylist);
+            NavigateOnlineSessionCommand = new AsyncRelayCommand(NavigateOnlineSession);
+            NavigateToPlaylistCommand = new RelayCommand<Playlist>(NavigateToPlaylist);
             CreatePlaylistCommand = new RelayCommand(CreatePlaylist);
-            ImportPlaylistCommand = new HandyControl.Tools.Command.RelayCommand<Playlist>(ImportPlaylist);
+            ImportPlaylistCommand = new RelayCommand<Playlist>(ImportPlaylist);
             PlayPlaylistCommand = new AsyncRelayCommand<Playlist>(PlayPlaylist);
             Playlists.CollectionChanged += (_, _) => ShowPlaylists = Playlists.Count > 0;
         }
 
-        public ICommand                       NavigateCommand           { get; }
-        public ICommand                       NavigateToPlaylistCommand { get; }
-        public ICommand                       CreatePlaylistCommand     { get; }
-        public ICommand                       ImportPlaylistCommand     { get; }
-        public ICommand                       PlayPlaylistCommand       { get; }
-        public ObservableCollection<Playlist> Playlists                 => NebulaClient.Playlists.Playlists;
+        public ICommand                       NavigateCommand              { get; }
+        public ICommand                       NavigateOnlineSessionCommand { get; }
+        public ICommand                       NavigateToPlaylistCommand    { get; }
+        public ICommand                       CreatePlaylistCommand        { get; }
+        public ICommand                       ImportPlaylistCommand        { get; }
+        public ICommand                       PlayPlaylistCommand          { get; }
+        public ObservableCollection<Playlist> Playlists                    => NebulaClient.Playlists.Playlists;
 
         public bool ShowPlaylists
         {
@@ -57,13 +59,16 @@ namespace Nebula.ViewModel
 
         private void ImportPlaylist(object param)
         {
-            //   Dialog.Show<PlaylistImportDialogViewModel>().DataContext = new PlaylistImportDialogViewModel();
             NebulaClient.ShowDialog<PlaylistImportDialogView>();
         }
 
         private async Task PlayPlaylist(Playlist playlist)
         {
             await NebulaClient.MediaPlayer.OpenPlaylist(playlist);
+        }
+
+        private async Task NavigateOnlineSession()
+        {
         }
     }
 }

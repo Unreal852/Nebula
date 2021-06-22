@@ -159,7 +159,7 @@ namespace Nebula.ViewModel
             if (!result)
                 return;
             await NebulaClient.Playlists.DeletePlaylist(Playlist);
-            Messenger.Broadcast(this, NavigationInfo.Create(typeof(TestControl1), null, false));
+            Messenger.Broadcast(this, NavigationInfo.Create(typeof(HomeView), null, false));
         }
 
         private void OnTextChanged(string str)

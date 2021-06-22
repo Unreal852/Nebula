@@ -178,6 +178,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explore.
+        /// </summary>
+        public static string global_explore {
+            get {
+                return ResourceManager.GetString("global_explore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hour.
         /// </summary>
         public static string global_hour {
@@ -214,6 +223,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Radio.
+        /// </summary>
+        public static string global_radio {
+            get {
+                return ResourceManager.GetString("global_radio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string global_search {
@@ -237,6 +255,15 @@ namespace Nebula.Resources {
         public static string global_seconds {
             get {
                 return ResourceManager.GetString("global_seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared Session.
+        /// </summary>
+        public static string global_shared_session {
+            get {
+                return ResourceManager.GetString("global_shared_session", resourceCulture);
             }
         }
         

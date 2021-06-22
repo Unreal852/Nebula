@@ -8,7 +8,6 @@ using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Player;
 using Nebula.Core.Providers;
-using Nebula.Discord.SDK;
 using Nebula.View.Views.Dialogs;
 using Nebula.ViewModel.Dialogs;
 
@@ -22,9 +21,10 @@ namespace Nebula
             Playlists = new PlaylistsManager();
             Database = new NebulaDatabase();
             // Order does not matter below 
-            Discord = new Discord.SDK.Discord(740292732794306690, (ulong) CreateFlags.Default);
+            Discord = new DiscordManager();
             MediaPlayer = new NAudioPlayer();
             CancellationTokenSource = new CancellationTokenSource();
+
             Task.Run(() => AppTick(CancellationTokenSource.Token, 500));
         }
 
@@ -32,7 +32,7 @@ namespace Nebula
         public static   NAudioPlayer            MediaPlayer             { get; }
         public static   NebulaDatabase          Database                { get; }
         public static   PlaylistsManager        Playlists               { get; }
-        public static   Discord.SDK.Discord     Discord                 { get; }
+        public static   DiscordManager          Discord                 { get; }
         internal static CancellationTokenSource CancellationTokenSource { get; }
 
         public static event EventHandler Tick;
@@ -126,7 +126,6 @@ namespace Nebula
                 while (true)
                 {
                     token.ThrowIfCancellationRequested();
-                    Discord.RunCallbacks();
                     Invoke(() => Tick?.Invoke(Application.Current, new EventArgs()));
                     await Task.Delay(delay, token);
                 }
