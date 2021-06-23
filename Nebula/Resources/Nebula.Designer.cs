@@ -340,6 +340,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string online_clear_messages {
+            get {
+                return ResourceManager.GetString("online_clear_messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Session.
         /// </summary>
         public static string online_create {
@@ -381,6 +390,15 @@ namespace Nebula.Resources {
         public static string online_port {
             get {
                 return ResourceManager.GetString("online_port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send.
+        /// </summary>
+        public static string online_send_message {
+            get {
+                return ResourceManager.GetString("online_send_message", resourceCulture);
             }
         }
         

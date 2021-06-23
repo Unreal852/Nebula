@@ -143,4 +143,10 @@
     <data name="update_update_now" xml:space="preserve">
         <value>Mettre a jour</value>
     </data>
+    <data name="online_clear_messages" xml:space="preserve">
+        <value>Vider</value>
+    </data>
+    <data name="online_send_message" xml:space="preserve">
+        <value>Envoyer</value>
+    </data>
 </root>

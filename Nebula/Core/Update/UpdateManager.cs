@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ namespace Nebula.Core.Update
     {
         private const           string RepositoryOwner = "Unreal852";
         private const           string RepositoryName  = "Nebula";
+        private const           string SetupFileName   = "nebula_setup.exe";
         private static readonly string AssemblyVersion;
 
         static UpdateManager()
@@ -26,6 +29,8 @@ namespace Nebula.Core.Update
             Client = new RepositoriesClient(new ApiConnection(new Connection(new ProductHeaderValue("Nebula"), GitHubClient.GitHubApiUrl)));
             WebClient = new WebClient();
             WebClient.DownloadFileCompleted += OnDownloadFileCompleted;
+            if (File.Exists(SetupFileName))
+                File.Delete(SetupFileName);
         }
 
         private RepositoriesClient Client    { get; }
@@ -55,7 +60,7 @@ namespace Nebula.Core.Update
                     {
                         if (isConfirmed)
                         {
-                            WebClient.DownloadFileAsync(new Uri(result.PackageUrl), "nebula_setup.exe");
+                            WebClient.DownloadFileAsync(new Uri(result.PackageUrl), SetupFileName);
                         }
 
                         return true;
@@ -68,7 +73,7 @@ namespace Nebula.Core.Update
         private void OnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
 #if RELEASE
-            Process.Start(new ProcessStartInfo("nebula_setup.exe") {UseShellExecute = true});
+            Process.Start(new ProcessStartInfo(SetupFileName) {UseShellExecute = true});
             System.Windows.Application.Current.Dispatcher.Invoke(() => System.Windows.Application.Current.Shutdown());
 #endif
         }

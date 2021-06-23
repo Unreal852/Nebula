@@ -200,7 +200,6 @@ namespace Nebula.Core.Player
                 return;
             _stoppedByUSer = false;
             SoundOut.Out.Play();
-            NebulaClient.Discord.UpdateActivity();
             StateChanged?.Invoke(this, new PlayerStateChangedEventArgs(State));
         }
 

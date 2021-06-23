@@ -4,7 +4,8 @@
                     xmlns:model="clr-namespace:Nebula.Model"
                     xmlns:converters="clr-namespace:Nebula.View.Converters"
                     xmlns:resx="clr-namespace:Nebula.Resources"
-                    xmlns:controls="clr-namespace:Nebula.View.Controls">
+                    xmlns:controls="clr-namespace:Nebula.View.Controls"
+                    xmlns:data="clr-namespace:Nebula.Net.Data;assembly=Nebula.Net">
     <!--Template for medias search results -->
     <DataTemplate x:Key="MediaInfoCardTemplate" DataType="model:MediaInfo">
         <hc:Card Width="350" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="7" Footer="{Binding }" Cursor="Hand">
@@ -58,5 +59,43 @@
             </controls:SimpleGrid>
         </Border>
     </DataTemplate>
-    
+
+    <!-- Template for Online Session Messages in a List Box -->
+    <DataTemplate x:Key="MessageItemTemplate" DataType="model:UserMessage">
+        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" Margin="5 5">
+            <controls:SimpleGrid Rows="5,Auto,Auto,5" Columns="15,*,15">
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Foreground="{DynamicResource AppForegroundBrush}"
+                           HorizontalAlignment="Left" FontWeight="Bold" FontSize="12" Text="{Binding Sender.Username}" />
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           Foreground="{DynamicResource AppForegroundBrush}"
+                           TextWrapping="Wrap" Text="{Binding Message.Message}" />
+            </controls:SimpleGrid>
+        </Border>
+    </DataTemplate>
+
+    <!-- Template for Online Session Media Messages in a List Box -->
+    <DataTemplate x:Key="MessageMediaItemTemplate" DataType="model:UserMessage">
+        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" Margin="5 5">
+            <controls:SimpleGrid Rows="5,Auto,Auto,5" Columns="15,*,15">
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Foreground="{DynamicResource AppForegroundBrush}"
+                           HorizontalAlignment="Left" FontWeight="Bold" FontSize="12" Text="{Binding Sender.Username}" />
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           Foreground="{DynamicResource AppForegroundBrush}"
+                           TextWrapping="Wrap" Text="{Binding Message.Message}" />
+            </controls:SimpleGrid>
+        </Border>
+    </DataTemplate>
+
+    <!-- Template for Online Session User Info in a List Box -->
+    <DataTemplate x:Key="UserInfoItemTemplate" DataType="data:NetUserInfo">
+        <controls:SimpleGrid Columns="32,*">
+            <hc:Gravatar Grid.Column="0" Width="32" Height="32" Source="{Binding AvatarUrl}" />
+            <TextBlock Grid.Column="1"
+                       Foreground="{DynamicResource AppForegroundBrush}" VerticalAlignment="Center" Margin="5 5"
+                       HorizontalAlignment="Left" FontWeight="Bold" FontSize="12" Text="{Binding Username}" />
+        </controls:SimpleGrid>
+    </DataTemplate>
+
 </ResourceDictionary>

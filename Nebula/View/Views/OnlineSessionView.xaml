@@ -5,9 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Nebula.View.Views"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
+             xmlns:selectors="clr-namespace:Nebula.View.Selectors"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:resx="clr-namespace:Nebula.Resources"
              mc:Ignorable="d"
              DataContext="{Binding Path=OnlineSessionViewModel, Source={StaticResource Locator}}">
-    <controls:SimpleGrid Visibility="{Binding IsConnected}">
-        <Grid />
+    <UserControl.Resources>
+        <selectors:UserMessageTemplateSelector x:Key="MessageTemplateSelector" />
+    </UserControl.Resources>
+    <controls:SimpleGrid Columns="5,*,250,5" Rows="*,Auto">
+        <ListBox x:Name="MessageList" Grid.Column="1" Grid.Row="0"
+                 ItemsSource="{Binding Messages}" ItemTemplateSelector="{StaticResource MessageTemplateSelector}"
+                 Background="Transparent">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                    </Style.Resources>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <ListBox Grid.Column="2" Grid.RowSpan="3" 
+                 ItemTemplate="{StaticResource UserInfoItemTemplate}"
+                 ItemsSource="{Binding Users}"
+                 Background="{DynamicResource SecondaryAppBackgroundBrush}" />
+        <controls:SimpleGrid Grid.Column="1" Grid.Row="1" Columns="*,Auto,Auto,5">
+            <hc:SearchBar Grid.Column="0" Text="{Binding CurrentMessage, UpdateSourceTrigger=PropertyChanged}"
+                          Command="{Binding SendMessageCommand}" />
+            <Button Grid.Column="1" Content="{x:Static resx:Nebula.online_send_message}" Command="{Binding SendMessageCommand}" />
+            <Button Grid.Column="2" Content="{x:Static resx:Nebula.online_clear_messages}" Command="{Binding ClearMessagesCommand}" />
+        </controls:SimpleGrid>
     </controls:SimpleGrid>
 </UserControl>

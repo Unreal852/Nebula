@@ -32,7 +32,7 @@ namespace Nebula.Net.Server
         public  NetServerSettings                Settings          { get; private set; }
         public  NatDevice                        NatDevice         { get; private set; }
         private Dictionary<int, NetServerClient> Clients           { get; } = new();
-        private NetSessionInfo                   SessionInfo       { get; set; }
+        private int                              Id                { get; set; }
         private DateTime                         LastMediaChange   { get; set; } = DateTime.UtcNow;
         private TimeSpan                         LastSessionChange { get; set; } = TimeSpan.Zero;
 
@@ -52,12 +52,7 @@ namespace Nebula.Net.Server
         public async Task<bool> Start(NetServerSettings settings = null)
         {
             Settings = settings ?? NetServerSettings.Default;
-            SessionInfo = new NetSessionInfo
-            {
-                Id = new Random().Next(1000, 100000),
-                ClientsCount = NetManager.ConnectedPeersCount,
-                MaxClients = Settings.MaxClients
-            };
+            Id = new Random().Next(1000, 100000);
             if (Settings.UseUpnp)
             {
                 var discoverer = new NatDiscoverer();
@@ -108,7 +103,7 @@ namespace Nebula.Net.Server
         {
             SessionInfoPacket packet = new SessionInfoPacket
             {
-                SessionInfo = SessionInfo,
+                SessionInfo = new NetSessionInfo {Id = Id, ClientsCount = NetManager.ConnectedPeersCount, MaxClients = Settings.MaxClients},
                 Users = Clients.Select(kvp => kvp.Value.UserInfo).ToArray()
             };
             return packet;

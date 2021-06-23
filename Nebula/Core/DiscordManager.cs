@@ -14,8 +14,8 @@ namespace Nebula.Core
             try
             {
                 Discord = new Discord.SDK.Discord(740292732794306690, (ulong) CreateFlags.NoRequireDiscord);
-                NebulaClient.Tick += (_, _) => Discord.RunCallbacks();
                 Discord.GetActivityManager().OnActivityJoin += OnActivityJoin;
+                NebulaClient.Tick += (_, _) => Discord.RunCallbacks();
                 NebulaClient.MediaPlayer.MediaChanged += OnMediaPlayerOnMediaChanged;
             }
             catch

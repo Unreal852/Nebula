@@ -6,6 +6,7 @@ using System.Windows.Media;
 using HandyControl.Controls;
 using Nebula.Core;
 using Nebula.Core.Database;
+using Nebula.Core.Online;
 using Nebula.Core.Player;
 using Nebula.Core.Providers;
 using Nebula.Core.Update;

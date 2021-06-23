@@ -1,5 +1,7 @@
-﻿using HandyControl.Controls;
+﻿using System;
+using HandyControl.Controls;
 using LiteNetLib;
+using Nebula.Core.Online.Events;
 using Nebula.Core.Providers.Youtube;
 using Nebula.Model;
 using Nebula.Net.Client;
@@ -8,15 +10,17 @@ using Nebula.Net.Data;
 using Nebula.Net.Packet;
 using Nebula.Net.Packet.C2S;
 using Nebula.Net.Packet.S2C;
+using Nebula.Net.Server;
 using Nebula.Net.Server.Events;
 
-namespace Nebula.Core
+namespace Nebula.Core.Online
 {
     public class OnlineSessionManager
     {
         public OnlineSessionManager()
         {
             HostClient = new NetHostClient();
+            SetSessionInfo(NetSessionInfo.Default, null);
             HostClient.Server.ClientConnected += OnServerClientConnected;
             HostClient.Server.ClientDisconnected += OnServerClientDisconnected;
             HostClient.Client.Connected += OnClientConnected;
@@ -27,16 +31,33 @@ namespace Nebula.Core
             HostClient.Client.NetProcessor.SubscribeReusable<PlayerResumePacket>(OnReceivePlayerResumePacket);
             HostClient.Client.NetProcessor.SubscribeReusable<PlayerPlayPacket>(OnReceivePlayerPlayPacket);
             HostClient.Client.NetProcessor.SubscribeReusable<PlayerPositionPacket>(OnReceivePlayerPositionPacket);
+            HostClient.Client.NetProcessor.SubscribeReusable<UserMessagePacket>(OnReceiveUserMessagePacket);
+            HostClient.Client.NetProcessor.SubscribeReusable<UserConnectedPacket>(OnReceiveUserConnectedPacket);
+            HostClient.Client.NetProcessor.SubscribeReusable<UserDisconnectedPacket>(OnReceiveUserDisconnectedPacket);
         }
 
         public NetHostClient  HostClient        { get; }
-        public NetSessionInfo SessionInfo       { get; private set; } = NetSessionInfo.Default;
+        public NetSessionInfo SessionInfo       { get; private set; }
+        public NetClient      Client            => HostClient.Client;
+        public NetServer      Server            => HostClient.Server;
         public bool           IsClientConnected => HostClient.Client.IsConnected;
         public bool           IsServerRunning   => HostClient.Server.IsRunning;
+
+        public event EventHandler<SessionInfoChangedEventArgs> SessionInfoChanged;
+        public event EventHandler<NewUserMessageEventArgs>     NewMessage;
+        public event EventHandler<UserConnectedEventArgs>      UserConnected;
+        public event EventHandler<UserDisconnectedEventArgs>   UserDisconnected;
 
         public void SendClientPacket<T>(T packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
             HostClient.Client.SendPacket(packet, method);
+        }
+
+        private void SetSessionInfo(NetSessionInfo sessionInfo, NetUserInfo[] users)
+        {
+            SessionInfo = sessionInfo;
+            SessionInfoChanged?.Invoke(this, new SessionInfoChangedEventArgs(sessionInfo, users));
+            NebulaClient.Discord?.UpdateActivity();
         }
 
         private void OnServerClientConnected(object sender, ClientConnectedEventArgs e)
@@ -50,18 +71,17 @@ namespace Nebula.Core
         private void OnClientConnected(object sender, ConnectedEventArgs e)
         {
             SendClientPacket(new UserInfoPacket {UserInfo = new NetUserInfo {Username = "Unreal", AvatarUrl = ""}});
-            NebulaClient.Discord.UpdateActivity();
         }
 
         private void OnClientDisconnected(object sender, DisconnectedEventArgs e)
         {
-            SessionInfo = NetSessionInfo.Default;
+            SetSessionInfo(NetSessionInfo.Default, null);
             Growl.Warning($"Disconnected : {e.Info.Reason}");
         }
 
         private void OnReceiveSessionInfoPacket(SessionInfoPacket packet)
         {
-            SessionInfo = packet.SessionInfo;
+            SetSessionInfo(packet.SessionInfo, packet.Users);
         }
 
         private void OnReceivePlayerPausePacket(PlayerPausePacket packet)
@@ -82,6 +102,21 @@ namespace Nebula.Core
         private void OnReceivePlayerPositionPacket(PlayerPositionPacket packet)
         {
             NebulaClient.MediaPlayer.SetPosition(packet.Position, true);
+        }
+
+        private void OnReceiveUserMessagePacket(UserMessagePacket packet)
+        {
+            NewMessage?.Invoke(this, new NewUserMessageEventArgs(packet.Sender, packet.Message));
+        }
+
+        private void OnReceiveUserConnectedPacket(UserConnectedPacket packet)
+        {
+            UserConnected?.Invoke(this, new UserConnectedEventArgs(packet.User));
+        }
+
+        private void OnReceiveUserDisconnectedPacket(UserDisconnectedPacket packet)
+        {
+            UserDisconnected?.Invoke(this, new UserDisconnectedEventArgs(packet.User));
         }
 
         private async void OnReceivePlayerOpenMediaPacket(PlayerOpenMediaPacket packet)
