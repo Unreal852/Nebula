@@ -3,7 +3,6 @@ using System.Windows.Input;
 using HandyControl.Data;
 using LiteMVVM;
 using LiteMVVM.Command;
-using Nebula.Media;
 using Nebula.Model;
 using Nebula.Utils.Collections.Paging;
 
@@ -25,7 +24,7 @@ namespace Nebula.ViewModel
         public ICommand                         PlayNowCommand              { get; }
         public ICommand                         PageChangedCommand          { get; }
         public ObservableFilterPager<MediaInfo> Pager                       { get; }
-        public IMediaInfo                       CurrentMedia                => NebulaClient.MediaPlayer.CurrentMedia;
+        public MediaInfo                        CurrentMedia                => NebulaClient.MediaPlayer.CurrentMedia;
         public string                           MediaTitle                  => CurrentMedia?.Title ?? "";
         public string                           MediaAuthor                 => CurrentMedia?.Author ?? "";
         public string                           MediaThumbnail              => CurrentMedia?.AnyThumbnailFromHighest;

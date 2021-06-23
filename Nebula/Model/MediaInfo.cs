@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Nebula.Core;
+using Nebula.Core.Extensions;
 using Nebula.Core.Providers;
 using Nebula.Core.Providers.Youtube;
-using Nebula.Media;
-using Nebula.Media.Extensions;
 using SQLite;
 
 namespace Nebula.Model
 {
     [Table("Medias")]
-    public class MediaInfo : IMediaInfo
+    public class MediaInfo : IThumbnailSource
     {
         public MediaInfo()
         {
@@ -49,7 +48,7 @@ namespace Nebula.Model
         public                        string   AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
         public                        string   AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
-        public Task<IArtistInfo> GetArtistInfo()
+        public Task<ArtistInfo> GetArtistInfo()
         {
             throw new NotImplementedException();
         }

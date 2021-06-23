@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Extensions;
-using Nebula.Media;
-using Nebula.Media.Events;
-using Nebula.Media.Extensions;
+using Nebula.Model.Events;
 using SQLite;
 
 namespace Nebula.Model
 {
     [Table("Playlists")]
-    public class Playlist : IPlaylist, IEnumerable<MediaInfo>
+    public class Playlist : IThumbnailSource, IEnumerable<MediaInfo>
     {
         private const           int             MaxNameLength        = 128;
         private const           int             MaxDescriptionLength = 92;
@@ -68,7 +66,7 @@ namespace Nebula.Model
         public                             string                            AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
         public MediaInfo this[int index] => Medias[index];
-        public IMediaInfo             GetMedia(int index)           => Medias[index];
+        public MediaInfo              GetMedia(int index)           => Medias[index];
         public bool                   Contains(MediaInfo mediaInfo) => Medias.Contains(mediaInfo);
         public IEnumerator<MediaInfo> GetEnumerator()               => Medias.GetEnumerator();
         IEnumerator IEnumerable.      GetEnumerator()               => GetEnumerator();

@@ -147,4 +147,25 @@
     <data name="global_shared_session" xml:space="preserve">
         <value>Shared Session</value>
     </data>
+    <data name="online_join" xml:space="preserve">
+        <value>Join Session</value>
+    </data>
+    <data name="online_ip" xml:space="preserve">
+        <value>IP Address</value>
+    </data>
+    <data name="online_port" xml:space="preserve">
+        <value>Server Port</value>
+    </data>
+    <data name="online_create" xml:space="preserve">
+        <value>Create Session</value>
+    </data>
+    <data name="online_size" xml:space="preserve">
+        <value>Session Size</value>
+    </data>
+    <data name="online_key" xml:space="preserve">
+        <value>Connection Key</value>
+    </data>
+    <data name="online_use_upnp" xml:space="preserve">
+        <value>Use UPNP</value>
+    </data>
 </root>

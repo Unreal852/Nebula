@@ -1,4 +1,4 @@
-﻿namespace Nebula.Media.Extensions
+﻿namespace Nebula.Core.Extensions
 {
     public static class ThumbnailSourceExtensions
     {

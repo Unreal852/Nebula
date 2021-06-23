@@ -1,4 +1,4 @@
-﻿namespace Nebula.Media.Player
+﻿namespace Nebula.Core.Player
 {
     /// <summary>
     ///     Represents the <see cref="IMediaPlayer" /> state

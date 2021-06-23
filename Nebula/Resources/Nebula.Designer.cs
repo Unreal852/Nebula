@@ -340,6 +340,69 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Session.
+        /// </summary>
+        public static string online_create {
+            get {
+                return ResourceManager.GetString("online_create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP Address.
+        /// </summary>
+        public static string online_ip {
+            get {
+                return ResourceManager.GetString("online_ip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join Session.
+        /// </summary>
+        public static string online_join {
+            get {
+                return ResourceManager.GetString("online_join", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Key.
+        /// </summary>
+        public static string online_key {
+            get {
+                return ResourceManager.GetString("online_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Port.
+        /// </summary>
+        public static string online_port {
+            get {
+                return ResourceManager.GetString("online_port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Session Size.
+        /// </summary>
+        public static string online_size {
+            get {
+                return ResourceManager.GetString("online_size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use UPNP.
+        /// </summary>
+        public static string online_use_upnp {
+            get {
+                return ResourceManager.GetString("online_use_upnp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By {0}.
         /// </summary>
         public static string playlist_by {

@@ -1,10 +1,11 @@
 ﻿using System;
+using Nebula.Model;
 
-namespace Nebula.Media.Player.Events
+namespace Nebula.Core.Player.Events
 {
     public class PlayerMediaChangedEventArgs : EventArgs
     {
-        public PlayerMediaChangedEventArgs(IPlaylist playlist, IMediaInfo oldMedia, IMediaInfo newMedia)
+        public PlayerMediaChangedEventArgs(Playlist playlist, MediaInfo oldMedia, MediaInfo newMedia)
         {
             Playlist = playlist;
             OldMedia = oldMedia;
@@ -14,16 +15,16 @@ namespace Nebula.Media.Player.Events
         /// <summary>
         ///     Currently Played <see cref="IPlaylist" />. This can be null if no playlist is being played.
         /// </summary>
-        public IPlaylist Playlist { get; }
+        public Playlist Playlist { get; }
 
         /// <summary>
         ///     Previous media <see cref="IMediaInfo" />. This can be null if there was no previous media.
         /// </summary>
-        public IMediaInfo OldMedia { get; }
+        public MediaInfo OldMedia { get; }
 
         /// <summary>
         ///     The new <see cref="IMediaInfo" /> being played. This can't be null.
         /// </summary>
-        public IMediaInfo NewMedia { get; }
+        public MediaInfo NewMedia { get; }
     }
 }

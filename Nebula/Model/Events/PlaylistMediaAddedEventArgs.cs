@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Nebula.Media.Events
+namespace Nebula.Model.Events
 {
     public class PlaylistMediaAddedEventArgs : EventArgs
     {
-        public PlaylistMediaAddedEventArgs(IPlaylist playlist, IMediaInfo mediaInfo, int mediaIndex)
+        public PlaylistMediaAddedEventArgs(Playlist playlist, MediaInfo mediaInfo, int mediaIndex)
         {
             Playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
             AddedMedia = mediaInfo ?? throw new ArgumentNullException(nameof(mediaInfo));
@@ -14,12 +14,12 @@ namespace Nebula.Media.Events
         /// <summary>
         ///     Modified Playlist.
         /// </summary>
-        public IPlaylist Playlist { get; }
+        public Playlist Playlist { get; }
 
         /// <summary>
         ///     New Media.
         /// </summary>
-        public IMediaInfo AddedMedia { get; }
+        public MediaInfo AddedMedia { get; }
 
         /// <summary>
         ///     New Media Insert Index.

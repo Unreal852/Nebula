@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Nebula.Core.Providers.Youtube.Extensions;
-using Nebula.Media;
 using Nebula.Model;
 using YoutubeExplode;
 using YoutubeExplode.Channels;
@@ -81,7 +80,7 @@ namespace Nebula.Core.Providers.Youtube
             return VideoToMediaInfo(await Youtube.Videos.GetAsync(VideoId.Parse(query)));
         }
 
-        public async Task<IArtistInfo> GetArtistInfo(string query, params object[] args)
+        public async Task<ArtistInfo> GetArtistInfo(string query, params object[] args)
         {
             Channel channel = await Youtube.Channels.GetAsync(ChannelId.Parse(query));
             (string LowRes, string MediumRes, string HighRes) thumbnails = channel.Thumbnails.GetThumbnails();
@@ -112,21 +111,21 @@ namespace Nebula.Core.Providers.Youtube
             return playlist;
         }
 
-        public async Task<Uri> GetAudioStreamUri(IMediaInfo mediaInfo, params object[] args)
+        public async Task<Uri> GetAudioStreamUri(MediaInfo mediaInfo, params object[] args)
         {
             StreamManifest manifest = await Youtube.Videos.Streams.GetManifestAsync(VideoId.Parse(mediaInfo.Id));
             AudioOnlyStreamInfo streamInfo = manifest.GetAudioOnlyStreams().OrderByDescending(stream => stream.Bitrate.BitsPerSecond).First();
             return new Uri(streamInfo.Url);
         }
 
-        public async Task<Uri> GetMuxedStreamUri(IMediaInfo mediaInfo, params object[] args)
+        public async Task<Uri> GetMuxedStreamUri(MediaInfo mediaInfo, params object[] args)
         {
             StreamManifest manifest = await Youtube.Videos.Streams.GetManifestAsync(VideoId.Parse(mediaInfo.Id));
             MuxedStreamInfo streamInfo = manifest.GetMuxedStreams().OrderByDescending(stream => stream.Bitrate.BitsPerSecond).First();
             return new Uri(streamInfo.Url);
         }
 
-        public async Task<Uri> GetVideoStreamUri(IMediaInfo mediaInfo, params object[] args)
+        public async Task<Uri> GetVideoStreamUri(MediaInfo mediaInfo, params object[] args)
         {
             StreamManifest manifest = await Youtube.Videos.Streams.GetManifestAsync(VideoId.Parse(mediaInfo.Id));
             IVideoStreamInfo streamInfo = manifest.GetVideoStreams().OrderByDescending(stream => stream.Bitrate.BitsPerSecond).First();

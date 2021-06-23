@@ -20,11 +20,12 @@ namespace Nebula
             Providers = new ProvidersManager();
             Playlists = new PlaylistsManager();
             Database = new NebulaDatabase();
-            // Order does not matter below 
-            Discord = new DiscordManager();
+            OnlineSession = new OnlineSessionManager();
             MediaPlayer = new NAudioPlayer();
+            Discord = new DiscordManager();
             CancellationTokenSource = new CancellationTokenSource();
 
+            Discord.UpdateActivity();
             Task.Run(() => AppTick(CancellationTokenSource.Token, 500));
         }
 
@@ -33,6 +34,7 @@ namespace Nebula
         public static   NebulaDatabase          Database                { get; }
         public static   PlaylistsManager        Playlists               { get; }
         public static   DiscordManager          Discord                 { get; }
+        public static   OnlineSessionManager    OnlineSession           { get; }
         internal static CancellationTokenSource CancellationTokenSource { get; }
 
         public static event EventHandler Tick;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Nebula.Media;
 using Nebula.Model;
 
 namespace Nebula.Core.Providers
@@ -84,7 +83,7 @@ namespace Nebula.Core.Providers
         /// <returns>
         ///     <see cref="IArtistInfo" />
         /// </returns>
-        Task<IArtistInfo> GetArtistInfo(string query, params object[] args);
+        Task<ArtistInfo> GetArtistInfo(string query, params object[] args);
 
         /// <summary>
         ///     Get playlist
@@ -104,7 +103,7 @@ namespace Nebula.Core.Providers
         /// <returns>
         ///     <see cref="Uri" />
         /// </returns>
-        Task<Uri> GetAudioStreamUri(IMediaInfo mediaInfo, params object[] args);
+        Task<Uri> GetAudioStreamUri(MediaInfo mediaInfo, params object[] args);
 
         /// <summary>
         ///     Get the muxed stream ( audio and video ) from the specified media
@@ -114,7 +113,7 @@ namespace Nebula.Core.Providers
         /// <returns>
         ///     <see cref="Uri" />
         /// </returns>
-        Task<Uri> GetMuxedStreamUri(IMediaInfo mediaInfo, params object[] args);
+        Task<Uri> GetMuxedStreamUri(MediaInfo mediaInfo, params object[] args);
 
         /// <summary>
         ///     Get the video stream from the specified media
@@ -124,6 +123,6 @@ namespace Nebula.Core.Providers
         /// <returns>
         ///     <see cref="Uri" />
         /// </returns>
-        Task<Uri> GetVideoStreamUri(IMediaInfo mediaInfo, params object[] args);
+        Task<Uri> GetVideoStreamUri(MediaInfo mediaInfo, params object[] args);
     }
 }

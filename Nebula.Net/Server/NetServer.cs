@@ -1,36 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Nebula.Net.Data;
 using Nebula.Net.Packet;
+using Nebula.Net.Packet.C2S;
 using Nebula.Net.Packet.S2C;
+using Nebula.Net.Server.Events;
 using Open.Nat;
 
 namespace Nebula.Net.Server
 {
     public class NetServer : NetWorker
     {
-        public NetServer(NetServerSettings settings)
+        private NetMediaInfo _currentMedia;
+
+        public NetServer()
         {
-            Settings = settings ?? NetServerSettings.Default;
             NetProcessor.SubscribeReusable<UserInfoPacket, NetServerClient>(OnReceiveUserInfos);
             NetProcessor.SubscribeReusable<UserMessagePacket, NetServerClient>(OnReceiveUserMessage);
+            NetProcessor.SubscribeReusable<PlayerOpenMediaPacket, NetServerClient>(OnReceiveOpenMedia);
+            NetProcessor.SubscribeReusable<PlayerReadyPacket, NetServerClient>(OnReceivePlayReady);
+            NetProcessor.SubscribeReusable<PlayerPausePacket, NetServerClient>(OnReceivePlayerPause);
+            NetProcessor.SubscribeReusable<PlayerResumePacket, NetServerClient>(OnReceivePlayerResume);
+            NetProcessor.SubscribeReusable<PlayerPositionPacket, NetServerClient>(OnReceivePlayerPosition);
         }
 
-        public  NetServerSettings                Settings          { get; }
+        public  NetServerSettings                Settings          { get; private set; }
         public  NatDevice                        NatDevice         { get; private set; }
         private Dictionary<int, NetServerClient> Clients           { get; } = new();
-        private NetMediaInfo                     CurrentMedia      { get; set; }
         private NetSessionInfo                   SessionInfo       { get; set; }
-        private TimeSpan                         LastMediaChange   { get; set; } = TimeSpan.Zero;
+        private DateTime                         LastMediaChange   { get; set; } = DateTime.UtcNow;
         private TimeSpan                         LastSessionChange { get; set; } = TimeSpan.Zero;
 
-        public async Task<bool> Start()
+        private NetMediaInfo CurrentMedia
         {
-            if (Settings.UseUpNp)
+            get => _currentMedia;
+            set
+            {
+                _currentMedia = value;
+                LastMediaChange = DateTime.UtcNow;
+            }
+        }
+
+        public event EventHandler<ClientConnectedEventArgs>    ClientConnected;
+        public event EventHandler<ClientDisconnectedEventArgs> ClientDisconnected;
+
+        public async Task<bool> Start(NetServerSettings settings = null)
+        {
+            Settings = settings ?? NetServerSettings.Default;
+            SessionInfo = new NetSessionInfo
+            {
+                Id = new Random().Next(1000, 100000),
+                ClientsCount = NetManager.ConnectedPeersCount,
+                MaxClients = Settings.MaxClients
+            };
+            if (Settings.UseUpnp)
             {
                 var discoverer = new NatDiscoverer();
                 var cts = new CancellationTokenSource(Settings.UpNpTimeOut);
@@ -43,17 +71,47 @@ namespace Nebula.Net.Server
             return NetManager.Start(Settings.ServerPort);
         }
 
-        public void Stop()
+        public async Task Stop()
         {
             NetManager.Stop(true);
+            await NatDevice.DeletePortMapAsync(await NatDevice.GetSpecificMappingAsync(Protocol.Udp, Settings.ServerPort));
+            NatDevice = null;
             Clients.Clear();
             CurrentMedia = default;
-            LastMediaChange = TimeSpan.Zero;
+            LastMediaChange = DateTime.Now;
+            LastSessionChange = TimeSpan.Zero;
         }
 
         public void BroadcastPacket<T>(T packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
             NetProcessor.Send(NetManager, packet, method);
+        }
+
+        public void SetAllNotReady()
+        {
+            foreach (var kvp in Clients)
+                kvp.Value.IsPlayReady = false;
+        }
+
+        public bool AreAllReady()
+        {
+            foreach (var kvp in Clients)
+            {
+                if (!kvp.Value.IsPlayReady)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public SessionInfoPacket GetSessionInfoPacket()
+        {
+            SessionInfoPacket packet = new SessionInfoPacket
+            {
+                SessionInfo = SessionInfo,
+                Users = Clients.Select(kvp => kvp.Value.UserInfo).ToArray()
+            };
+            return packet;
         }
 
         public NetServerClient GetClient(int id)
@@ -90,7 +148,10 @@ namespace Nebula.Net.Server
                 return;
             }
 
-            Clients.Add(peer.Id, new NetServerClient(peer));
+            var client = new NetServerClient(peer);
+            Clients.Add(peer.Id, client);
+            SendPacket(GetSessionInfoPacket(), peer);
+            ClientConnected?.Invoke(this, new ClientConnectedEventArgs(client));
         }
 
         public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
@@ -99,6 +160,7 @@ namespace Nebula.Net.Server
             if (serverClient == null)
                 return;
             BroadcastPacket(new UserDisconnectedPacket {User = serverClient.UserInfo});
+            ClientDisconnected?.Invoke(this, new ClientDisconnectedEventArgs(serverClient));
         }
 
         public override void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
@@ -123,12 +185,49 @@ namespace Nebula.Net.Server
         private void OnReceiveUserInfos(UserInfoPacket packet, NetServerClient client)
         {
             client.UserInfo = packet.UserInfo.WithId(client.Id);
-            BroadcastPacket(new UserInfoPacket {UserInfo = client.UserInfo});
+            if (!client.HasDefaultInfo)
+            {
+                client.HasDefaultInfo = true;
+                BroadcastPacket(new UserConnectedPacket {User = client.UserInfo});
+            }
+            else
+                BroadcastPacket(new UserInfoPacket {UserInfo = client.UserInfo});
         }
 
         private void OnReceiveUserMessage(UserMessagePacket packet, NetServerClient client)
         {
             BroadcastPacket(new UserMessagePacket {Sender = client.UserInfo, Message = packet.Message});
+        }
+
+        private void OnReceivePlayerPause(PlayerPausePacket packet, NetServerClient client)
+        {
+            BroadcastPacket(packet);
+        }
+
+        private void OnReceivePlayerResume(PlayerResumePacket packet, NetServerClient client)
+        {
+            BroadcastPacket(packet);
+        }
+
+        private void OnReceivePlayerPosition(PlayerPositionPacket packet, NetServerClient client)
+        {
+            BroadcastPacket(packet);
+        }
+
+        private void OnReceiveOpenMedia(PlayerOpenMediaPacket packet, NetServerClient client)
+        {
+            if ((DateTime.UtcNow - LastMediaChange).TotalMilliseconds < Settings.MediaChangeDelay)
+                return;
+            SetAllNotReady();
+            packet.Sender = client.UserInfo;
+            BroadcastPacket(packet);
+        }
+
+        private void OnReceivePlayReady(PlayerReadyPacket packet, NetServerClient client)
+        {
+            client.IsPlayReady = packet.IsReady;
+            if (AreAllReady())
+                BroadcastPacket(new PlayerPlayPacket());
         }
     }
 }

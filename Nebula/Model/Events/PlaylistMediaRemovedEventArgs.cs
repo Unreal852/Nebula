@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Nebula.Media.Events
+namespace Nebula.Model.Events
 {
     public class PlaylistMediaRemovedEventArgs : EventArgs
     {
-        public PlaylistMediaRemovedEventArgs(IPlaylist playlist, IMediaInfo mediaInfo)
+        public PlaylistMediaRemovedEventArgs(Playlist playlist, MediaInfo mediaInfo)
         {
             Playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
             AddedMedia = mediaInfo ?? throw new ArgumentNullException(nameof(mediaInfo));
@@ -13,11 +13,11 @@ namespace Nebula.Media.Events
         /// <summary>
         ///     Modified Playlist.
         /// </summary>
-        public IPlaylist Playlist { get; }
+        public Playlist Playlist { get; }
 
         /// <summary>
         ///     Removed Media.
         /// </summary>
-        public IMediaInfo AddedMedia { get; }
+        public MediaInfo AddedMedia { get; }
     }
 }

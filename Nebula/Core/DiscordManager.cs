@@ -1,8 +1,9 @@
-﻿using System;
-using HandyControl.Controls;
-using Nebula.Core.Extensions;
+﻿using Nebula.Core.Extensions;
+using Nebula.Core.Player.Events;
 using Nebula.Discord.SDK;
 using Nebula.Model;
+using Nebula.Net.Client;
+using Nebula.Net.Data;
 
 namespace Nebula.Core
 {
@@ -12,6 +13,7 @@ namespace Nebula.Core
         {
             NebulaClient.Tick += (_, _) => Discord.RunCallbacks();
             Discord.GetActivityManager().OnActivityJoin += OnActivityJoin;
+            NebulaClient.MediaPlayer.MediaChanged += OnMediaPlayerOnMediaChanged;
         }
 
         private Discord.SDK.Discord Discord { get; } = new(740292732794306690, (ulong) CreateFlags.Default);
@@ -21,32 +23,82 @@ namespace Nebula.Core
             Discord.GetActivityManager().ClearActivity(_ => { });
         }
 
-        public bool SetActivity(MediaInfo mediaInfo, TimeSpan currentPosition = default)
+        public bool UpdateActivity()
         {
-            Activity activity = new Activity
+            (string Name, string State, string Details) activityInfo = GetActivityInfos();
+            ActivityParty party = GetActivityParty();
+            ActivitySecrets secrets = GetActivityPartySecrets();
+            ActivityTimestamps timestamps = GetActivityTimeStamps();
+            var activity = new Activity
             {
-                Name = mediaInfo.Title,
-                State = "Listening",
-                Details = $"{mediaInfo.Title} - {mediaInfo.Author}",
+                Name = activityInfo.Name,
+                State = activityInfo.State,
+                Details = activityInfo.Details,
                 Type = ActivityType.Listening,
                 Instance = true,
-                Timestamps =
-                {
-                    Start = (long) currentPosition.ToUnixMilliseconds(),
-                    End = (long) (mediaInfo.Duration - currentPosition).ToUnixMilliseconds()
-                },
-                Assets = {LargeImage = "nebula_icon", LargeText = $"Listening {mediaInfo.Title}"},
-                Party = {Id = "dummy", Size = {CurrentSize = 1, MaxSize = 4}},
-                Secrets = {Join = "127.0.0.1"}
+                Timestamps = timestamps,
+                Party = party,
+                Secrets = secrets,
+                Assets = {LargeImage = "nebula_icon", LargeText = $"Listening {activityInfo.Details}"}
             };
-            bool success = false;
+            var success = false;
             Discord.GetActivityManager().UpdateActivity(activity, result => { success = result == Result.Ok; });
             return success;
         }
 
+        private (string Name, string State, string Details) GetActivityInfos()
+        {
+            MediaInfo mediaInfo = NebulaClient.MediaPlayer.CurrentMedia;
+            var name = "";
+            string state = mediaInfo == null ? "Idle" : "Listening";
+            string details = mediaInfo == null ? "" : $"{mediaInfo.Title} - {mediaInfo.Author}";
+            return (name, state, details);
+        }
+
+        private ActivityTimestamps GetActivityTimeStamps()
+        {
+            MediaInfo mediaInfo = NebulaClient.MediaPlayer.CurrentMedia;
+            if (mediaInfo == null)
+                return default;
+            return new ActivityTimestamps
+            {
+                Start = (long) NebulaClient.MediaPlayer.Position.ToUnixMilliseconds(),
+                End = (long) (mediaInfo.Duration - NebulaClient.MediaPlayer.Position).ToUnixMilliseconds()
+            };
+        }
+
+        private ActivityParty GetActivityParty()
+        {
+            NetSessionInfo sessionInfo = NebulaClient.OnlineSession.SessionInfo;
+            if (sessionInfo.Id == -1)
+                return default;
+            return new ActivityParty {Id = sessionInfo.Id.ToString(), Size = {CurrentSize = sessionInfo.ClientsCount, MaxSize = sessionInfo.MaxClients}};
+        }
+
+        private ActivitySecrets GetActivityPartySecrets()
+        {
+            NetSessionInfo sessionInfo = NebulaClient.OnlineSession.SessionInfo;
+            if (sessionInfo.Id == -1)
+                return default;
+            NetHostClient hostClient = NebulaClient.OnlineSession.HostClient;
+            string ip = hostClient.Server.IsRunning ? hostClient.IpAddress : hostClient.Client.ServerPeer.EndPoint.Address.ToString();
+            int port = NebulaClient.OnlineSession.HostClient.Client.ServerPeer.EndPoint.Port;
+            return new ActivitySecrets {Join = $"{ip}:{port}"};
+        }
+
         private void OnActivityJoin(string secret)
         {
-            NebulaClient.Invoke(() => Growl.Info("DISCORD JOIN : " + secret));
+            string[] ipPort = secret.Split(':');
+            if (ipPort.Length <= 1)
+                return;
+            string ip = ipPort[0];
+            int port = int.Parse(ipPort[1]);
+            NebulaClient.OnlineSession.HostClient.Client.Connect(ip, port);
+        }
+
+        private void OnMediaPlayerOnMediaChanged(object sender, PlayerMediaChangedEventArgs e)
+        {
+            UpdateActivity();
         }
     }
 }

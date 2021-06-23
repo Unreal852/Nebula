@@ -1,10 +1,11 @@
 ﻿using System;
+using Nebula.Model;
 
-namespace Nebula.Media.Player.Events
+namespace Nebula.Core.Player.Events
 {
     public class PlayerPlaylistChangedEventArgs : EventArgs
     {
-        public PlayerPlaylistChangedEventArgs(IPlaylist old, IPlaylist @new)
+        public PlayerPlaylistChangedEventArgs(Playlist old, Playlist @new)
         {
             OldPlaylist = old;
             NewPlaylist = @new;
@@ -13,11 +14,11 @@ namespace Nebula.Media.Player.Events
         /// <summary>
         ///     The old <see cref="IPlaylist" />, this can be null
         /// </summary>
-        public IPlaylist OldPlaylist { get; }
+        public Playlist OldPlaylist { get; }
 
         /// <summary>
         ///     The new <see cref="IPlaylist" />
         /// </summary>
-        public IPlaylist NewPlaylist { get; }
+        public Playlist NewPlaylist { get; }
     }
 }

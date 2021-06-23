@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula", "Nebula\Nebula.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Utils", "Nebula.Utils\Nebula.Utils.csproj", "{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Media", "Nebula.Media\Nebula.Media.csproj", "{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Discord", "Nebula.Discord\Nebula.Discord.csproj", "{39629B6B-FA2B-403B-944B-322D16AE3230}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebula.Net", "Nebula.Net\Nebula.Net.csproj", "{F233DAE7-449B-4EFC-A0A8-4EBE76F7F6A2}"
@@ -24,10 +22,6 @@ Global
 		{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7BA7C49-D9C7-40B0-9592-F6A9C6B82CBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47C90521-63C0-4AB8-AF38-15D8D9EFF57B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39629B6B-FA2B-403B-944B-322D16AE3230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39629B6B-FA2B-403B-944B-322D16AE3230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39629B6B-FA2B-403B-944B-322D16AE3230}.Release|Any CPU.ActiveCfg = Release|Any CPU

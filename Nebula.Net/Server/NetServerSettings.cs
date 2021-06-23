@@ -8,14 +8,14 @@
         {
         }
 
-        public NetServerSettings(int maxClients, int serverPort, int badPacketsLimit, int mediaChangeDelay, int upNpTimeOut, bool useUpNp, string key)
+        public NetServerSettings(int maxClients, int serverPort, int badPacketsLimit, int mediaChangeDelay, int upNpTimeOut, bool useUpnp, string key)
         {
             MaxClients = maxClients;
             ServerPort = serverPort;
             BadPacketsLimit = badPacketsLimit;
             MediaChangeDelay = mediaChangeDelay;
             UpNpTimeOut = upNpTimeOut;
-            UseUpNp = useUpNp;
+            UseUpnp = useUpnp;
             Key = key;
         }
 
@@ -24,7 +24,7 @@
         public int    BadPacketsLimit  { get; init; }
         public int    MediaChangeDelay { get; init; }
         public int    UpNpTimeOut      { get; init; }
-        public bool   UseUpNp          { get; init; }
+        public bool   UseUpnp          { get; init; }
         public string Key              { get; init; }
     }
 }

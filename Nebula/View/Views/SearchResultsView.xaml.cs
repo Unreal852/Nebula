@@ -1,7 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using HandyControl.Controls;
-using Nebula.Media;
+﻿using System.Windows.Controls;
 using Nebula.Model;
 using Nebula.ViewModel;
 

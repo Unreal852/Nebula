@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Nebula.Media;
-using Nebula.Media.Extensions;
+using Nebula.Core;
+using Nebula.Core.Extensions;
 using SQLite;
 
 namespace Nebula.Model
 {
     [Table("Artists")]
-    public class ArtistInfo : IArtistInfo
+    public class ArtistInfo : IThumbnailSource
     {
         public ArtistInfo()
         {
@@ -32,7 +32,7 @@ namespace Nebula.Model
         public                       string AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
         public                       string AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
-        public IAsyncEnumerable<IMediaInfo> GetMedias()
+        public IAsyncEnumerable<MediaInfo> GetMedias()
         {
             throw new System.NotImplementedException();
         }

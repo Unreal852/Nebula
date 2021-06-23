@@ -6,7 +6,6 @@ using HandyControl.Tools.Extension;
 using LiteMVVM;
 using LiteMVVM.Command;
 using LiteMVVM.Navigation;
-using Nebula.Media.Extensions;
 using Nebula.Model;
 using Nebula.Utils.Collections.Paging;
 using Nebula.View;
@@ -93,7 +92,7 @@ namespace Nebula.ViewModel
 
         public string Thumbnail
         {
-            get => Playlist?.AnyThumbnailFromHighest();
+            get => Playlist?.AnyThumbnailFromHighest;
             set
             {
                 if (Playlist == null)

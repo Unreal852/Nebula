@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nebula.Media.Player.Events
+namespace Nebula.Core.Player.Events
 {
     public class PlayerShuffleChangedEventArgs : EventArgs
     {

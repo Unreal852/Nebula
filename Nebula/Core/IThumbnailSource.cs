@@ -1,4 +1,4 @@
-﻿namespace Nebula.Media
+﻿namespace Nebula.Core
 {
     public interface IThumbnailSource
     {

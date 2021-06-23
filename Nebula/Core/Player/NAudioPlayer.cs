@@ -2,27 +2,26 @@
 using System.Threading.Tasks;
 using HandyControl.Controls;
 using NAudio.Wave;
-using Nebula.Core.Extensions;
-using Nebula.Media;
-using Nebula.Media.Player;
-using Nebula.Media.Player.Events;
+using Nebula.Core.Player.Events;
 using Nebula.Model;
+using Nebula.Net.Data;
+using Nebula.Net.Packet;
 
 #pragma warning disable 4014
 
 namespace Nebula.Core.Player
 {
-    public class NAudioPlayer : IMediaPlayer
+    public class NAudioPlayer
     {
-        private IMediaInfo _currentMedia;
-        private IPlaylist  _currentPlaylist;
-        private TimeSpan   _lastPosition = TimeSpan.Zero;
-        private bool       _shuffle;
-        private bool       _repeat;
-        private bool       _stoppedByUSer;
-        private bool       _isMuted;
-        private int        _volume;
-        private int        _volumeBeforeMute;
+        private MediaInfo _currentMedia;
+        private Playlist  _currentPlaylist;
+        private bool      _isMuted;
+        private TimeSpan  _lastPosition = TimeSpan.Zero;
+        private bool      _repeat;
+        private bool      _shuffle;
+        private bool      _stoppedByUSer;
+        private int       _volume;
+        private int       _volumeBeforeMute;
 
         public NAudioPlayer()
         {
@@ -55,23 +54,23 @@ namespace Nebula.Core.Player
             }
         }
 
-        public IMediaInfo CurrentMedia
+        public MediaInfo CurrentMedia
         {
             get => _currentMedia;
             private set
             {
-                IMediaInfo oldMedia = _currentMedia;
+                MediaInfo oldMedia = _currentMedia;
                 _currentMedia = value;
                 MediaChanged?.Invoke(this, new PlayerMediaChangedEventArgs(null, oldMedia, value));
             }
         }
 
-        public IPlaylist CurrentPlaylist
+        public Playlist CurrentPlaylist
         {
             get => _currentPlaylist;
             private set
             {
-                IPlaylist oldPlaylist = _currentPlaylist;
+                Playlist oldPlaylist = _currentPlaylist;
                 _currentPlaylist = value;
                 PlaylistChanged?.Invoke(this, new PlayerPlaylistChangedEventArgs(oldPlaylist, value));
             }
@@ -136,12 +135,26 @@ namespace Nebula.Core.Player
         public event EventHandler<PlayerRepeatChangedEventArgs>   RepeatChanged;
         public event EventHandler<PlayerPositionChangedEventArgs> PositionChanged;
 
-        public async Task OpenMedia(IMediaInfo mediaInfo, bool byUser = true, bool fromRemote = false)
+        public async Task OpenMedia(MediaInfo mediaInfo, bool byUser = true, bool fromRemote = false)
         {
             if (mediaInfo == null)
                 return;
             try
             {
+                if (NebulaClient.OnlineSession.IsClientConnected && !fromRemote)
+                {
+                    NebulaClient.OnlineSession.SendClientPacket(new PlayerOpenMediaPacket
+                    {
+                        Media = new NetMediaInfo
+                        {
+                            Id = mediaInfo.Id,
+                            Author = mediaInfo.Author,
+                            Title = mediaInfo.Title
+                        }
+                    });
+                    return;
+                }
+
                 Stop(byUser);
                 SoundOut.Prepare(await mediaInfo.GetAudioStreamUri());
                 if (SoundOut.IsReady)
@@ -160,12 +173,12 @@ namespace Nebula.Core.Player
             Play();
         }
 
-        public async Task OpenPlaylist(IPlaylist playlist)
+        public async Task OpenPlaylist(Playlist playlist)
         {
             if (playlist == null)
                 return;
             CurrentPlaylist = playlist;
-            MediaQueue.Enqueue((Playlist) playlist);
+            MediaQueue.Enqueue(playlist);
             await OpenMedia(MediaQueue.Dequeue(Shuffle));
         }
 
@@ -183,9 +196,11 @@ namespace Nebula.Core.Player
         {
             if (IsPaused || !SoundOut.IsReady)
                 return;
+            if (NebulaClient.OnlineSession.IsClientConnected && !fromRemote)
+                return;
             _stoppedByUSer = false;
             SoundOut.Out.Play();
-            NebulaClient.Discord.SetActivity((MediaInfo) CurrentMedia, Position);
+            NebulaClient.Discord.UpdateActivity();
             StateChanged?.Invoke(this, new PlayerStateChangedEventArgs(State));
         }
 
@@ -193,6 +208,12 @@ namespace Nebula.Core.Player
         {
             if (IsIdle || IsPaused || !SoundOut.IsReady)
                 return;
+            if (NebulaClient.OnlineSession.IsClientConnected && !fromRemote)
+            {
+                NebulaClient.OnlineSession.SendClientPacket(new PlayerPausePacket());
+                return;
+            }
+
             SoundOut.Out.Pause();
             StateChanged?.Invoke(this, new PlayerStateChangedEventArgs(State));
         }
@@ -201,6 +222,12 @@ namespace Nebula.Core.Player
         {
             if (IsIdle || IsPlaying || !SoundOut.IsReady)
                 return;
+            if (NebulaClient.OnlineSession.IsClientConnected && !fromRemote)
+            {
+                NebulaClient.OnlineSession.SendClientPacket(new PlayerResumePacket());
+                return;
+            }
+
             SoundOut.Out.Play();
             StateChanged?.Invoke(this, new PlayerStateChangedEventArgs(State));
         }
@@ -218,8 +245,14 @@ namespace Nebula.Core.Player
         {
             if (!SoundOut.IsReady)
                 return;
+            if (NebulaClient.OnlineSession.IsClientConnected && !fromRemote)
+            {
+                NebulaClient.OnlineSession.SendClientPacket(new PlayerPositionPacket {Position = position});
+                return;
+            }
+
             SoundOut.Reader.CurrentTime = TimeSpan.FromSeconds(position);
-            NebulaClient.Discord.SetActivity((MediaInfo) CurrentMedia, TimeSpan.FromSeconds(position));
+            NebulaClient.Discord.UpdateActivity();
         }
 
         private void OnMediaStopped(object sender, StoppedEventArgs e)

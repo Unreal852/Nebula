@@ -10,10 +10,11 @@ namespace Nebula.Net.Server
             Peer = peer;
         }
 
-        public NetPeer     Peer        { get; }
-        public NetUserInfo UserInfo    { get; set; }
-        public bool        IsPlayReady { get; set; }
-        public int         BadPackets  { get; set; }
-        public int         Id          => Peer?.Id ?? -1;
+        public NetPeer     Peer           { get; }
+        public NetUserInfo UserInfo       { get; set; }
+        public bool        HasDefaultInfo { get; set; }
+        public bool        IsPlayReady    { get; set; }
+        public int         BadPackets     { get; set; }
+        public int         Id             => Peer?.Id ?? -1;
     }
 }

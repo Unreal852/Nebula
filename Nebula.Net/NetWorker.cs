@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using LiteNetLib;
 using LiteNetLib.Utils;
@@ -20,6 +21,9 @@ namespace Nebula.Net
 
         public NetManager         NetManager   { get; }
         public NetPacketProcessor NetProcessor { get; }
+        public bool               IsRunning    => NetManager.IsRunning;
+
+        public EventHandler<Exception> ReceiveError;
 
         public void SendPacket<T>(T packet, NetPeer user, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
@@ -44,7 +48,14 @@ namespace Nebula.Net
 
         public virtual void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
         {
-            NetProcessor.ReadAllPackets(reader);
+            try
+            {
+                NetProcessor.ReadAllPackets(reader);
+            }
+            catch (Exception e)
+            {
+                ReceiveError?.Invoke(this, e);
+            }
         }
 
         public virtual void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)

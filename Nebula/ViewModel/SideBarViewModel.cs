@@ -69,6 +69,7 @@ namespace Nebula.ViewModel
 
         private async Task NavigateOnlineSession()
         {
+            NebulaClient.ShowDialog<OnlineSessionJoinCreateDialogView>();
         }
     }
 }

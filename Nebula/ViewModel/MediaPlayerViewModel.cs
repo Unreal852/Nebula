@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using LiteMVVM;
 using LiteMVVM.Command;
-using Nebula.Media;
-using Nebula.Media.Player;
+using Nebula.Core.Player;
+using Nebula.Model;
 
 namespace Nebula.ViewModel
 {
@@ -34,10 +34,10 @@ namespace Nebula.ViewModel
         public ICommand BackwardCommand  { get; }
         public ICommand PlayPauseCommand { get; }
 
-        public IMediaPlayer MediaPlayer => NebulaClient.MediaPlayer;
+        public NAudioPlayer MediaPlayer => NebulaClient.MediaPlayer;
 
-        public IMediaInfo CurrentMedia => MediaPlayer.CurrentMedia;
-        public TimeSpan   Duration     => MediaPlayer.Duration;
+        public MediaInfo CurrentMedia => MediaPlayer.CurrentMedia;
+        public TimeSpan  Duration     => MediaPlayer.Duration;
 
         public bool IsPlaying
         {
