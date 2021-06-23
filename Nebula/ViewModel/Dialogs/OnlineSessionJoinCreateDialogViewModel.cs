@@ -1,4 +1,6 @@
 ﻿using Nebula.Net.Server;
+using Nebula.View;
+using Nebula.View.Views;
 
 namespace Nebula.ViewModel.Dialogs
 {
@@ -70,11 +72,12 @@ namespace Nebula.ViewModel.Dialogs
                     ServerPort = Port,
                     UseUpnp = UseUpnp,
                     BadPacketsLimit = 100,
-                    MediaChangeDelay = 1500,
+                    MediaChangeDelay = 2000,
                     UpNpTimeOut = 10000
                 });
             }
 
+            Messenger.Broadcast(this, NavigationInfo.Create(typeof(OnlineSessionView), null, false));
             Close();
         }
     }

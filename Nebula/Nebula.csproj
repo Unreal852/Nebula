@@ -5,6 +5,12 @@
         <TargetFramework>net5.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>Resources/nebula_icon.ico</ApplicationIcon>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,8 +19,9 @@
         <PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.3.0"/>
         <PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.3.0"/>
         <PackageReference Include="NAudio" Version="2.0.1"/>
+        <PackageReference Include="Octokit" Version="0.50.0"/>
         <PackageReference Include="sqlite-net-pcl" Version="1.8.0-beta"/>
-        <PackageReference Include="YoutubeExplode" Version="6.0.2"/>
+        <PackageReference Include="YoutubeExplode" Version="6.0.3"/>
     </ItemGroup>
 
     <ItemGroup>

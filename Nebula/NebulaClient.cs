@@ -8,6 +8,7 @@ using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Player;
 using Nebula.Core.Providers;
+using Nebula.Core.Update;
 using Nebula.View.Views.Dialogs;
 using Nebula.ViewModel.Dialogs;
 
@@ -23,9 +24,11 @@ namespace Nebula
             OnlineSession = new OnlineSessionManager();
             MediaPlayer = new NAudioPlayer();
             Discord = new DiscordManager();
+            UpdateManager = new UpdateManager();
             CancellationTokenSource = new CancellationTokenSource();
 
             Discord.UpdateActivity();
+            UpdateManager.CheckForUpdateNotify();
             Task.Run(() => AppTick(CancellationTokenSource.Token, 500));
         }
 
@@ -35,6 +38,7 @@ namespace Nebula
         public static   PlaylistsManager        Playlists               { get; }
         public static   DiscordManager          Discord                 { get; }
         public static   OnlineSessionManager    OnlineSession           { get; }
+        public static   UpdateManager           UpdateManager           { get; }
         internal static CancellationTokenSource CancellationTokenSource { get; }
 
         public static event EventHandler Tick;

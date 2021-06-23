@@ -137,4 +137,10 @@
     <data name="online_use_upnp" xml:space="preserve">
         <value>Utiliser UPNP</value>
     </data>
+    <data name="update_available" xml:space="preserve">
+        <value>Mise a jour {0} Disponible ! Voulez vous la télécharger ?</value>
+    </data>
+    <data name="update_update_now" xml:space="preserve">
+        <value>Mettre a jour</value>
+    </data>
 </root>

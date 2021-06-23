@@ -1,4 +1,5 @@
-﻿using LiteNetLib;
+﻿using HandyControl.Controls;
+using LiteNetLib;
 using Nebula.Core.Providers.Youtube;
 using Nebula.Model;
 using Nebula.Net.Client;
@@ -55,6 +56,7 @@ namespace Nebula.Core
         private void OnClientDisconnected(object sender, DisconnectedEventArgs e)
         {
             SessionInfo = NetSessionInfo.Default;
+            Growl.Warning($"Disconnected : {e.Info.Reason}");
         }
 
         private void OnReceiveSessionInfoPacket(SessionInfoPacket packet)

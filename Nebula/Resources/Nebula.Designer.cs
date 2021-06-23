@@ -509,5 +509,23 @@ namespace Nebula.Resources {
                 return ResourceManager.GetString("playlist_importing", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update {0} Available ! Would you like to download it ?.
+        /// </summary>
+        public static string update_available {
+            get {
+                return ResourceManager.GetString("update_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Now.
+        /// </summary>
+        public static string update_update_now {
+            get {
+                return ResourceManager.GetString("update_update_now", resourceCulture);
+            }
+        }
     }
 }

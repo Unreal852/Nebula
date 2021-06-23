@@ -69,7 +69,10 @@ namespace Nebula.ViewModel
 
         private async Task NavigateOnlineSession()
         {
-            NebulaClient.ShowDialog<OnlineSessionJoinCreateDialogView>();
+            if (NebulaClient.OnlineSession.IsClientConnected)
+                Messenger.Broadcast(this, NavigationInfo.Create(typeof(OnlineSessionView), null, false));
+            else
+                NebulaClient.ShowDialog<OnlineSessionJoinCreateDialogView>();
         }
     }
 }

@@ -11,20 +11,33 @@ namespace Nebula.Core
     {
         public DiscordManager()
         {
-            NebulaClient.Tick += (_, _) => Discord.RunCallbacks();
-            Discord.GetActivityManager().OnActivityJoin += OnActivityJoin;
-            NebulaClient.MediaPlayer.MediaChanged += OnMediaPlayerOnMediaChanged;
+            try
+            {
+                Discord = new Discord.SDK.Discord(740292732794306690, (ulong) CreateFlags.NoRequireDiscord);
+                NebulaClient.Tick += (_, _) => Discord.RunCallbacks();
+                Discord.GetActivityManager().OnActivityJoin += OnActivityJoin;
+                NebulaClient.MediaPlayer.MediaChanged += OnMediaPlayerOnMediaChanged;
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
-        private Discord.SDK.Discord Discord { get; } = new(740292732794306690, (ulong) CreateFlags.Default);
+        private Discord.SDK.Discord Discord  { get; }
+        private bool                IsActive => Discord != null;
 
         public void ClearActivity()
         {
+            if (!IsActive)
+                return;
             Discord.GetActivityManager().ClearActivity(_ => { });
         }
 
         public bool UpdateActivity()
         {
+            if (!IsActive)
+                return false;
             (string Name, string State, string Details) activityInfo = GetActivityInfos();
             ActivityParty party = GetActivityParty();
             ActivitySecrets secrets = GetActivityPartySecrets();
