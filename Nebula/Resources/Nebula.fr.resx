@@ -149,4 +149,10 @@
     <data name="online_send_message" xml:space="preserve">
         <value>Envoyer</value>
     </data>
+    <data name="online_copy_address" xml:space="preserve">
+        <value>Copier l'Adresse</value>
+    </data>
+    <data name="online_leave" xml:space="preserve">
+        <value>Déconnexion</value>
+    </data>
 </root>

@@ -11,7 +11,7 @@ namespace Nebula.Net.Client
         }
 
         public NetPeer ServerPeer  { get; private set; }
-        public bool    IsConnected => ServerPeer != null;
+        public bool    IsConnected => ServerPeer != null && IsRunning;
 
         public event EventHandler<ConnectedEventArgs>    Connected;
         public event EventHandler<DisconnectedEventArgs> Disconnected;
@@ -38,16 +38,7 @@ namespace Nebula.Net.Client
 
         public override void OnPeerConnected(NetPeer peer)
         {
-            ServerPeer = peer; /*
-            SendPacket(new UserInfoPacket
-            {
-                UserInfo = 
-                {
-                    Username = "TestUser",
-                    AvatarUrl = ""
-                }
-            }); */
-
+            ServerPeer = peer;
             Connected?.Invoke(this, new ConnectedEventArgs());
         }
 

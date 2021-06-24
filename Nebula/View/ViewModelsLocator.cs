@@ -6,6 +6,13 @@ namespace Nebula.View
 {
     public class ViewModelsLocator
     {
+        public static ViewModelsLocator Instance { get; private set; }
+
+        public ViewModelsLocator()
+        {
+            Instance = this;
+        }
+
         private MainWindowViewModel    _mainWindowViewModel;
         private MediaPlayerViewModel   _mediaPlayerViewModel;
         private MediasQueueViewModel   _mediasQueueViewModel;

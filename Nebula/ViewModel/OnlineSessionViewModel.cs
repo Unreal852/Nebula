@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using LiteMVVM;
 using LiteMVVM.Command;
@@ -8,6 +9,8 @@ using Nebula.Model;
 using Nebula.Net.Client.Events;
 using Nebula.Net.Data;
 using Nebula.Net.Packet;
+using Nebula.View;
+using Nebula.View.Views;
 
 namespace Nebula.ViewModel
 {
@@ -19,6 +22,8 @@ namespace Nebula.ViewModel
         {
             SendMessageCommand = new RelayCommand(SendMessage);
             ClearMessagesCommand = new RelayCommand(ClearMessages);
+            CopyAddressCommand = new RelayCommand(CopyAddress);
+            DisconnectCommand = new RelayCommand(Disconnect);
             Session.SessionInfoChanged += OnSessionInfoChanged;
             Session.NewMessage += OnNewMessage;
             Session.UserConnected += OnUserConnected;
@@ -29,6 +34,8 @@ namespace Nebula.ViewModel
 
         public ICommand                          SendMessageCommand   { get; }
         public ICommand                          ClearMessagesCommand { get; }
+        public ICommand                          CopyAddressCommand   { get; }
+        public ICommand                          DisconnectCommand    { get; }
         public ObservableCollection<UserMessage> Messages             { get; } = new();
         public ObservableCollection<NetUserInfo> Users                { get; } = new();
         public OnlineSessionManager              Session              => NebulaClient.OnlineSession;
@@ -53,11 +60,24 @@ namespace Nebula.ViewModel
             Messages.Clear();
         }
 
+        private void Disconnect()
+        {
+            NebulaClient.OnlineSession.HostClient.StopAndDisconnect();
+            OnDisconnected(null, null);
+        }
+
+        private void CopyAddress()
+        {
+            Clipboard.SetText(NebulaClient.OnlineSession.IpEndPoint.ToString());
+        }
+
         private void OnSessionInfoChanged(object sender, SessionInfoChangedEventArgs e)
         {
             NebulaClient.Invoke(() =>
             {
                 Users.Clear();
+                if (e.Users == null)
+                    return;
                 foreach (NetUserInfo user in e.Users)
                 {
                     if (string.IsNullOrWhiteSpace(user.Username))
@@ -97,6 +117,8 @@ namespace Nebula.ViewModel
 
         private void OnDisconnected(object sender, DisconnectedEventArgs e)
         {
+            if (ViewModelsLocator.Instance.MainWindowViewModel.IsCurrentPage(typeof(OnlineSessionView)))
+                NebulaClient.Invoke(() => Messenger.Broadcast(this, NavigationInfo.Create(typeof(HomeView), null, true)));
         }
     }
 }

@@ -349,6 +349,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy Address.
+        /// </summary>
+        public static string online_copy_address {
+            get {
+                return ResourceManager.GetString("online_copy_address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Session.
         /// </summary>
         public static string online_create {
@@ -381,6 +390,15 @@ namespace Nebula.Resources {
         public static string online_key {
             get {
                 return ResourceManager.GetString("online_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string online_leave {
+            get {
+                return ResourceManager.GetString("online_leave", resourceCulture);
             }
         }
         

@@ -180,4 +180,10 @@
     <data name="online_clear_messages" xml:space="preserve">
         <value>Clear</value>
     </data>
+    <data name="online_copy_address" xml:space="preserve">
+        <value>Copy Address</value>
+    </data>
+    <data name="online_leave" xml:space="preserve">
+        <value>Disconnect</value>
+    </data>
 </root>

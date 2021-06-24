@@ -77,11 +77,6 @@ namespace Nebula.Net.Server
             LastSessionChange = TimeSpan.Zero;
         }
 
-        public void BroadcastPacket<T>(T packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
-        {
-            NetProcessor.Send(NetManager, packet, method);
-        }
-
         public void SetAllNotReady()
         {
             foreach (var kvp in Clients)

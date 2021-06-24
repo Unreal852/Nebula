@@ -1,6 +1,5 @@
-﻿using Nebula.Net.Server;
-using Nebula.View;
-using Nebula.View.Views;
+﻿using System.Net;
+using Nebula.Net.Server;
 
 namespace Nebula.ViewModel.Dialogs
 {
@@ -24,7 +23,20 @@ namespace Nebula.ViewModel.Dialogs
         public string IpAddress
         {
             get => _ipAddress;
-            set => Set(ref _ipAddress, value);
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value) && value.Contains(":"))
+                {
+                    string[] split = value.Split(':');
+                    if (split.Length == 2)
+                    {
+                        Set(ref _ipAddress, split[0]);
+                        Port = int.Parse(split[1]);
+                    }
+                }
+                else
+                    Set(ref _ipAddress, value);
+            }
         }
 
         public string Key
@@ -61,6 +73,8 @@ namespace Nebula.ViewModel.Dialogs
         {
             if (TabIndex == 0) // Join
             {
+                if (!IPAddress.TryParse(IpAddress, out _))
+                    return;
                 NebulaClient.OnlineSession.HostClient.Connect(IpAddress, Port, Key);
             }
             else // Create
@@ -77,7 +91,6 @@ namespace Nebula.ViewModel.Dialogs
                 });
             }
 
-            Messenger.Broadcast(this, NavigationInfo.Create(typeof(OnlineSessionView), null, false));
             Close();
         }
     }

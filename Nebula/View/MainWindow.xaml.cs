@@ -44,8 +44,8 @@ namespace Nebula.View
                     break;
                 case "x":
                 {
-                    Visibility = Visibility.Collapsed;
-                    // Close();
+                    //Visibility = Visibility.Collapsed; Todo: enable when settings will done
+                    Close();
                     break;
                 }
             }

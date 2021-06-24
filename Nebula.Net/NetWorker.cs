@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using LiteNetLib;
@@ -27,7 +28,16 @@ namespace Nebula.Net
 
         public void SendPacket<T>(T packet, NetPeer user, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
+            if (!IsRunning || packet == null || user == null)
+                return;
             NetProcessor.Send(user, packet, method);
+        }
+
+        public void BroadcastPacket<T>(T packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where T : class, new()
+        {
+            if (!IsRunning || packet == null)
+                return;
+            NetProcessor.Send(NetManager, packet, method);
         }
 
         public virtual void OnConnectionRequest(ConnectionRequest request)
@@ -55,6 +65,8 @@ namespace Nebula.Net
             catch (Exception e)
             {
                 ReceiveError?.Invoke(this, e);
+                Debug.Print(e.Message);
+                Debug.Print(e.StackTrace);
             }
         }
 

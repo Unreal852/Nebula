@@ -43,6 +43,11 @@ namespace Nebula.ViewModel
             private set => Set(ref _currentPage, value);
         }
 
+        public bool IsCurrentPage(Type pageType)
+        {
+            return CurrentPage?.GetType() == pageType;
+        }
+
         private void SwitchTheme()
         {
             if (ThemeManager.Current.ApplicationTheme == ApplicationTheme.Light)

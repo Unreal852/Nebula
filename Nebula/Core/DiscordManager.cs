@@ -1,8 +1,8 @@
-﻿using Nebula.Core.Extensions;
+﻿using System.Net;
+using Nebula.Core.Extensions;
 using Nebula.Core.Player.Events;
 using Nebula.Discord.SDK;
 using Nebula.Model;
-using Nebula.Net.Client;
 using Nebula.Net.Data;
 
 namespace Nebula.Core
@@ -20,7 +20,7 @@ namespace Nebula.Core
             }
             catch
             {
-                // ignored
+                // ignored, this commonly means that discord is not running
             }
         }
 
@@ -93,10 +93,8 @@ namespace Nebula.Core
             NetSessionInfo sessionInfo = NebulaClient.OnlineSession.SessionInfo;
             if (sessionInfo.Id == -1)
                 return default;
-            NetHostClient hostClient = NebulaClient.OnlineSession.HostClient;
-            string ip = hostClient.Server.IsRunning ? hostClient.IpAddress : hostClient.Client.ServerPeer.EndPoint.Address.ToString();
-            int port = NebulaClient.OnlineSession.HostClient.Client.ServerPeer.EndPoint.Port;
-            return new ActivitySecrets {Join = $"{ip}:{port}"};
+            IPEndPoint endPoint = NebulaClient.OnlineSession.IpEndPoint;
+            return new ActivitySecrets {Join = $"{endPoint.Address}:{endPoint.Port}"};
         }
 
         private void OnActivityJoin(string secret)

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using HandyControl.Controls;
+using LiteMVVM.Messenger;
 using LiteNetLib;
 using Nebula.Core.Online.Events;
 using Nebula.Core.Providers.Youtube;
@@ -11,7 +13,8 @@ using Nebula.Net.Packet;
 using Nebula.Net.Packet.C2S;
 using Nebula.Net.Packet.S2C;
 using Nebula.Net.Server;
-using Nebula.Net.Server.Events;
+using Nebula.View;
+using Nebula.View.Views;
 
 namespace Nebula.Core.Online
 {
@@ -21,8 +24,6 @@ namespace Nebula.Core.Online
         {
             HostClient = new NetHostClient();
             SetSessionInfo(NetSessionInfo.Default, null);
-            HostClient.Server.ClientConnected += OnServerClientConnected;
-            HostClient.Server.ClientDisconnected += OnServerClientDisconnected;
             HostClient.Client.Connected += OnClientConnected;
             HostClient.Client.Disconnected += OnClientDisconnected;
             HostClient.Client.NetProcessor.SubscribeReusable<SessionInfoPacket>(OnReceiveSessionInfoPacket);
@@ -43,6 +44,16 @@ namespace Nebula.Core.Online
         public bool           IsClientConnected => HostClient.Client.IsConnected;
         public bool           IsServerRunning   => HostClient.Server.IsRunning;
 
+        public IPEndPoint IpEndPoint
+        {
+            get
+            {
+                if (IsServerRunning)
+                    return new IPEndPoint(HostClient.IpAddress, Server.Settings.ServerPort);
+                return new IPEndPoint(Client.ServerPeer.EndPoint.Address, Client.ServerPeer.EndPoint.Port);
+            }
+        }
+
         public event EventHandler<SessionInfoChangedEventArgs> SessionInfoChanged;
         public event EventHandler<NewUserMessageEventArgs>     NewMessage;
         public event EventHandler<UserConnectedEventArgs>      UserConnected;
@@ -60,17 +71,10 @@ namespace Nebula.Core.Online
             NebulaClient.Discord?.UpdateActivity();
         }
 
-        private void OnServerClientConnected(object sender, ClientConnectedEventArgs e)
-        {
-        }
-
-        private void OnServerClientDisconnected(object sender, ClientDisconnectedEventArgs e)
-        {
-        }
-
         private void OnClientConnected(object sender, ConnectedEventArgs e)
         {
             SendClientPacket(new UserInfoPacket {UserInfo = new NetUserInfo {Username = "Unreal", AvatarUrl = ""}});
+            NebulaClient.Invoke(() => Messenger.Default.Broadcast(this, NavigationInfo.Create(typeof(OnlineSessionView), null, true)));
         }
 
         private void OnClientDisconnected(object sender, DisconnectedEventArgs e)
