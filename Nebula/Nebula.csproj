@@ -14,14 +14,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentWPF" Version="0.9.0"/>
-        <PackageReference Include="HandyControls" Version="3.3.6"/>
-        <PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.3.0"/>
-        <PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.3.0"/>
-        <PackageReference Include="NAudio" Version="2.0.1"/>
-        <PackageReference Include="Octokit" Version="0.50.0"/>
-        <PackageReference Include="sqlite-net-pcl" Version="1.8.0-beta"/>
-        <PackageReference Include="YoutubeExplode" Version="6.0.3"/>
+        <PackageReference Include="FluentWPF" Version="0.9.0" />
+        <PackageReference Include="HandyControls" Version="3.3.6" />
+        <PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.3.0" />
+        <PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.3.0" />
+        <PackageReference Include="NAudio" Version="2.0.1" />
+        <PackageReference Include="Octokit" Version="0.50.0" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.8.0-beta" />
+        <PackageReference Include="YoutubeExplode" Version="6.0.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -35,13 +35,13 @@
         <EmbeddedResource Update="Resources\Nebula.en.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
-        <None Remove="Resources\nebula_icon.ico"/>
-        <Resource Include="Resources\nebula_icon.ico"/>
-        <None Remove="Resources\discord_game_sdk.dll.lib"/>
-        <None Remove="Resources\discord_game_sdk.so"/>
-        <None Remove="Resources\discord_game_sdk.dylib"/>
-        <None Remove="Resources\discord_game_sdk.bundle"/>
-        <None Remove="Resources\discord_game_sdk.dll"/>
+        <None Remove="Resources\nebula_icon.ico" />
+        <Resource Include="Resources\nebula_icon.ico" />
+        <None Remove="Resources\discord_game_sdk.dll.lib" />
+        <None Remove="Resources\discord_game_sdk.so" />
+        <None Remove="Resources\discord_game_sdk.dylib" />
+        <None Remove="Resources\discord_game_sdk.bundle" />
+        <None Remove="Resources\discord_game_sdk.dll" />
     </ItemGroup>
 
     <ItemGroup>
@@ -53,18 +53,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Nebula.Discord\Nebula.Discord.csproj"/>
-        <ProjectReference Include="..\Nebula.Media\Nebula.Media.csproj" />
-        <ProjectReference Include="..\Nebula.Net\Nebula.Net.csproj"/>
+        <ProjectReference Include="..\Nebula.Discord\Nebula.Discord.csproj" />
+        <ProjectReference Include="..\Nebula.Net\Nebula.Net.csproj" />
+        <ProjectReference Include="..\Nebula.Utils\Nebula.Utils.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="LiteMVVM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\..\LiteMVVM\LiteMVVM.WPF\bin\Release\net5.0-windows\LiteMVVM.dll</HintPath>
-        </Reference>
-        <Reference Include="LiteMVVM.WPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\..\LiteMVVM\LiteMVVM.WPF\bin\Release\net5.0-windows\LiteMVVM.WPF.dll</HintPath>
-        </Reference>
+      <Reference Include="LiteMVVM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\LiteMVVM\LiteMVVM\bin\Publish\LiteMVVM.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
