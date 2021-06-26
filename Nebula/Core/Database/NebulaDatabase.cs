@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HandyControl.Controls;
 using HandyControl.Data;
+using Nebula.Core.Settings;
 using Nebula.Model;
 using SQLite;
 
@@ -11,11 +12,9 @@ namespace Nebula.Core.Database
 {
     public class NebulaDatabase
     {
-        private static readonly string DatabaseFile = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\userdata.db";
-
         public NebulaDatabase()
         {
-            Database = new SQLiteAsyncConnection(DatabaseFile);
+            Database = new SQLiteAsyncConnection(Path.Combine(AppSettings.SettingsDirectory.FullName, AppSettings.PlaylistDatabaseFileName));
             LoadDatabase();
         }
 

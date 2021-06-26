@@ -11,8 +11,9 @@ namespace Nebula.Core.Settings
 {
     public class AppSettings
     {
-        private const          string        SettingsFileName  = "nebula_settings.json";
-        private const          string        UserProfile       = "user_profile.json";
+        public const           string        SettingsFileName = "nebula_settings.json";
+        public const           string        UserProfileFileName = "user_profile.json";
+        public const           string        PlaylistDatabaseFileName = "playlists.db";
         public static readonly DirectoryInfo SettingsDirectory = new(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nebula"));
 
         private static readonly JsonSerializerOptions JsonOptions = new()
