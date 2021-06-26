@@ -8,13 +8,11 @@
         xmlns:dialogs="clr-namespace:Nebula.ViewModel.Dialogs"
         xmlns:controls="clr-namespace:Nebula.View.Controls"
         mc:Ignorable="d" CornerRadius="10"
+        DataContext="{Binding Path=PlaylistCreationDialogViewModel, Source={StaticResource Locator}}"
         Background="{DynamicResource SecondaryAppBackgroundBrush}"
         Effect="{StaticResource EffectShadow5}">
-    <Border.DataContext>
-        <dialogs:PlaylistCreationDialogViewModel />
-    </Border.DataContext>
     <controls:SimpleGrid Rows="30,Auto,50">
-        <Border Grid.Row="0" Background="DodgerBlue" CornerRadius="10 10 0 0">
+        <Border Grid.Row="0" Background="{Binding TitleBrush}" CornerRadius="10 10 0 0">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                        Text="{Binding Title}"
                        Foreground="{DynamicResource AppForegroundBrush}" FontWeight="Bold" FontSize="18" />

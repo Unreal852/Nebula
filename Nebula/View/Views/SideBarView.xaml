@@ -10,7 +10,7 @@
              xmlns:converters="clr-namespace:Nebula.View.Converters"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:resx="clr-namespace:Nebula.Resources"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Effect="{StaticResource EffectShadow5}">
     <UserControl.DataContext>
         <viewModel:SideBarViewModel />
     </UserControl.DataContext>

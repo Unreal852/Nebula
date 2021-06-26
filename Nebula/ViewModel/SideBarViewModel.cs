@@ -59,7 +59,7 @@ namespace Nebula.ViewModel
 
         private void ImportPlaylist(object param)
         {
-            NebulaClient.ShowDialog<PlaylistImportDialogView>();
+            NebulaDialog.ShowDialog<PlaylistImportDialogView>();
         }
 
         private async Task PlayPlaylist(Playlist playlist)
@@ -72,7 +72,7 @@ namespace Nebula.ViewModel
             if (NebulaClient.OnlineSession.IsClientConnected)
                 Messenger.Broadcast(this, NavigationInfo.Create(typeof(OnlineSessionView), null, false));
             else
-                NebulaClient.ShowDialog<OnlineSessionJoinCreateDialogView>();
+                NebulaDialog.ShowDialog<OnlineSessionJoinCreateDialogView>();
         }
     }
 }

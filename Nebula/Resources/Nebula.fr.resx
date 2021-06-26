@@ -155,4 +155,64 @@
     <data name="online_leave" xml:space="preserve">
         <value>Déconnexion</value>
     </data>
+    <data name="settings_general" xml:space="preserve">
+        <value>Général</value>
+    </data>
+    <data name="settings_about" xml:space="preserve">
+        <value>A propos</value>
+    </data>
+    <data name="settings_privacy" xml:space="preserve">
+        <value>Confidentialité</value>
+    </data>
+    <data name="settings_server" xml:space="preserve">
+        <value>Serveur (Session Partagée)</value>
+    </data>
+    <data name="settings_title" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="settings_general_close_to_tray" xml:space="preserve">
+        <value>Lors de la fermeture, réduire dans la barre d'état système</value>
+    </data>
+    <data name="settings_general_keyboard" xml:space="preserve">
+        <value>Clavier</value>
+    </data>
+    <data name="settings_general_keyboard_volume_incdec" xml:space="preserve">
+        <value>Augmentation/Réduction du volume via le clavier</value>
+    </data>
+    <data name="settings_general_keyboard_support" xml:space="preserve">
+        <value>Support des touches média du clavier</value>
+    </data>
+    <data name="settings_general_default_volume" xml:space="preserve">
+        <value>Volume par défaut</value>
+    </data>
+    <data name="settings_general_max_search_elements" xml:space="preserve">
+        <value>Limite des résultats d'une recherche</value>
+    </data>
+    <data name="settings_general_playlist_page_size" xml:space="preserve">
+        <value>Limite des elements dans une page d'une playlist</value>
+    </data>
+    <data name="settings_user_profile" xml:space="preserve">
+        <value>Profil</value>
+    </data>
+    <data name="settings_privacy_allow_analytics" xml:space="preserve">
+        <value>Autoriser les données analytiques</value>
+    </data>
+    <data name="settings_privacy_allow_crash" xml:space="preserve">
+        <value>Autoriser les rapports de crash</value>
+    </data>
+    <data name="settings_server_ip" xml:space="preserve">
+        <value>Adresse IP du Serveur</value>
+    </data>
+    <data name="settings_server_key" xml:space="preserve">
+        <value>Clé de connection</value>
+    </data>
+    <data name="settings_server_size" xml:space="preserve">
+        <value>Taille du Serveur</value>
+    </data>
+    <data name="settings_server_port" xml:space="preserve">
+        <value>Port du Serveur</value>
+    </data>
+    <data name="settings_server_upnp" xml:space="preserve">
+        <value>Utiliser l'UpNp</value>
+    </data>
 </root>

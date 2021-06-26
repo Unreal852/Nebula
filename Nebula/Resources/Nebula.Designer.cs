@@ -151,6 +151,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        public static string global_application {
+            get {
+                return ResourceManager.GetString("global_application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Day.
         /// </summary>
         public static string global_day {
@@ -543,6 +552,186 @@ namespace Nebula.Resources {
         public static string playlist_importing {
             get {
                 return ResourceManager.GetString("playlist_importing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string settings_about {
+            get {
+                return ResourceManager.GetString("settings_about", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string settings_general {
+            get {
+                return ResourceManager.GetString("settings_general", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When closing, reduce to system tray.
+        /// </summary>
+        public static string settings_general_close_to_tray {
+            get {
+                return ResourceManager.GetString("settings_general_close_to_tray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Volume.
+        /// </summary>
+        public static string settings_general_default_volume {
+            get {
+                return ResourceManager.GetString("settings_general_default_volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard.
+        /// </summary>
+        public static string settings_general_keyboard {
+            get {
+                return ResourceManager.GetString("settings_general_keyboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support keyboard media keys.
+        /// </summary>
+        public static string settings_general_keyboard_support {
+            get {
+                return ResourceManager.GetString("settings_general_keyboard_support", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume Increase/Decrease value from media keys.
+        /// </summary>
+        public static string settings_general_keyboard_volume_incdec {
+            get {
+                return ResourceManager.GetString("settings_general_keyboard_volume_incdec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Results Size.
+        /// </summary>
+        public static string settings_general_max_search_elements {
+            get {
+                return ResourceManager.GetString("settings_general_max_search_elements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playlist Page Size.
+        /// </summary>
+        public static string settings_general_playlist_page_size {
+            get {
+                return ResourceManager.GetString("settings_general_playlist_page_size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privacy.
+        /// </summary>
+        public static string settings_privacy {
+            get {
+                return ResourceManager.GetString("settings_privacy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow Analytics.
+        /// </summary>
+        public static string settings_privacy_allow_analytics {
+            get {
+                return ResourceManager.GetString("settings_privacy_allow_analytics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Allow Crash Reports.
+        /// </summary>
+        public static string settings_privacy_allow_crash {
+            get {
+                return ResourceManager.GetString("settings_privacy_allow_crash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server (Shared Session).
+        /// </summary>
+        public static string settings_server {
+            get {
+                return ResourceManager.GetString("settings_server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server IP Address.
+        /// </summary>
+        public static string settings_server_ip {
+            get {
+                return ResourceManager.GetString("settings_server_ip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Key.
+        /// </summary>
+        public static string settings_server_key {
+            get {
+                return ResourceManager.GetString("settings_server_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Port.
+        /// </summary>
+        public static string settings_server_port {
+            get {
+                return ResourceManager.GetString("settings_server_port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Size.
+        /// </summary>
+        public static string settings_server_size {
+            get {
+                return ResourceManager.GetString("settings_server_size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use UpNp.
+        /// </summary>
+        public static string settings_server_upnp {
+            get {
+                return ResourceManager.GetString("settings_server_upnp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string settings_title {
+            get {
+                return ResourceManager.GetString("settings_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string settings_user_profile {
+            get {
+                return ResourceManager.GetString("settings_user_profile", resourceCulture);
             }
         }
         

@@ -42,12 +42,17 @@ namespace Nebula.View
                 case "+" when WindowState == WindowState.Normal:
                     WindowState = WindowState.Maximized;
                     break;
-                case "x":
+                case "x" when NebulaClient.Settings.General.CloseToTray:
                 {
-                    //Visibility = Visibility.Collapsed; Todo: enable when settings will done
+                    Visibility = Visibility.Collapsed;
+                    break;
+                }
+                case "x" when !NebulaClient.Settings.General.CloseToTray:
+                {
                     Close();
                     break;
                 }
+                
             }
         }
     }

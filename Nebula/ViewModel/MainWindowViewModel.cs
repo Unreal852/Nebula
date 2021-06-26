@@ -9,6 +9,7 @@ using LiteMVVM.Navigation;
 using Nebula.Model;
 using Nebula.View;
 using Nebula.View.Views;
+using Nebula.View.Views.Dialogs;
 
 namespace Nebula.ViewModel
 {
@@ -24,12 +25,14 @@ namespace Nebula.ViewModel
             Instance = this;
             SearchCommand = new AsyncRelayCommand<string>(Search);
             SwitchThemeCommand = new RelayCommand(SwitchTheme);
+            ShowSettingsCommand = new RelayCommand(() => Navigate(NavigationInfo.Create(typeof(SettingsView), null, false)));
             Messenger.Subscribe<NavigationInfo>((_, o) => Navigate(o));
             SearchCommand.CanExecuteChanged += (_, _) => CanSearch = SearchCommand.CanExecute("");
         }
 
-        public ICommand SearchCommand      { get; }
-        public ICommand SwitchThemeCommand { get; }
+        public ICommand SearchCommand       { get; }
+        public ICommand SwitchThemeCommand  { get; }
+        public ICommand ShowSettingsCommand { get; }
 
         public bool CanSearch
         {

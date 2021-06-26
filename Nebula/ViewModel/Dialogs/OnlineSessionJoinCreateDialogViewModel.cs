@@ -15,9 +15,11 @@ namespace Nebula.ViewModel.Dialogs
         public OnlineSessionJoinCreateDialogViewModel()
         {
             Title = NebulaClient.GetLang("global_shared_session");
-            Port = 9080;
-            Size = 10;
-            UseUpnp = true;
+            Port = NebulaClient.Settings.Server.ServerPort;
+            Size = NebulaClient.Settings.Server.ServerSize;
+            UseUpnp = NebulaClient.Settings.Server.UseUpnp;
+            Key = NebulaClient.Settings.Server.ServerConnectionKey;
+            IpAddress = NebulaClient.Settings.Server.ServerIp;
         }
 
         public string IpAddress

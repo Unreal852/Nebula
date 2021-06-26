@@ -186,4 +186,67 @@
     <data name="online_leave" xml:space="preserve">
         <value>Disconnect</value>
     </data>
+    <data name="settings_general" xml:space="preserve">
+        <value>General</value>
+    </data>
+    <data name="settings_privacy" xml:space="preserve">
+        <value>Privacy</value>
+    </data>
+    <data name="settings_about" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="settings_user_profile" xml:space="preserve">
+        <value>Profile</value>
+    </data>
+    <data name="settings_server" xml:space="preserve">
+        <value>Server (Shared Session)</value>
+    </data>
+    <data name="settings_title" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="settings_general_close_to_tray" xml:space="preserve">
+        <value>When closing, reduce to system tray</value>
+    </data>
+    <data name="settings_general_keyboard" xml:space="preserve">
+        <value>Keyboard</value>
+    </data>
+    <data name="settings_general_keyboard_volume_incdec" xml:space="preserve">
+        <value>Volume Increase/Decrease value from media keys</value>
+    </data>
+    <data name="settings_general_keyboard_support" xml:space="preserve">
+        <value>Support keyboard media keys</value>
+    </data>
+    <data name="settings_general_default_volume" xml:space="preserve">
+        <value>Default Volume</value>
+    </data>
+    <data name="settings_general_max_search_elements" xml:space="preserve">
+        <value>Search Results Size</value>
+    </data>
+    <data name="settings_general_playlist_page_size" xml:space="preserve">
+        <value>Playlist Page Size</value>
+    </data>
+    <data name="global_application" xml:space="preserve">
+        <value>Application</value>
+    </data>
+    <data name="settings_privacy_allow_analytics" xml:space="preserve">
+        <value>Allow Analytics</value>
+    </data>
+    <data name="settings_privacy_allow_crash" xml:space="preserve">
+        <value>Allow Crash Reports</value>
+    </data>
+    <data name="settings_server_ip" xml:space="preserve">
+        <value>Server IP Address</value>
+    </data>
+    <data name="settings_server_port" xml:space="preserve">
+        <value>Server Port</value>
+    </data>
+    <data name="settings_server_key" xml:space="preserve">
+        <value>Connection Key</value>
+    </data>
+    <data name="settings_server_upnp" xml:space="preserve">
+        <value>Use UpNp</value>
+    </data>
+    <data name="settings_server_size" xml:space="preserve">
+        <value>Server Size</value>
+    </data>
 </root>

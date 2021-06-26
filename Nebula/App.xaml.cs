@@ -14,7 +14,6 @@ namespace Nebula
     {
         private void OnAppStart(object sender, StartupEventArgs e)
         {
-            AppCenter.Start("df3a859e-110a-43b2-892d-71f4650c9c70", typeof(Analytics), typeof(Crashes));
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
         }
 

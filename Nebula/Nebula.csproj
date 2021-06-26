@@ -62,6 +62,12 @@
       <Reference Include="LiteMVVM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\LiteMVVM\LiteMVVM\bin\Publish\LiteMVVM.dll</HintPath>
       </Reference>
+      <Reference Include="SharpToolbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\SharpToolbox\SharpToolbox\bin\Publish\SharpToolbox.dll</HintPath>
+      </Reference>
+      <Reference Include="SharpToolbox.Windows, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\SharpToolbox\SharpToolbox.Windows\bin\Publish\SharpToolbox.Windows.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

@@ -17,8 +17,6 @@ namespace Nebula.Core.Providers.Youtube
 {
     public class YoutubeMediaProvider : IMediasProvider
     {
-        private const int MaxVideos = 50;
-
         public YoutubeClient Youtube { get; } = new();
 
         public string Url         { get; } = "https://www.youtube.com/";
@@ -30,11 +28,12 @@ namespace Nebula.Core.Providers.Youtube
             if (string.IsNullOrWhiteSpace(query))
                 throw new ArgumentNullException($"{nameof(query)} is null or empty.");
             var totalElements = 0;
+            int maxVideos = NebulaClient.Settings.General.MaxSearchElements;
             await foreach (Batch<ISearchResult> batch in Youtube.Search.GetResultBatchesAsync(query))
             {
                 foreach (ISearchResult result in batch.Items)
                 {
-                    if (totalElements >= MaxVideos)
+                    if (totalElements >= maxVideos)
                         break;
                     if (result is T element)
                     {
@@ -43,7 +42,7 @@ namespace Nebula.Core.Providers.Youtube
                     }
                 }
 
-                if (totalElements >= MaxVideos)
+                if (totalElements >= maxVideos)
                     break;
             }
         }

@@ -63,7 +63,7 @@ namespace Nebula.ViewModel.Dialogs
 
         private async Task SearchPlaylist()
         {
-            Dialog dialog = NebulaClient.ShowDialog<ElementSelectorDialogView, ImportPlaylistSearchSelectorViewModel>();
+            Dialog dialog = NebulaDialog.ShowDialog<ElementSelectorDialogView, ImportPlaylistSearchSelectorViewModel>();
             var result = await dialog.GetResultAsync<Playlist>();
             if (result == null)
                 return;

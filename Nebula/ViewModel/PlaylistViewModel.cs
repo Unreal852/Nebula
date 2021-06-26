@@ -48,7 +48,10 @@ namespace Nebula.ViewModel
             {
                 _playlist = value;
                 if (Playlist != null)
+                {
                     Medias.SetSource(Playlist.Medias);
+                    Medias.PageSize = NebulaClient.Settings.General.PlaylistPageSize;
+                }
                 OnPropertyChanged();
                 OnPropertiesChanged(nameof(Name), nameof(Description), nameof(Author), nameof(Thumbnail), nameof(Medias));
             }
@@ -134,7 +137,7 @@ namespace Nebula.ViewModel
         {
             if (Playlist == null || mediaInfo == null)
                 return;
-            Dialog dialog = NebulaClient.ShowWarningNoYes("dialog_delete_playlist_media");
+            Dialog dialog = NebulaDialog.ShowWarningNoYes("dialog_delete_playlist_media");
             var result = await dialog.GetResultAsync<bool>();
             if (!result)
                 return;
@@ -153,7 +156,7 @@ namespace Nebula.ViewModel
         {
             if (Playlist == null)
                 return;
-            Dialog dialog = NebulaClient.ShowWarningNoYes("dialog_delete_playlist");
+            Dialog dialog = NebulaDialog.ShowWarningNoYes("dialog_delete_playlist");
             var result = await dialog.GetResultAsync<bool>();
             if (!result)
                 return;

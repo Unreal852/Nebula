@@ -20,6 +20,7 @@ namespace Nebula.ViewModel.Dialogs
             ConfirmCommand = new RelayCommand(OnConfirm);
             CancelButtonText = NebulaClient.GetLang("dialog_cancel");
             ConfirmButtonText = NebulaClient.GetLang("dialog_confirm");
+            TitleBrush = new SolidColorBrush(Colors.DodgerBlue);
             CancelButtonVisible = ConfirmButtonVisible = true;
         }
 

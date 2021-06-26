@@ -18,7 +18,6 @@ namespace Nebula.ViewModel.Dialogs
         {
             Pager = new ObservableFilterPager<T>(null);
             SearchCommand = new AsyncRelayCommand<string>(Search);
-            TitleBrush = new SolidColorBrush(Colors.DodgerBlue);
         }
 
         public ObservableFilterPager<T> Pager           { get; }

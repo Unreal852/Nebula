@@ -68,7 +68,7 @@ namespace Nebula.ViewModel
 
         private async Task AddTo(MediaInfo mediaInfo)
         {
-            Dialog dialog = NebulaClient.ShowDialog<ElementSelectorDialogView, LocalPlaylistSelectorViewModel>();
+            Dialog dialog = NebulaDialog.ShowDialog<ElementSelectorDialogView, LocalPlaylistSelectorViewModel>();
             var result = await dialog.GetResultAsync<Playlist>();
             result?.AddMedia(mediaInfo);
         }

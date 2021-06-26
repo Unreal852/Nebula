@@ -1,17 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using HandyControl.Controls;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Online;
 using Nebula.Core.Player;
 using Nebula.Core.Providers;
+using Nebula.Core.Settings;
 using Nebula.Core.Update;
-using Nebula.View.Views.Dialogs;
-using Nebula.ViewModel.Dialogs;
+using SharpToolbox.Windows.Hookers;
+using SharpToolbox.Windows.Hookers.Keyboard;
 
 namespace Nebula
 {
@@ -19,6 +24,15 @@ namespace Nebula
     {
         static NebulaClient()
         {
+            Settings = AppSettings.LoadSettings();
+            if (Settings.Privacy.AllowAnalytics || Settings.Privacy.AllowCrashReports)
+            {
+                AppCenter.Start("df3a859e-110a-43b2-892d-71f4650c9c70",
+                    Settings.Privacy.AllowAnalytics ? typeof(Analytics) : null,
+                    Settings.Privacy.AllowCrashReports ? typeof(Crashes) : null);
+            }
+
+
             Providers = new ProvidersManager();
             Playlists = new PlaylistsManager();
             Database = new NebulaDatabase();
@@ -27,12 +41,17 @@ namespace Nebula
             Discord = new DiscordManager();
             UpdateManager = new UpdateManager();
             CancellationTokenSource = new CancellationTokenSource();
+            KeyboardHook = new KeyboardHooker();
 
             Discord.UpdateActivity();
             UpdateManager.CheckForUpdateNotify();
+            KeyboardHook.KeyDown += OnGlobalKeyDown;
+            if (Settings.General.KeyboardMediaKeysSupport)
+                KeyboardHook.Hook();
             Task.Run(() => AppTick(CancellationTokenSource.Token, 500));
         }
 
+        public static   AppSettings             Settings                { get; }
         public static   ProvidersManager        Providers               { get; }
         public static   NAudioPlayer            MediaPlayer             { get; }
         public static   NebulaDatabase          Database                { get; }
@@ -40,90 +59,50 @@ namespace Nebula
         public static   DiscordManager          Discord                 { get; }
         public static   OnlineSessionManager    OnlineSession           { get; }
         public static   UpdateManager           UpdateManager           { get; }
+        public static   KeyboardHooker          KeyboardHook            { get; }
         internal static CancellationTokenSource CancellationTokenSource { get; }
 
         public static event EventHandler Tick;
-
-        public static Dialog ShowError(string message, string title = "dialog_title_error")
-        {
-            return ShowMessage(message, title, MessageDialog.Ok, "#D00606");
-        }
-
-        public static Dialog ShowInfo(string message, string title = "dialog_title_info")
-        {
-            return ShowMessage(message, title, MessageDialog.Ok, "#349fff");
-        }
-
-        public static Dialog ShowInfoCancelConfirm(string message, string title = "dialog_title_info")
-        {
-            return ShowMessage(message, title, MessageDialog.CancelConfirm, "#349fff");
-        }
-
-        public static Dialog ShowInfoNoYes(string message, string title = "dialog_title_info")
-        {
-            return ShowMessage(message, title, MessageDialog.NoYes, "#349fff");
-        }
-
-        public static Dialog ShowWarning(string message, string title = "dialog_title_warning")
-        {
-            return ShowMessage(message, title, MessageDialog.Ok, "#Df6316");
-        }
-
-        public static Dialog ShowWarningCancelConfirm(string message, string title = "dialog_title_warning")
-        {
-            return ShowMessage(message, title, MessageDialog.CancelConfirm, "#Df6316");
-        }
-
-        public static Dialog ShowWarningNoYes(string message, string title = "dialog_title_warning")
-        {
-            return ShowMessage(message, title, MessageDialog.NoYes, "#Df6316");
-        }
-
-        public static Dialog ShowDialog<TDialog, TViewModel>(string token = "") where TDialog : FrameworkElement, new() where TViewModel : BaseDialogViewModel, new()
-        {
-            var dialog = Dialog.Show<TDialog>(token);
-            TViewModel viewModel = new() {Dialog = dialog};
-            dialog.DataContext = viewModel;
-            return dialog;
-        }
-
-        public static Dialog ShowDialog(object content, string token = "")
-        {
-            var dialog = Dialog.Show(content, token);
-            if (dialog.Content is FrameworkElement {DataContext: BaseDialogViewModel baseDialogViewModel})
-                baseDialogViewModel.Dialog = dialog;
-            return dialog;
-        }
-
-        public static Dialog ShowDialog<TDialog>(string token = "") where TDialog : FrameworkElement, new()
-        {
-            var dialog = Dialog.Show<TDialog>(token);
-            if (dialog.Content is TDialog {DataContext: BaseDialogViewModel baseDialogViewModel})
-                baseDialogViewModel.Dialog = dialog;
-            return dialog;
-        }
-
-        public static Dialog ShowMessage(string message, string title, MessageDialog messageDialog = MessageDialog.CancelConfirm, string titleHexColor = "")
-        {
-            var dialog = ShowDialog<MessageDialogView>();
-            if (dialog.Content is MessageDialogView {DataContext: MessageDialogViewModel messageDialogViewModel})
-            {
-                messageDialogViewModel.Dialog = dialog;
-                messageDialogViewModel.Title = GetLang(title);
-                messageDialogViewModel.Message = GetLang(message);
-                messageDialogViewModel.DialogType = messageDialog;
-                if (!string.IsNullOrWhiteSpace(titleHexColor))
-                    messageDialogViewModel.TitleBrush = new SolidColorBrush((Color) ColorConverter.ConvertFromString(titleHexColor));
-            }
-
-            return dialog;
-        }
 
         public static string GetLang(string key, params object[] format)
         {
             if (format is not {Length: > 0})
                 return Resources.Nebula.ResourceManager.GetString(key) ?? key;
             return string.Format(Resources.Nebula.ResourceManager.GetString(key) ?? $"UNKNOWN_KEY({key})", format);
+        }
+
+        private static void OnGlobalKeyDown(object sender, KeyboardKeyDownEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case EVirtualKeys.MEDIA_PLAY_PAUSE:
+                    if (MediaPlayer.IsPaused)
+                        MediaPlayer.Resume();
+                    else
+                        MediaPlayer.Pause();
+                    e.Handled = true;
+                    break;
+                case EVirtualKeys.MEDIA_STOP:
+                    MediaPlayer.Stop(true);
+                    e.Handled = true;
+                    break;
+                case EVirtualKeys.MEDIA_NEXT_TRACK:
+                    MediaPlayer.Forward(true);
+                    e.Handled = true;
+                    break;
+                case EVirtualKeys.VOLUME_MUTE:
+                    MediaPlayer.IsMuted = !MediaPlayer.IsMuted;
+                    e.Handled = true;
+                    break;
+                case EVirtualKeys.VOLUME_UP:
+                    MediaPlayer.Volume += Settings.General.KeyboardMediaKeysSoundIncDevValue;
+                    e.Handled = true;
+                    break;
+                case EVirtualKeys.VOLUME_DOWN:
+                    MediaPlayer.Volume -= Settings.General.KeyboardMediaKeysSoundIncDevValue;
+                    e.Handled = true;
+                    break;
+            }
         }
 
         private static async void AppTick(CancellationToken token, int delay)

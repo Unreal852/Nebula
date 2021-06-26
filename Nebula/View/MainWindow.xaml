@@ -70,7 +70,7 @@
             </hc:Interaction.Triggers>
         </hc:NotifyIcon>
         <views:SideBarView Grid.RowSpan="3" />
-        <controls:SimpleGrid Background="{DynamicResource SecondaryAppBackgroundBrush}" Grid.Column="1" Grid.Row="0">
+        <controls:SimpleGrid Background="{DynamicResource SecondaryAppBackgroundBrush}" Grid.Column="1" Grid.Row="0" Effect="{StaticResource EffectShadow5}">
             <hc:SimpleStackPanel Orientation="Horizontal" Margin="10 0 0 0">
                 <hc:SimpleStackPanel x:Name="TitleBar" Orientation="Vertical" VerticalAlignment="Center">
                     <hc:SearchBar x:Name="SearchBar" hc:InfoElement.Placeholder="Rechercher"
@@ -86,19 +86,20 @@
                 <Button Content="Recherche Billie" Command="{Binding SearchCommand}"
                         CommandParameter="billie eilish" />
                 <Button Content="Switch Theme" Command="{Binding SwitchThemeCommand}" Margin="10" />
+                <Button Content="Settings" Command="{Binding ShowSettingsCommand}" />
                 <ToggleButton Content="Queue" IsChecked="{Binding ElementName=Drawer, Path=IsOpen}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource MinimizeButton}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource MaximizeButton}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource CloseButton}" />
             </hc:SimpleStackPanel>
         </controls:SimpleGrid>
-        <controls:SimpleGrid Grid.Column="1" Grid.Row="1" Background="{DynamicResource AppBackgroundBrush}">
+        <controls:SimpleGrid Grid.Column="1" Grid.Row="1" Background="{DynamicResource AppBackgroundBrush}" Effect="{StaticResource EffectShadow5}">
             <ContentPresenter Content="{Binding CurrentPage}" />
             <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right" hc:Growl.GrowlParent="True" />
             <hc:Drawer x:Name="Drawer" Dock="Right" MaskCanClose="True" ShowMode="Cover">
                 <views:MediasQueueView MinWidth="350" MaxWidth="350" />
             </hc:Drawer>
         </controls:SimpleGrid>
-        <views:MediaPlayerView x:Name="PlayerView" Grid.Row="2" Grid.ColumnSpan="2" />
+        <views:MediaPlayerView x:Name="PlayerView" Grid.Row="2" Grid.ColumnSpan="2" Effect="{StaticResource EffectShadow5}" />
     </controls:SimpleGrid>
 </hc:Window>

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using Nebula.ViewModel;
+using Nebula.ViewModel.Dialogs;
 
 namespace Nebula.View
 {
@@ -18,11 +19,16 @@ namespace Nebula.View
         private MediasQueueViewModel   _mediasQueueViewModel;
         private OnlineSessionViewModel _onlineSessionViewModel;
 
-        private DependencyObject       Dummy                  { get; } = new();
-        public  MainWindowViewModel    MainWindowViewModel    => _mainWindowViewModel ??= new MainWindowViewModel();
-        public  MediaPlayerViewModel   MediaPlayerViewModel   => _mediaPlayerViewModel ??= new MediaPlayerViewModel();
-        public  MediasQueueViewModel   MediasQueueViewModel   => _mediasQueueViewModel ??= new MediasQueueViewModel();
-        public  OnlineSessionViewModel OnlineSessionViewModel => _onlineSessionViewModel ??= new OnlineSessionViewModel();
-        public  bool                   IsDesignMode           => DesignerProperties.GetIsInDesignMode(Dummy);
+        private DependencyObject                       Dummy                                  { get; } = new();
+        public  MainWindowViewModel                    MainWindowViewModel                    => _mainWindowViewModel ??= new MainWindowViewModel();
+        public  MediaPlayerViewModel                   MediaPlayerViewModel                   => _mediaPlayerViewModel ??= new MediaPlayerViewModel();
+        public  MediasQueueViewModel                   MediasQueueViewModel                   => _mediasQueueViewModel ??= new MediasQueueViewModel();
+        public  OnlineSessionViewModel                 OnlineSessionViewModel                 => _onlineSessionViewModel ??= new OnlineSessionViewModel();
+        public  SettingsViewModel                SettingsViewModel                => new();
+        public  PlaylistImportDialogViewModel          PlaylistImportDialogViewModel          => new();
+        public  PlaylistCreationDialogViewModel        PlaylistCreationDialogViewModel        => new();
+        public  OnlineSessionJoinCreateDialogViewModel OnlineSessionJoinCreateDialogViewModel => new();
+        public  MessageDialogViewModel                 MessageDialogViewModel                 => new();
+        public  bool                                   IsDesignMode                           => DesignerProperties.GetIsInDesignMode(Dummy);
     }
 }

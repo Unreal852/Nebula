@@ -26,7 +26,7 @@ namespace Nebula.Core.Player
         public NAudioPlayer()
         {
             NebulaClient.Tick += OnAppTick;
-            _volume = 50;
+            _volume = NebulaClient.Settings.General.DefaultVolume;
         }
 
         public  bool       IsIdle     => State == PlayerState.Idle;

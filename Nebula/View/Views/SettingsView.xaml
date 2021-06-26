@@ -1,0 +1,29 @@
+<UserControl x:Class="Nebula.View.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Nebula.View.Views.Dialogs"
+             xmlns:controls="clr-namespace:Nebula.View.Controls"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:resx="clr-namespace:Nebula.Resources"
+             mc:Ignorable="d"
+             DataContext="{Binding Path=SettingsViewModel, Source={StaticResource Locator}}">
+    <TabControl Background="Transparent" Style="{StaticResource TabControlCapsuleSolid}" Margin="5">
+        <TabItem Header="{x:Static resx:Nebula.settings_general}">
+            <hc:PropertyGrid MaxTitleWidth="500" SelectedObject="{Binding General}" />
+        </TabItem>
+        <TabItem Header="{x:Static resx:Nebula.settings_privacy}">
+            <hc:PropertyGrid MaxTitleWidth="500" SelectedObject="{Binding Privacy}" />
+        </TabItem>
+        <TabItem Header="{x:Static resx:Nebula.settings_server}">
+            <hc:PropertyGrid MaxTitleWidth="500" SelectedObject="{Binding Server}" />
+        </TabItem>
+        <TabItem Header="{x:Static resx:Nebula.settings_user_profile}">
+
+        </TabItem>
+        <TabItem Header="{x:Static resx:Nebula.settings_about}">
+
+        </TabItem>
+    </TabControl>
+</UserControl>

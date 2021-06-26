@@ -97,5 +97,4 @@
                        HorizontalAlignment="Left" FontWeight="Bold" FontSize="12" Text="{Binding Username}" />
         </controls:SimpleGrid>
     </DataTemplate>
-
 </ResourceDictionary>

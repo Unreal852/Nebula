@@ -14,6 +14,7 @@ namespace Nebula.Core.Player
             CleanUp();
             Reader = new MediaFoundationReader(uri.ToString());
             Out ??= new WaveOutEvent();
+            Out.Stop();
             Out.Init(Reader);
         }
 
