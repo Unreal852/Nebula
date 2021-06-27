@@ -33,13 +33,13 @@
                                     Style="{DynamicResource ButtonIcon}"
                                     Command="{Binding DataContext.OpenMediaCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
-                                    hc:IconElement.Geometry="{StaticResource PlayGeometry}" />
+                                    hc:IconElement.Geometry="{DynamicResource PlayGeometry}" />
                             <Button Width="30" Height="30"
                                     Foreground="{DynamicResource PrimaryTextBrush}"
                                     Style="{DynamicResource ButtonIcon}"
                                     Command="{Binding DataContext.AddToCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
-                                    hc:IconElement.Geometry="{StaticResource PlusGeometry}" />
+                                    hc:IconElement.Geometry="{DynamicResource PlusGeometry}" />
                         </hc:SimpleStackPanel>
                     </controls:SimpleGrid>
                 </DataTemplate>
