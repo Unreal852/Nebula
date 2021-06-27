@@ -10,17 +10,17 @@
              xmlns:converters="clr-namespace:Nebula.View.Converters"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:resx="clr-namespace:Nebula.Resources"
-             mc:Ignorable="d" Effect="{StaticResource EffectShadow5}">
+             mc:Ignorable="d">
     <UserControl.DataContext>
         <viewModel:SideBarViewModel />
     </UserControl.DataContext>
     <UserControl.Resources>
     </UserControl.Resources>
-    <controls:SimpleGrid x:Name="MainGrid" Rows="Auto,*,50">
+    <controls:SimpleGrid Rows="Auto,*,50">
         <hc:SimpleStackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 15">
-            <hc:Gravatar Width="32" Height="32" Id="Test" />
-            <hc:SimpleText Margin="10 0 0 0" VerticalAlignment="Center" Text="Unreal852" FontSize="12" Foreground="{DynamicResource SideBarUsernameBrush}"
-                           FontWeight="Bold" />
+            <hc:Gravatar Width="32" Height="32" Source="{Binding ProfileAvatar}" />
+            <hc:SimpleText Margin="10 0 0 0" VerticalAlignment="Center" Text="{Binding ProfileUsername}"
+                           FontSize="12" FontWeight="Bold" Foreground="{DynamicResource SideBarUsernameBrush}" />
         </hc:SimpleStackPanel>
         <hc:SimpleStackPanel Grid.Row="1" Orientation="Vertical" Margin="25 150 0 0">
             <hc:SimpleStackPanel Orientation="Vertical">

@@ -3,15 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Nebula.View.Views"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
-             xmlns:selectors="clr-namespace:Nebula.View.Selectors"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:resx="clr-namespace:Nebula.Resources"
+             xmlns:selectors1="clr-namespace:Nebula.View.DataTemplates.Selectors"
              mc:Ignorable="d"
              DataContext="{Binding Path=OnlineSessionViewModel, Source={StaticResource Locator}}">
     <UserControl.Resources>
-        <selectors:UserMessageTemplateSelector x:Key="MessageTemplateSelector" />
+        <selectors1:UserMessageTemplateSelector x:Key="MessageTemplateSelector" />
     </UserControl.Resources>
     <controls:SimpleGrid Columns="*,250" Rows="*,Auto">
         <ListBox x:Name="MessageList" Grid.Column="0" Grid.Row="0" Margin="5"

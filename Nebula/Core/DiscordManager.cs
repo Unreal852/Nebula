@@ -36,7 +36,7 @@ namespace Nebula.Core
 
         public bool UpdateActivity()
         {
-            if (!IsActive)
+            if (!IsActive || !NebulaClient.Settings.General.AllowDiscordIntegration)
                 return false;
             (string Name, string State, string Details) activityInfo = GetActivityInfos();
             ActivityParty party = GetActivityParty();

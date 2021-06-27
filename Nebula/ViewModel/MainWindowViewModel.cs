@@ -18,21 +18,22 @@ namespace Nebula.ViewModel
         public static MainWindowViewModel Instance { get; private set; }
 
         private object _currentPage;
+        private bool   _showQueue;
         private bool   _canSearch;
 
         public MainWindowViewModel()
         {
             Instance = this;
             SearchCommand = new AsyncRelayCommand<string>(Search);
-            SwitchThemeCommand = new RelayCommand(SwitchTheme);
             ShowSettingsCommand = new RelayCommand(() => Navigate(NavigationInfo.Create(typeof(SettingsView), null, false)));
+            ShowQueueCommand = new RelayCommand(() => ShowQueue = !ShowQueue);
             Messenger.Subscribe<NavigationInfo>((_, o) => Navigate(o));
             SearchCommand.CanExecuteChanged += (_, _) => CanSearch = SearchCommand.CanExecute("");
         }
 
         public ICommand SearchCommand       { get; }
-        public ICommand SwitchThemeCommand  { get; }
         public ICommand ShowSettingsCommand { get; }
+        public ICommand ShowQueueCommand    { get; }
 
         public bool CanSearch
         {
@@ -46,21 +47,15 @@ namespace Nebula.ViewModel
             private set => Set(ref _currentPage, value);
         }
 
+        public bool ShowQueue
+        {
+            get => _showQueue;
+            set => Set(ref _showQueue, value);
+        }
+
         public bool IsCurrentPage(Type pageType)
         {
             return CurrentPage?.GetType() == pageType;
-        }
-
-        private void SwitchTheme()
-        {
-            if (ThemeManager.Current.ApplicationTheme == ApplicationTheme.Light)
-            {
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-            }
-            else
-            {
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-            }
         }
 
         private async Task Search(string query)
@@ -86,6 +81,8 @@ namespace Nebula.ViewModel
                     UserControl userControl = info.Control ?? Activator.CreateInstance(info.Type) as UserControl;
                     if (userControl == null || (userControl.GetType() == CurrentPage?.GetType() && !info.NavigateIfSame))
                         return;
+                    if (CurrentPage is UserControl {DataContext: INavigable curNavigable})
+                        curNavigable.OnLeft();
                     CurrentPage = userControl;
                     if (info.Parameter != null && userControl.DataContext is INavigable navigable)
                         navigable.OnNavigated(info.Parameter);
@@ -96,6 +93,12 @@ namespace Nebula.ViewModel
                     CurrentPage = control;
                     if (control.DataContext is INavigable navigable)
                         navigable.OnNavigated(null);
+                    break;
+                }
+                case "exit":
+                {
+                    if (CurrentPage is UserControl {DataContext: INavigable curNavigable})
+                        curNavigable.OnLeft();
                     break;
                 }
             }

@@ -1,0 +1,30 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:hc="https://handyorg.github.io/handycontrol">
+        <!-- Controls box styles -->
+        <Style x:Key="ControlBoxButton" TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
+            <Setter Property="hc:BorderElement.CornerRadius" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style x:Key="MinimizeButton" TargetType="Button" BasedOn="{StaticResource ControlBoxButton}">
+            <Setter Property="hc:IconElement.Geometry" Value="{StaticResource WindowMinGeometry}" />
+            <Setter Property="Tag" Value="-" />
+        </Style>
+        <Style x:Key="MaximizeButton" TargetType="Button" BasedOn="{StaticResource ControlBoxButton}">
+            <Setter Property="hc:IconElement.Geometry" Value="{StaticResource WindowMaxGeometry}" />
+            <Setter Property="Tag" Value="+" />
+        </Style>
+        <Style x:Key="CloseButton" TargetType="Button" BasedOn="{StaticResource ControlBoxButton}">
+            <Setter Property="hc:IconElement.Geometry" Value="{StaticResource CloseGeometry}" />
+            <Setter Property="Tag" Value="x" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Red" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+</ResourceDictionary>

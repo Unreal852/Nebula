@@ -62,7 +62,7 @@
 
     <!-- Template for Online Session Messages in a List Box -->
     <DataTemplate x:Key="MessageItemTemplate" DataType="model:UserMessage">
-        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" Margin="5 5">
+        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" Margin="5">
             <controls:SimpleGrid Rows="5,Auto,Auto,5" Columns="15,*,15">
                 <TextBlock Grid.Row="1" Grid.Column="1"
                            Foreground="{DynamicResource AppForegroundBrush}"
@@ -76,21 +76,28 @@
 
     <!-- Template for Online Session Media Messages in a List Box -->
     <DataTemplate x:Key="MessageMediaItemTemplate" DataType="model:UserMessage">
-        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" Margin="5 5">
-            <controls:SimpleGrid Rows="5,Auto,Auto,5" Columns="15,*,15">
-                <TextBlock Grid.Row="1" Grid.Column="1"
-                           Foreground="{DynamicResource AppForegroundBrush}"
-                           HorizontalAlignment="Left" FontWeight="Bold" FontSize="12" Text="{Binding Sender.Username}" />
-                <TextBlock Grid.Row="2" Grid.Column="1"
-                           Foreground="{DynamicResource AppForegroundBrush}"
-                           TextWrapping="Wrap" Text="{Binding Message.Message}" />
+        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" BorderBrush="#4CD351" Margin="5">
+            <controls:SimpleGrid Margin="5" Columns="Auto,*">
+                <ContentControl Grid.Column="0" BorderBrush="Transparent" Background="Transparent">
+                    <ContentControl.Content >
+                        <Path Data="{DynamicResource PlayGeometry}" Fill="{DynamicResource AppForegroundBrush}" />
+                    </ContentControl.Content>
+                </ContentControl>
+                <TextBlock VerticalAlignment="Center" Grid.Column="1" Margin="5 0" FontWeight="Bold" FontSize="12" Foreground="#09A4EC">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{x:Static resx:Nebula.online_message_media}">
+                            <Binding Path="Sender.Username" />
+                            <Binding Path="Message.Message" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
             </controls:SimpleGrid>
         </Border>
     </DataTemplate>
 
     <!-- Template for Online Session User Info in a List Box -->
     <DataTemplate x:Key="UserInfoItemTemplate" DataType="data:NetUserInfo">
-        <controls:SimpleGrid Columns="32,*">
+        <controls:SimpleGrid Columns="32,*" Margin="0 5">
             <hc:Gravatar Grid.Column="0" Width="32" Height="32" Source="{Binding AvatarUrl}" />
             <TextBlock Grid.Column="1"
                        Foreground="{DynamicResource AppForegroundBrush}" VerticalAlignment="Center" Margin="5 5"

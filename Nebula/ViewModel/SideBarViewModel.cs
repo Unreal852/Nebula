@@ -4,6 +4,7 @@ using System.Windows.Input;
 using HandyControl.Controls;
 using LiteMVVM;
 using LiteMVVM.Command;
+using Nebula.Core.Settings;
 using Nebula.Model;
 using Nebula.View;
 using Nebula.View.Views;
@@ -28,6 +29,7 @@ namespace Nebula.ViewModel
             CreatePlaylistCommand = new RelayCommand(CreatePlaylist);
             ImportPlaylistCommand = new RelayCommand<Playlist>(ImportPlaylist);
             PlayPlaylistCommand = new AsyncRelayCommand<Playlist>(PlayPlaylist);
+            Messenger.Subscribe<UserProfileSettings>((_, _) => OnPropertiesChanged(nameof(ProfileUsername), nameof(ProfileAvatar)));
             Playlists.CollectionChanged += (_, _) => ShowPlaylists = Playlists.Count > 0;
         }
 
@@ -38,6 +40,8 @@ namespace Nebula.ViewModel
         public ICommand                       ImportPlaylistCommand        { get; }
         public ICommand                       PlayPlaylistCommand          { get; }
         public ObservableCollection<Playlist> Playlists                    => NebulaClient.Playlists.Playlists;
+        public string                         ProfileUsername              => NebulaClient.Settings.UserProfile.UserName;
+        public string                         ProfileAvatar                => NebulaClient.Settings.UserProfile.AvatarUrl;
 
         public bool ShowPlaylists
         {

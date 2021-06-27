@@ -191,14 +191,14 @@
     <data name="settings_general_playlist_page_size" xml:space="preserve">
         <value>Limite des elements dans une page d'une playlist</value>
     </data>
-    <data name="settings_user_profile" xml:space="preserve">
+    <data name="settings_profile" xml:space="preserve">
         <value>Profil</value>
     </data>
     <data name="settings_privacy_allow_analytics" xml:space="preserve">
-        <value>Autoriser les données analytiques</value>
+        <value>Autoriser l'envoi des données analytiques</value>
     </data>
     <data name="settings_privacy_allow_crash" xml:space="preserve">
-        <value>Autoriser les rapports de crash</value>
+        <value>Autoriser l'envoi les rapports de crash</value>
     </data>
     <data name="settings_server_ip" xml:space="preserve">
         <value>Adresse IP du Serveur</value>
@@ -214,5 +214,23 @@
     </data>
     <data name="settings_server_upnp" xml:space="preserve">
         <value>Utiliser l'UpNp</value>
+    </data>
+    <data name="settings_profile_username" xml:space="preserve">
+        <value>Nom d'utilisateur</value>
+    </data>
+    <data name="settings_general_discord" xml:space="preserve">
+        <value>Autoriser l'intégration avec Discord</value>
+    </data>
+    <data name="online_message_media" xml:space="preserve">
+        <value>{0} a lancé la lecture de {1}</value>
+    </data>
+    <data name="settings_personalization" xml:space="preserve">
+        <value>Personalisation</value>
+    </data>
+    <data name="settings_personalization_appearance" xml:space="preserve">
+        <value>Apparence</value>
+    </data>
+    <data name="settings_personalization_appearance_theme_accent" xml:space="preserve">
+        <value>Accent</value>
     </data>
 </root>

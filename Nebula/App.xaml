@@ -19,15 +19,8 @@
                     </hc:ThemeResources.ThemeDictionaries>
                 </hc:ThemeResources>
                 <hc:Theme />
-                <ResourceDictionary Source="pack://application:,,,/View/Styles/Styles.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/View/Styles/Geometry.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/View/Styles/Templates.xaml" />
+                <ResourceDictionary Source="View/ApplicationResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <view:ViewModelsLocator x:Key="Locator" />
-            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:DoubleToTimeSpanStringConverter x:Key="DoubleToTimeSpanStringConverter" />
-            <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter" />
-            <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

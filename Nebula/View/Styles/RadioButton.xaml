@@ -1,0 +1,23 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:hc="https://handyorg.github.io/handycontrol">
+    <!-- Radio button style for the side bar -->
+    <Style x:Key="NavigationRadioButton" TargetType="RadioButton" BasedOn="{StaticResource RadioButtonIcon}">
+        <Setter Property="GroupName" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource SideBarRadioButtonCheckedBrush}" />
+                <Setter Property="hc:VisualElement.HighlightBrush" Value="{DynamicResource SideBarRadioButtonLineBrush}" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource SideBarRadioButtonUnCheckedBrush}" />
+                <Setter Property="hc:VisualElement.HighlightBrush" Value="Transparent" />
+                <Setter Property="FontWeight" Value="Normal" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

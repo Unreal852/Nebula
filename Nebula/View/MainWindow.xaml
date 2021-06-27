@@ -82,12 +82,11 @@
                                  Visibility="{Binding Path=IsEnabled, ElementName=SearchBar, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=!}" />
                 </hc:SimpleStackPanel>
             </hc:SimpleStackPanel>
-            <hc:SimpleStackPanel x:Name="TitleBarButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Button Content="Recherche Billie" Command="{Binding SearchCommand}"
-                        CommandParameter="billie eilish" />
-                <Button Content="Switch Theme" Command="{Binding SwitchThemeCommand}" Margin="10" />
-                <Button Content="Settings" Command="{Binding ShowSettingsCommand}" />
-                <ToggleButton Content="Queue" IsChecked="{Binding ElementName=Drawer, Path=IsOpen}" />
+            <hc:SimpleStackPanel x:Name="TitleBarButtons" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                <Button Content="Recherche Billie" Command="{Binding SearchCommand}" CommandParameter="billie eilish" />
+                <Button hc:IconElement.Geometry="{StaticResource ListGeometry}" Command="{Binding ShowQueueCommand}" />
+                <Button hc:IconElement.Geometry="{StaticResource SettingsGeometry}"
+                        Command="{Binding ShowSettingsCommand}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource MinimizeButton}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource MaximizeButton}" />
                 <Button Click="OnControlBoxClick" Style="{StaticResource CloseButton}" />
@@ -96,7 +95,7 @@
         <controls:SimpleGrid Grid.Column="1" Grid.Row="1" Background="{DynamicResource AppBackgroundBrush}" Effect="{StaticResource EffectShadow5}">
             <ContentPresenter Content="{Binding CurrentPage}" />
             <StackPanel Margin="0 5 5 5" HorizontalAlignment="Right" hc:Growl.GrowlParent="True" />
-            <hc:Drawer x:Name="Drawer" Dock="Right" MaskCanClose="True" ShowMode="Cover">
+            <hc:Drawer x:Name="Drawer" IsOpen="{Binding ShowQueue}" Dock="Right" MaskCanClose="True" ShowMode="Cover">
                 <views:MediasQueueView MinWidth="350" MaxWidth="350" />
             </hc:Drawer>
         </controls:SimpleGrid>

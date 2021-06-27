@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Nebula.Core.Attributes;
 using SharpToolbox.Safes;
 using static Nebula.Core.Settings.AppSettings;
@@ -10,6 +10,7 @@ namespace Nebula.Core.Settings
     {
         private bool _closeToTray                       = false;
         private bool _keyboardMediaKeysSupport          = true;
+        private bool _allowDiscordIntegration           = true;
         private int  _keyboardMediaKeysSoundIncDecValue = 5;
         private int  _defaultVolume                     = 50;
         private int  _searchMaxElements                 = 50;
@@ -17,6 +18,7 @@ namespace Nebula.Core.Settings
 
         public GeneralSettings()
         {
+            
         }
 
         [LocalizedCategory("global_application"), LocalizedDisplayName("settings_general_close_to_tray")]
@@ -40,6 +42,20 @@ namespace Nebula.Core.Settings
             }
         }
 
+        [LocalizedCategory("global_application"), LocalizedDisplayName("settings_general_discord")]
+        public bool AllowDiscordIntegration
+        {
+            get => _allowDiscordIntegration;
+            set
+            {
+                SetAndSave(ref _allowDiscordIntegration, value);
+                if (!value)
+                    NebulaClient.Discord?.ClearActivity();
+                else
+                    NebulaClient.Discord?.UpdateActivity();
+            }
+        }
+
         [LocalizedCategory("settings_general_keyboard"), LocalizedDisplayName("settings_general_keyboard_volume_incdec")]
         public int KeyboardMediaKeysSoundIncDevValue
         {
@@ -47,25 +63,25 @@ namespace Nebula.Core.Settings
             set => SetAndSave(ref _keyboardMediaKeysSoundIncDecValue, value);
         }
 
-        [LocalizedCategory("global_application"), LocalizedDisplayName("settings_general_default_volume"), Range(0,100)]
+        [LocalizedCategory("global_application"), LocalizedDisplayName("settings_general_default_volume"), Range(0, 100)]
         public int DefaultVolume
         {
             get => _defaultVolume;
-            set => SetAndSave(ref _defaultVolume, Ensure.Between(value, 0,100));
+            set => SetAndSave(ref _defaultVolume, Ensure.Between(value, 0, 100));
         }
 
         [LocalizedCategory("global_application"), LocalizedDisplayName("settings_general_max_search_elements")]
         public int MaxSearchElements
         {
             get => _searchMaxElements;
-            set => SetAndSave(ref _searchMaxElements, Ensure.Between(value, 10,100));
+            set => SetAndSave(ref _searchMaxElements, Ensure.Between(value, 10, 100));
         }
 
         [LocalizedCategory("global_application"), LocalizedDisplayName("settings_general_playlist_page_size")]
         public int PlaylistPageSize
         {
             get => _playlistPageSize;
-            set => SetAndSave(ref _playlistPageSize, Ensure.Between(value, 5,100));
+            set => SetAndSave(ref _playlistPageSize, Ensure.Between(value, 5, 100));
         }
     }
 }

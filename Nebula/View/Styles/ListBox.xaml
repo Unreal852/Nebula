@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="EmptyListBox" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+        <Style.Triggers>
+            <Trigger Property="HasItems" Value="False">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <TextBlock Text="Empty" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

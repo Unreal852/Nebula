@@ -35,12 +35,12 @@
                     <Button Width="34" Height="34" Foreground="{DynamicResource PrimaryTextBrush}" Style="{DynamicResource ButtonIcon}"
                             hc:IconElement.Geometry="{StaticResource NextGeometry}" Command="{Binding ForwardCommand}" />
                     <ToggleButton Width="34" Height="34"
-                                  Style="{StaticResource MediaPlayerToggleButton}"
+                                  Style="{StaticResource IconToggleButton}"
                                   IsChecked="{Binding Shuffle}"
                                   hc:IconSwitchElement.Geometry="{StaticResource ShuffleGeometry}"
                                   hc:IconSwitchElement.GeometrySelected="{StaticResource ShuffleGeometry}" />
                     <ToggleButton Width="34" Height="34" Margin="10 0"
-                                  Style="{StaticResource MediaPlayerToggleButton}"
+                                  Style="{StaticResource IconToggleButton}"
                                   IsChecked="{Binding Repeat}"
                                   hc:IconSwitchElement.Geometry="{StaticResource RepeatGeometry}"
                                   hc:IconSwitchElement.GeometrySelected="{StaticResource RepeatGeometry}" />

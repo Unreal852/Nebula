@@ -412,6 +412,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} started playing {1}.
+        /// </summary>
+        public static string online_message_media {
+            get {
+                return ResourceManager.GetString("online_message_media", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server Port.
         /// </summary>
         public static string online_port {
@@ -592,6 +601,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allow Discord Integration.
+        /// </summary>
+        public static string settings_general_discord {
+            get {
+                return ResourceManager.GetString("settings_general_discord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyboard.
         /// </summary>
         public static string settings_general_keyboard {
@@ -637,6 +655,42 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Personalization.
+        /// </summary>
+        public static string settings_personalization {
+            get {
+                return ResourceManager.GetString("settings_personalization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Appearance.
+        /// </summary>
+        public static string settings_personalization_appearance {
+            get {
+                return ResourceManager.GetString("settings_personalization_appearance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string settings_personalization_appearance_theme {
+            get {
+                return ResourceManager.GetString("settings_personalization_appearance_theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accent.
+        /// </summary>
+        public static string settings_personalization_appearance_theme_accent {
+            get {
+                return ResourceManager.GetString("settings_personalization_appearance_theme_accent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Privacy.
         /// </summary>
         public static string settings_privacy {
@@ -646,7 +700,7 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow Analytics.
+        ///   Looks up a localized string similar to Allow sending analytics data.
         /// </summary>
         public static string settings_privacy_allow_analytics {
             get {
@@ -655,11 +709,38 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allow Crash Reports.
+        ///   Looks up a localized string similar to Allow sending crash reports.
         /// </summary>
         public static string settings_privacy_allow_crash {
             get {
                 return ResourceManager.GetString("settings_privacy_allow_crash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string settings_profile {
+            get {
+                return ResourceManager.GetString("settings_profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avatar.
+        /// </summary>
+        public static string settings_profile_avatar {
+            get {
+                return ResourceManager.GetString("settings_profile_avatar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string settings_profile_username {
+            get {
+                return ResourceManager.GetString("settings_profile_username", resourceCulture);
             }
         }
         
@@ -723,15 +804,6 @@ namespace Nebula.Resources {
         public static string settings_title {
             get {
                 return ResourceManager.GetString("settings_title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile.
-        /// </summary>
-        public static string settings_user_profile {
-            get {
-                return ResourceManager.GetString("settings_user_profile", resourceCulture);
             }
         }
         

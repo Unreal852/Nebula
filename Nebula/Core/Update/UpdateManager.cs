@@ -56,13 +56,11 @@ namespace Nebula.Core.Update
                     Message = NebulaClient.GetLang("update_available", result.NewVersion),
                     ConfirmStr = NebulaClient.GetLang("update_update_now"),
                     CancelStr = NebulaClient.GetLang("dialog_no"),
+                    StaysOpen = true,
                     ActionBeforeClose = isConfirmed =>
                     {
                         if (isConfirmed)
-                        {
                             WebClient.DownloadFileAsync(new Uri(result.PackageUrl), SetupFileName);
-                        }
-
                         return true;
                     }
                 };

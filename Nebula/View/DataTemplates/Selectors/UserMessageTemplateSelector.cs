@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using Nebula.Model;
 using Nebula.View.Helper;
 
-namespace Nebula.View.Selectors
+namespace Nebula.View.DataTemplates.Selectors
 {
     public class UserMessageTemplateSelector : DataTemplateSelector
     {

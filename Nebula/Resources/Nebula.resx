@@ -195,7 +195,7 @@
     <data name="settings_about" xml:space="preserve">
         <value>About</value>
     </data>
-    <data name="settings_user_profile" xml:space="preserve">
+    <data name="settings_profile" xml:space="preserve">
         <value>Profile</value>
     </data>
     <data name="settings_server" xml:space="preserve">
@@ -229,10 +229,10 @@
         <value>Application</value>
     </data>
     <data name="settings_privacy_allow_analytics" xml:space="preserve">
-        <value>Allow Analytics</value>
+        <value>Allow sending analytics data</value>
     </data>
     <data name="settings_privacy_allow_crash" xml:space="preserve">
-        <value>Allow Crash Reports</value>
+        <value>Allow sending crash reports</value>
     </data>
     <data name="settings_server_ip" xml:space="preserve">
         <value>Server IP Address</value>
@@ -248,5 +248,29 @@
     </data>
     <data name="settings_server_size" xml:space="preserve">
         <value>Server Size</value>
+    </data>
+    <data name="settings_profile_username" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="settings_profile_avatar" xml:space="preserve">
+        <value>Avatar</value>
+    </data>
+    <data name="settings_general_discord" xml:space="preserve">
+        <value>Allow Discord Integration</value>
+    </data>
+    <data name="online_message_media" xml:space="preserve">
+        <value>{0} started playing {1}</value>
+    </data>
+    <data name="settings_personalization_appearance_theme" xml:space="preserve">
+        <value>Theme</value>
+    </data>
+    <data name="settings_personalization_appearance" xml:space="preserve">
+        <value>Appearance</value>
+    </data>
+    <data name="settings_personalization" xml:space="preserve">
+        <value>Personalization</value>
+    </data>
+    <data name="settings_personalization_appearance_theme_accent" xml:space="preserve">
+        <value>Accent</value>
     </data>
 </root>

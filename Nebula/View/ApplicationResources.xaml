@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:view="clr-namespace:Nebula.View"
+                    xmlns:converters="clr-namespace:Nebula.View.Converters"
+                    xmlns:hc="https://handyorg.github.io/handycontrol">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles/Geometry.xaml" />
+        <ResourceDictionary Source="Styles/Button.xaml" />
+        <ResourceDictionary Source="Styles/RadioButton.xaml" />
+        <ResourceDictionary Source="Styles/ToggleButton.xaml" />
+        <ResourceDictionary Source="Styles/ListBox.xaml" />
+        <ResourceDictionary Source="Styles/ListView.xaml" />
+        <ResourceDictionary Source="DataTemplates/Templates.xaml" />
+        <hc:IntellisenseResources Source="/HandyControl;Component/DesignTime/DesignTimeResources.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <view:ViewModelsLocator x:Key="Locator" />
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converters:DoubleToTimeSpanStringConverter x:Key="DoubleToTimeSpanStringConverter" />
+    <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter" />
+    <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
+</ResourceDictionary>

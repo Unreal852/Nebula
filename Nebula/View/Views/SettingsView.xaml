@@ -7,20 +7,24 @@
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:resx="clr-namespace:Nebula.Resources"
+             xmlns:views="clr-namespace:Nebula.View.Views"
              mc:Ignorable="d"
              DataContext="{Binding Path=SettingsViewModel, Source={StaticResource Locator}}">
     <TabControl Background="Transparent" Style="{StaticResource TabControlCapsuleSolid}" Margin="5">
         <TabItem Header="{x:Static resx:Nebula.settings_general}">
-            <hc:PropertyGrid MaxTitleWidth="500" SelectedObject="{Binding General}" />
+            <hc:PropertyGrid MaxTitleWidth="500" ShowSortButton="False" SelectedObject="{Binding General}" />
+        </TabItem>
+        <TabItem Header="{x:Static resx:Nebula.settings_personalization}">
+            <hc:PropertyGrid MaxTitleWidth="500" ShowSortButton="False" SelectedObject="{Binding Personalization}" />
         </TabItem>
         <TabItem Header="{x:Static resx:Nebula.settings_privacy}">
-            <hc:PropertyGrid MaxTitleWidth="500" SelectedObject="{Binding Privacy}" />
+            <hc:PropertyGrid MaxTitleWidth="500" ShowSortButton="False" SelectedObject="{Binding Privacy}" />
         </TabItem>
         <TabItem Header="{x:Static resx:Nebula.settings_server}">
-            <hc:PropertyGrid MaxTitleWidth="500" SelectedObject="{Binding Server}" />
+            <hc:PropertyGrid MaxTitleWidth="500" ShowSortButton="False" SelectedObject="{Binding Server}" />
         </TabItem>
-        <TabItem Header="{x:Static resx:Nebula.settings_user_profile}">
-
+        <TabItem Header="{x:Static resx:Nebula.settings_profile}">
+            <hc:PropertyGrid MaxTitleWidth="500" ShowSortButton="False" SelectedObject="{Binding UserProfile}" />
         </TabItem>
         <TabItem Header="{x:Static resx:Nebula.settings_about}">
 

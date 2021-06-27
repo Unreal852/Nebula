@@ -17,6 +17,7 @@ using Nebula.Core.Settings;
 using Nebula.Core.Update;
 using SharpToolbox.Windows.Hookers;
 using SharpToolbox.Windows.Hookers.Keyboard;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Nebula
 {
@@ -41,7 +42,7 @@ namespace Nebula
             Discord = new DiscordManager();
             UpdateManager = new UpdateManager();
             CancellationTokenSource = new CancellationTokenSource();
-            KeyboardHook = new KeyboardHooker();
+            KeyboardHook = new KeyboardHook();
 
             Discord.UpdateActivity();
             UpdateManager.CheckForUpdateNotify();
@@ -59,7 +60,7 @@ namespace Nebula
         public static   DiscordManager          Discord                 { get; }
         public static   OnlineSessionManager    OnlineSession           { get; }
         public static   UpdateManager           UpdateManager           { get; }
-        public static   KeyboardHooker          KeyboardHook            { get; }
+        public static   KeyboardHook            KeyboardHook            { get; }
         internal static CancellationTokenSource CancellationTokenSource { get; }
 
         public static event EventHandler Tick;
@@ -75,30 +76,30 @@ namespace Nebula
         {
             switch (e.Key)
             {
-                case EVirtualKeys.MEDIA_PLAY_PAUSE:
+                case VirtualKeys.MEDIA_PLAY_PAUSE:
                     if (MediaPlayer.IsPaused)
                         MediaPlayer.Resume();
                     else
                         MediaPlayer.Pause();
                     e.Handled = true;
                     break;
-                case EVirtualKeys.MEDIA_STOP:
+                case VirtualKeys.MEDIA_STOP:
                     MediaPlayer.Stop(true);
                     e.Handled = true;
                     break;
-                case EVirtualKeys.MEDIA_NEXT_TRACK:
+                case VirtualKeys.MEDIA_NEXT_TRACK:
                     MediaPlayer.Forward(true);
                     e.Handled = true;
                     break;
-                case EVirtualKeys.VOLUME_MUTE:
+                case VirtualKeys.VOLUME_MUTE:
                     MediaPlayer.IsMuted = !MediaPlayer.IsMuted;
                     e.Handled = true;
                     break;
-                case EVirtualKeys.VOLUME_UP:
+                case VirtualKeys.VOLUME_UP:
                     MediaPlayer.Volume += Settings.General.KeyboardMediaKeysSoundIncDevValue;
                     e.Handled = true;
                     break;
-                case EVirtualKeys.VOLUME_DOWN:
+                case VirtualKeys.VOLUME_DOWN:
                     MediaPlayer.Volume -= Settings.General.KeyboardMediaKeysSoundIncDevValue;
                     e.Handled = true;
                     break;

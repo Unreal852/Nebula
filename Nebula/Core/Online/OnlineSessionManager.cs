@@ -73,7 +73,8 @@ namespace Nebula.Core.Online
 
         private void OnClientConnected(object sender, ConnectedEventArgs e)
         {
-            SendClientPacket(new UserInfoPacket {UserInfo = new NetUserInfo {Username = "Unreal", AvatarUrl = ""}});
+            SendClientPacket(new UserInfoPacket
+                {UserInfo = new NetUserInfo {Username = NebulaClient.Settings.UserProfile.UserName, AvatarUrl = NebulaClient.Settings.UserProfile.AvatarUrl}});
             NebulaClient.Invoke(() => Messenger.Default.Broadcast(this, NavigationInfo.Create(typeof(OnlineSessionView), null, true)));
         }
 
@@ -129,6 +130,9 @@ namespace Nebula.Core.Online
             if (mediaInfo == null)
                 return;
             await NebulaClient.MediaPlayer.OpenMedia(mediaInfo, fromRemote: true);
+            if (NebulaClient.MediaPlayer.CurrentMedia != null)
+                NewMessage?.Invoke(this,
+                    new NewUserMessageEventArgs(packet.Sender, new NetMessage {MessageType = 1, Message = NebulaClient.MediaPlayer.CurrentMedia.Title}));
             SendClientPacket(new PlayerReadyPacket());
         }
     }

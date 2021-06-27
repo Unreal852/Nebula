@@ -126,6 +126,11 @@ namespace Nebula.ViewModel
             }
         }
 
+        public void OnLeft()
+        {
+            
+        }
+
         private async Task PlayMedia(MediaInfo mediaInfo)
         {
             if (mediaInfo == null)
