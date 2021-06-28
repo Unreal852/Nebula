@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Nebula.Core;
 using Nebula.Core.Extensions;
 using Nebula.Core.Providers;
+using Nebula.Core.Providers.Youtube;
 using SQLite;
 
 namespace Nebula.Model
@@ -14,59 +15,62 @@ namespace Nebula.Model
         {
         }
 
-        public MediaInfo(string id, string authorId, string title, string authorName, string providerName, string lowResThumbnail,
-                         string mediumResThumbnail, string highResThumbnail, TimeSpan duration)
+        public MediaInfo(string id, string authorId, string title, string author, string description, string providerName, string lowResThumbnail,
+                         string mediumResThumbnail, string highResThumbnail, TimeSpan duration, DateTime creationDate)
         {
-            MediaId = id;
+            Id = id;
             AuthorId = authorId;
             Title = title;
-            AuthorName = authorName;
+            Author = author;
+            Description = description;
             ProviderName = providerName;
             LowResThumbnail = lowResThumbnail;
             MediumResThumbnail = mediumResThumbnail;
             HighResThumbnail = highResThumbnail;
             Duration = duration;
+            CreationDate = creationDate;
             Title = Validator.ValidateMediaTitle(this);
         }
 
-        [Indexed] [PrimaryKey] public string   MediaId                 { get; set; }
+        [Indexed] [PrimaryKey] public string   Id                      { get; set; }
         public                        string   AuthorId                { get; set; }
-        public                        string   AuthorName              { get; set; }
-        public                        string   ProviderName            { get; set; }
         public                        string   Title                   { get; set; }
-        public                        TimeSpan Duration                { get; set; }
-        [Ignore] public               bool     IsActive                { get; set; } = true;
+        public                        string   Author                  { get; set; }
+        public                        string   Description             { get; set; }
+        public                        string   ProviderName            { get; set; }
         public                        string   LowResThumbnail         { get; set; }
         public                        string   MediumResThumbnail      { get; set; }
         public                        string   HighResThumbnail        { get; set; }
-        [Ignore] public               string   CustomThumbnail         { get; set; }
+        public                        string   CustomThumbnail         { get; set; }
+        public                        TimeSpan Duration                { get; set; }
+        public                        DateTime CreationDate            { get; set; }
+        [Ignore] public               bool     IsActive                { get; set; } = true;
         public                        string   AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
         public                        string   AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
-        [Ignore] public               string   Url                     => $"https://www.youtube.com/watch?v={MediaId}";
 
-        public async Task<ArtistInfo> GetArtistInfo()
+        public Task<ArtistInfo> GetArtistInfo()
         {
-            return await GetMediaProvider().GetArtistInfo(AuthorId);
+            throw new NotImplementedException();
         }
 
         public async Task<Uri> GetAudioStreamUri()
         {
-            return await GetMediaProvider().GetAudioStreamUri(this);
+            return await NebulaClient.Providers.FindProviderByType<YoutubeMediaProvider>().GetAudioStreamUri(this);
         }
 
-        public async Task<Uri> GetVideoStreamUri()
+        public Task<Uri> GetVideoStreamUri()
         {
-            return await GetMediaProvider().GetVideoStreamUri(this);
+            throw new NotImplementedException();
         }
 
-        public async Task<Uri> GetMuxedStreamUri()
+        public Task<Uri> GetMuxedStreamUri()
         {
-            return await GetMediaProvider().GetMuxedStreamUri(this);
+            throw new NotImplementedException();
         }
 
         public IMediasProvider GetMediaProvider()
         {
-            return NebulaClient.Providers.GetProvider(ProviderName);
+            throw new NotImplementedException();
         }
 
         public override string ToString()

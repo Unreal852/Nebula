@@ -64,7 +64,7 @@ namespace Nebula.Core
             MediaInfo mediaInfo = NebulaClient.MediaPlayer.CurrentMedia;
             var name = "";
             string state = mediaInfo == null ? "Idle" : "Listening";
-            string details = mediaInfo == null ? "" : $"{mediaInfo.Title} - {mediaInfo.AuthorName}";
+            string details = mediaInfo == null ? "" : $"{mediaInfo.Title} - {mediaInfo.Author}";
             return (name, state, details);
         }
 

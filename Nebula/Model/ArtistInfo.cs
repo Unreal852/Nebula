@@ -12,31 +12,29 @@ namespace Nebula.Model
         {
         }
 
-        public ArtistInfo(string authorId, string providerName, string name, string lowResThumbnail, string mediumResThumbnail, string highResThumbnail)
+        public ArtistInfo(string id, string name, string url, string lowResThumbnail, string mediumResThumbnail, string highResThumbnail)
         {
-            AuthorId = authorId;
-            ProviderName = providerName;
+            Id = id;
             Name = name;
+            Url = url;
             LowResThumbnail = lowResThumbnail;
             MediumResThumbnail = mediumResThumbnail;
             HighResThumbnail = highResThumbnail;
         }
 
-        [Indexed, PrimaryKey] public string AuthorId                { get; set; }
-        public                       string ProviderName            { get; set; }
+        [Indexed, PrimaryKey] public string Id                      { get; set; }
         public                       string Name                    { get; set; }
+        public                       string Url                     { get; set; }
         public                       string LowResThumbnail         { get; set; }
         public                       string MediumResThumbnail      { get; set; }
         public                       string HighResThumbnail        { get; set; }
-        [Ignore] public              string CustomThumbnail         { get; set; }
-        public                       string Url                     => $"https://www.youtube.com/channel/{AuthorId}";
+        public                       string CustomThumbnail         { get; set; }
         public                       string AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
         public                       string AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
-        public async IAsyncEnumerable<MediaInfo> GetMedias()
+        public IAsyncEnumerable<MediaInfo> GetMedias()
         {
-            await foreach (MediaInfo mediaInfo in NebulaClient.Providers.GetProvider(ProviderName).GetArtistMedias(this))
-                yield return mediaInfo;
+            throw new System.NotImplementedException();
         }
     }
 }

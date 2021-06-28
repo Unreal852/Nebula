@@ -189,7 +189,7 @@ namespace Nebula.ViewModel
                 string[] split = loweredFilter.Split(':');
                 Predicate<MediaInfo> predicate = split[0] switch
                 {
-                    "by"      => media => media.AuthorName.ToLower().Contains(split[1]),
+                    "by"      => media => media.Author.ToLower().Contains(split[1]),
                     "active"  => media => media.IsActive,
                     "nactive" => media => !media.IsActive,
                     _         => media => media.Title.ToLower().Contains(loweredFilter)

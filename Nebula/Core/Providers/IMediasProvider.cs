@@ -63,7 +63,7 @@ namespace Nebula.Core.Providers
         /// <returns>
         ///     <see cref="IEnumerable{T}" />
         /// </returns>
-        IAsyncEnumerable<MediaInfo> GetArtistMedias(ArtistInfo artistInfo, params object[] args);
+        IAsyncEnumerable<MediaInfo> GetArtistMedias(string query, params object[] args);
 
         /// <summary>
         ///     Get Media info

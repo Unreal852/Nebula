@@ -15,7 +15,6 @@ namespace Nebula.Core.Database
         public NebulaDatabase()
         {
             Database = new SQLiteAsyncConnection(Path.Combine(AppSettings.SettingsDirectory.FullName, AppSettings.PlaylistDatabaseFileName));
-            
             LoadDatabase();
         }
 
@@ -50,7 +49,7 @@ namespace Nebula.Core.Database
             if (playlist == null)
                 return new List<MediaInfo>();
             List<PlaylistMediaInfo> playlistMediaInfos =
-                await Database.QueryAsync<PlaylistMediaInfo>($"SELECT * FROM PlaylistsMedias WHERE PlaylistId={playlist.PlaylistId} ORDER BY \"Order\" ASC");
+                await Database.QueryAsync<PlaylistMediaInfo>($"SELECT * FROM PlaylistsMedias WHERE PlaylistId={playlist.Id} ORDER BY \"Order\" ASC");
             List<MediaInfo> medias = new List<MediaInfo>(playlistMediaInfos.Count);
             foreach (PlaylistMediaInfo pInfo in playlistMediaInfos)
             {
@@ -77,7 +76,7 @@ namespace Nebula.Core.Database
         {
             if (playlist == null || mediaInfo == null)
                 return;
-            await Database.ExecuteAsync("UPDATE PlaylistsMedias SET IsActive=? WHERE PlaylistId=? AND MediaId=?", mediaInfo.IsActive, playlist.PlaylistId, mediaInfo.MediaId);
+            await Database.ExecuteAsync("UPDATE PlaylistsMedias SET IsActive=? WHERE PlaylistId=? AND MediaId=?", mediaInfo.IsActive, playlist.Id, mediaInfo.Id);
         }
 
         public async Task InsertWholePlaylist(Playlist playlist)
@@ -94,7 +93,7 @@ namespace Nebula.Core.Database
                 {
                     trans.InsertOrReplace(mediaInfo);
                     trans.Execute("INSERT INTO PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) VALUES(?,?,?,?)",
-                        playlist.PlaylistId, mediaInfo.MediaId, index++, true);
+                        playlist.Id, mediaInfo.Id, index++, true);
                 }
             });
         }
@@ -108,7 +107,7 @@ namespace Nebula.Core.Database
                 trans.InsertOrReplace(playlist);
                 trans.InsertOrReplace(mediaInfo);
                 trans.Execute("INSERT INTO PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) VALUES(?,?,?,?)",
-                    playlist.PlaylistId, mediaInfo.MediaId, order < 0 ? playlist.Medias.IndexOf(mediaInfo) : order, true);
+                    playlist.Id, mediaInfo.Id, order < 0 ? playlist.Medias.IndexOf(mediaInfo) : order, true);
             });
         }
 
@@ -116,7 +115,7 @@ namespace Nebula.Core.Database
         {
             if (playlist == null || mediaInfo == null)
                 return;
-            await Database.ExecuteAsync("DELETE FROM PlaylistsMedias WHERE PlaylistId=? AND MediaId=?", playlist.PlaylistId, mediaInfo.MediaId);
+            await Database.ExecuteAsync("DELETE FROM PlaylistsMedias WHERE PlaylistId=? AND MediaId=?", playlist.Id, mediaInfo.Id);
         }
 
         public async Task DeletePlaylist(Playlist playlist)
@@ -125,11 +124,12 @@ namespace Nebula.Core.Database
                 return;
             await Database.RunInTransactionAsync(trans =>
             {
-                trans.Execute("DELETE FROM Playlists WHERE Id=?", playlist.PlaylistId);
-                trans.Execute("DELETE FROM PlaylistsMedias WHERE PlaylistId=?", playlist.PlaylistId);
+                trans.Execute("DELETE FROM Playlists WHERE Id=?", playlist.Id);
+                trans.Execute("DELETE FROM PlaylistsMedias WHERE PlaylistId=?", playlist.Id);
                 trans.Execute(
-                    "DELETE FROM Medias WHERE MediaId IN (SELECT Medias.MediaId FROM Medias LEFT JOIN PlaylistsMedias ON Medias.MediaId=PlaylistsMedias.MediaId WHERE PlaylistsMedias.MediaId IS NULL)");
+                    "DELETE FROM Medias WHERE Id IN (SELECT Medias.Id FROM Medias LEFT JOIN PlaylistsMedias ON Medias.Id=PlaylistsMedias.MediaId WHERE PlaylistsMedias.MediaId IS NULL)");
             });
+            await Vacuum();
         }
 
         private void OnReceiveTrace(string obj)

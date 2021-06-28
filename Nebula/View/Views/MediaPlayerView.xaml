@@ -15,7 +15,7 @@
             <hc:SimpleStackPanel Orientation="Vertical" Margin="5 0 0 0" Width="168">
                 <TextBlock Text="{Binding CurrentMedia.Title}" FontWeight="Bold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
                            Foreground="{DynamicResource AppForegroundBrush}" />
-                <TextBlock Text="{Binding CurrentMedia.AuthorName}" FontSize="9" Foreground="{DynamicResource AppForegroundBrush}" />
+                <TextBlock Text="{Binding CurrentMedia.Author}" FontSize="9" Foreground="{DynamicResource AppForegroundBrush}" />
             </hc:SimpleStackPanel>
         </hc:SimpleStackPanel>
         <controls:SimpleGrid Grid.Column="1" Columns="Auto,*,Auto" Background="{DynamicResource SecondaryAppBackgroundBrush}">

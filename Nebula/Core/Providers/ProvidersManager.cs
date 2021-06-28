@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Nebula.Core.Providers.Youtube;
 using Nebula.Model;
 
@@ -11,46 +12,51 @@ namespace Nebula.Core.Providers
             RegisterProvider(new YoutubeMediaProvider());
         }
 
-        private Dictionary<string, IMediasProvider> Providers      { get; } = new();
-        public  int                                 ProvidersCount => Providers.Count;
+        private List<IMediasProvider> Providers      { get; } = new();
+        public  int                   ProvidersCount => Providers.Count;
 
         public void RegisterProvider(IMediasProvider provider)
         {
-            if (Providers.ContainsValue(provider))
+            if (Providers.Contains(provider))
                 return;
-            Providers.Add(provider.Name, provider);
+            Providers.Add(provider);
         }
 
         public void UnregisterProvider(IMediasProvider provider)
         {
-            if (!Providers.ContainsValue(provider))
+            if (!Providers.Contains(provider))
                 return;
-            Providers.Remove(provider.Name);
+            Providers.Remove(provider);
         }
 
         public T FindProviderByType<T>()
         {
-            foreach (IMediasProvider provider in Providers.Values)
+            foreach (IMediasProvider provider in Providers)
                 if (provider is T type)
                     return type;
+
             return default;
         }
 
-        public IMediasProvider GetProvider(string name)
+        public IMediasProvider FindProviderByName(string name, bool ignoreCase = true)
         {
-            return Providers.ContainsKey(name) ? Providers[name] : default;
+            foreach (IMediasProvider provider in Providers)
+                if (string.Equals(provider.Name, name, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture))
+                    return provider;
+
+            return default;
         }
 
         public async IAsyncEnumerable<MediaInfo> SearchMedias(string query, params object[] args)
         {
-            foreach (IMediasProvider mediasProvider in Providers.Values)
+            foreach (IMediasProvider mediasProvider in Providers)
             await foreach (MediaInfo mediaInfo in mediasProvider.SearchMedias(query, args))
                 yield return mediaInfo;
         }
 
         public async IAsyncEnumerable<Playlist> SearchPlaylists(string query, params object[] args)
         {
-            foreach (IMediasProvider mediasProvider in Providers.Values)
+            foreach (IMediasProvider mediasProvider in Providers)
             await foreach (Playlist playlist in mediasProvider.SearchPlaylists(query, args))
                 yield return playlist;
         }

@@ -71,7 +71,7 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="{x:Static resx:Nebula.media_title}" DisplayMemberBinding="{Binding Title}" Width="350" />
-                        <GridViewColumn Header="{x:Static resx:Nebula.media_author}" DisplayMemberBinding="{Binding AuthorName}" />
+                        <GridViewColumn Header="{x:Static resx:Nebula.media_author}" DisplayMemberBinding="{Binding Author}" />
                         <GridViewColumn Header="{x:Static resx:Nebula.media_duration}"
                                         DisplayMemberBinding="{Binding Duration, Converter={StaticResource TimeSpanToStringConverter}}" />
                         <GridViewColumn Header="{x:Static resx:Nebula.media_active}" CellTemplate="{StaticResource IsActiveTemplate}" />
