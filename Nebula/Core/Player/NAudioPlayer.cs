@@ -147,8 +147,8 @@ namespace Nebula.Core.Player
                     {
                         Media = new NetMediaInfo
                         {
-                            Id = mediaInfo.Id,
-                            Author = mediaInfo.Author,
+                            Id = mediaInfo.MediaId,
+                            Author = mediaInfo.AuthorName,
                             Title = mediaInfo.Title
                         }
                     });

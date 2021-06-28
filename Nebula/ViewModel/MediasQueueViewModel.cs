@@ -26,7 +26,7 @@ namespace Nebula.ViewModel
         public ObservableFilterPager<MediaInfo> Pager                       { get; }
         public MediaInfo                        CurrentMedia                => NebulaClient.MediaPlayer.CurrentMedia;
         public string                           MediaTitle                  => CurrentMedia?.Title ?? "";
-        public string                           MediaAuthor                 => CurrentMedia?.Author ?? "";
+        public string                           MediaAuthor                 => CurrentMedia?.AuthorName ?? "";
         public string                           MediaThumbnail              => CurrentMedia?.AnyThumbnailFromHighest;
         public int                              TotalPages                  => Pager.TotalPages;
 

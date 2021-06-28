@@ -18,7 +18,7 @@ namespace Nebula.Model
         private const           int             MaxNameLength        = 128;
         private const           int             MaxDescriptionLength = 92;
         private const           int             MaxAuthorLength      = 128;
-        private static readonly Regex           SRemLines            = new(@"\t|\n|\r");
+        private static readonly Regex           RemoveLinesRegex     = new(@"\t|\n|\r");
         private static readonly IPlaylistLoader DefaultLoader        = new DatabasePlaylistLoader();
 
         public Playlist()
@@ -45,10 +45,9 @@ namespace Nebula.Model
             }
         }
 
-        [PrimaryKey, AutoIncrement] public int                               Id                      { get; set; }
+        [PrimaryKey, AutoIncrement] public int                               PlaylistId              { get; set; }
         public                             string                            Name                    { get; set; }
         public                             string                            Description             { get; set; }
-        public                             string                            Url                     { get; set; }
         public                             string                            Author                  { get; set; }
         public                             string                            LowResThumbnail         { get; set; }
         public                             string                            MediumResThumbnail      { get; set; }
@@ -56,11 +55,13 @@ namespace Nebula.Model
         public                             string                            CustomThumbnail         { get; set; }
         public                             bool                              KeepSync                { get; set; }
         public                             string                            ProviderName            { get; set; }
+        public                             bool                              IsCustom                { get; set; }
         [Ignore] public                    bool                              AutoSave                { get; set; } = true;
         [Ignore] public                    bool                              IsLoaded                { get; set; } = false;
         [Ignore] public                    ObservableCollectionEx<MediaInfo> Medias                  { get; }
         [Ignore] public                    IPlaylistLoader                   PlaylistLoader          { get; set; }
         public                             TimeSpan                          TotalDuration           { get; private set; }
+        public                             string                            Url                     => $"https://www.youtube.com/playlist?list={PlaylistId}";
         public                             int                               MediasCount             => Medias.Count;
         public                             string                            AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
         public                             string                            AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
@@ -76,9 +77,9 @@ namespace Nebula.Model
 
         public void ValidateFields()
         {
-            Name = string.IsNullOrWhiteSpace(Name) ? " " : SRemLines.Replace(Name, "").Truncate(MaxNameLength);
-            Description = string.IsNullOrWhiteSpace(Description) ? " " : SRemLines.Replace(Description, "").Truncate(MaxDescriptionLength);
-            Author = string.IsNullOrWhiteSpace(Author) ? " " : SRemLines.Replace(Author, "").Truncate(MaxAuthorLength);
+            Name = string.IsNullOrWhiteSpace(Name) ? "No Name" : RemoveLinesRegex.Replace(Name, "").Truncate(MaxNameLength);
+            Description = string.IsNullOrWhiteSpace(Description) ? " " : RemoveLinesRegex.Replace(Description, "").Truncate(MaxDescriptionLength);
+            Author = string.IsNullOrWhiteSpace(Author) ? " " : RemoveLinesRegex.Replace(Author, "").Truncate(MaxAuthorLength);
         }
 
         public virtual async Task Load()

@@ -24,7 +24,7 @@
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 5" />
                         <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis"
                                    FontSize="14"
-                                   Text="{Binding Author, StringFormat={x:Static resx:Nebula.playlist_by}}"
+                                   Text="{Binding AuthorName, StringFormat={x:Static resx:Nebula.playlist_by}}"
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 0 0 0" />
                         <hc:SimpleStackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right"
                                              VerticalAlignment="Bottom">

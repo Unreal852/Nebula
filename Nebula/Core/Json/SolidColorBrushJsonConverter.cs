@@ -9,12 +9,12 @@ namespace Nebula.Core.Json
     {
         public override SolidColorBrush Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return new ((Color) ColorConverter.ConvertFromString(reader.GetString()));
+            return new((Color) ColorConverter.ConvertFromString(reader.GetString()));
         }
 
-        public override void             Write(Utf8JsonWriter writer, SolidColorBrush value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, SolidColorBrush value, JsonSerializerOptions options)
         {
-           writer.WriteStringValue($"#{value.Color.R:X2}{value.Color.G:X2}{value.Color.B:X2}");
+            writer.WriteStringValue($"#{value.Color.R:X2}{value.Color.G:X2}{value.Color.B:X2}");
         }
     }
 }

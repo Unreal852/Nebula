@@ -17,7 +17,7 @@ namespace Nebula.Core
             if (split.Length > 1)
             {
                 string left = split[0].ToLower();
-                if (left.Contains(mediaInfo.Author.ToLower()))
+                if (left.Contains(mediaInfo.AuthorName.ToLower()))
                     title = split[1].Trim();
             }
 
