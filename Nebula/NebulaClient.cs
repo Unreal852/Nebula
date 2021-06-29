@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -17,7 +17,6 @@ using Nebula.Core.Settings;
 using Nebula.Core.Update;
 using SharpToolbox.Windows.Hookers;
 using SharpToolbox.Windows.Hookers.Keyboard;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Nebula
 {
@@ -139,6 +138,20 @@ namespace Nebula
         public static void BeginInvoke(Action action)
         {
             Application.Current.Dispatcher.BeginInvoke(action);
+        }
+
+        public static async void Restart(bool ask = true)
+        {
+            if (ask)
+            {
+                Dialog dialog = NebulaDialog.ShowWarningNoYes("dialog_restart", "dialog_title_restart");
+                bool result = await dialog.GetResultAsync<bool>();
+                if (!result)
+                    return;
+            }
+
+            Process.Start(Process.GetCurrentProcess().MainModule.FileName);
+            Application.Current.Shutdown();
         }
     }
 }

@@ -230,7 +230,19 @@
     <data name="settings_personalization_appearance" xml:space="preserve">
         <value>Apparence</value>
     </data>
-    <data name="settings_personalization_appearance_theme_accent" xml:space="preserve">
-        <value>Accent</value>
+    <data name="settings_general_lang" xml:space="preserve">
+        <value>Langue</value>
+    </data>
+    <data name="dialog_title_restart" xml:space="preserve">
+        <value>Redémarrage requis</value>
+    </data>
+    <data name="dialog_restart" xml:space="preserve">
+        <value>Voulez-vous redémarrer Nebula maintenant ?</value>
+    </data>
+    <data name="global_your_music" xml:space="preserve">
+        <value>VOTRE MUSIQUE</value>
+    </data>
+    <data name="dialog_title_error" xml:space="preserve">
+        <value>Erreur</value>
     </data>
 </root>

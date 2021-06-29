@@ -4,7 +4,6 @@ using System.Windows.Media;
 using HandyControl.Themes;
 using Nebula.Core.Attributes;
 using Nebula.View.Controls;
-using SharpToolbox.Safes;
 using static Nebula.Core.Settings.AppSettings;
 
 namespace Nebula.Core.Settings
@@ -24,7 +23,7 @@ namespace Nebula.Core.Settings
             get => _theme;
             set
             {
-                SetAndSave(ref _theme, value);
+                Set(ref _theme, value);
                 ThemeManager.Current.ApplicationTheme = value;
             }
         }
@@ -37,7 +36,7 @@ namespace Nebula.Core.Settings
             get => _themeAccent;
             set
             {
-                SetAndSave(ref _themeAccent, value);
+                Set(ref _themeAccent, value);
                 ThemeManager.Current.AccentColor = value;
             }
         }

@@ -10,10 +10,8 @@
              xmlns:converters="clr-namespace:Nebula.View.Converters"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:resx="clr-namespace:Nebula.Resources"
-             mc:Ignorable="d">
-    <UserControl.DataContext>
-        <viewModel:SideBarViewModel />
-    </UserControl.DataContext>
+             DataContext="{Binding Path=SideBarViewModel, Source={StaticResource Locator}}"
+    mc:Ignorable="d">
     <UserControl.Resources>
     </UserControl.Resources>
     <controls:SimpleGrid Rows="Auto,*,50">
@@ -37,15 +35,16 @@
             </hc:SimpleStackPanel>
             <hc:SimpleStackPanel Orientation="Vertical" Margin="0 80 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="VOTRE MUSIQUE" Foreground="{DynamicResource SideBarCategoryBrush}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" />
+                    <TextBlock Text="{x:Static resx:Nebula.global_your_music}" Foreground="{DynamicResource SideBarCategoryBrush}" FontSize="18" FontWeight="Bold"
+                               VerticalAlignment="Center" />
                     <Button hc:IconElement.Geometry="{StaticResource PlusGeometry}" Foreground="{DynamicResource SideBarCategoryBrush}"
                             Style="{StaticResource ButtonIcon}" Command="{Binding CreatePlaylistCommand}" />
                     <Button hc:IconElement.Geometry="{StaticResource ImportGeometry}" Foreground="{DynamicResource SideBarCategoryBrush}"
                             Style="{StaticResource ButtonIcon}" Command="{Binding ImportPlaylistCommand}" />
                 </StackPanel>
                 <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="300">
-                    <hc:ButtonGroup ItemsSource="{Binding Playlists}" Orientation="Vertical">
-                        <hc:ButtonGroup.ItemTemplate>
+                    <controls:ButtonGroupEx ItemsSource="{Binding Playlists}" Orientation="Vertical">
+                        <controls:ButtonGroupEx.ItemTemplate>
                             <DataTemplate DataType="model:Playlist">
                                 <RadioButton
                                     Style="{StaticResource NavigationRadioButton}"
@@ -63,8 +62,8 @@
                                     </controls:SimpleGrid>
                                 </RadioButton>
                             </DataTemplate>
-                        </hc:ButtonGroup.ItemTemplate>
-                    </hc:ButtonGroup>
+                        </controls:ButtonGroupEx.ItemTemplate>
+                    </controls:ButtonGroupEx>
                 </hc:ScrollViewer>
             </hc:SimpleStackPanel>
         </hc:SimpleStackPanel>

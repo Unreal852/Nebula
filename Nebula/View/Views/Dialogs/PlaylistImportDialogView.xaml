@@ -5,10 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:controls="clr-namespace:Nebula.View.Controls"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:dialogs="clr-namespace:Nebula.ViewModel.Dialogs"
         xmlns:resx="clr-namespace:Nebula.Resources"
         mc:Ignorable="d"
-        CornerRadius="10" 
+        CornerRadius="10"
         Background="{DynamicResource SecondaryAppBackgroundBrush}"
         DataContext="{Binding Path=PlaylistImportDialogViewModel, Source={StaticResource Locator}}"
         Effect="{StaticResource EffectShadow5}">

@@ -1,10 +1,6 @@
-﻿using System.Globalization;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows;
-using LiteMVVM.Messenger;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+using Nebula.Core.Extensions;
 using Nebula.View;
 
 namespace Nebula
@@ -16,7 +12,7 @@ namespace Nebula
     {
         private void OnAppStart(object sender, StartupEventArgs e)
         {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.CurrentUICulture;
+            Thread.CurrentThread.CurrentUICulture = NebulaClient.Settings.General.Language.GetCulture();
         }
 
         private void OnAppExit(object sender, ExitEventArgs e)

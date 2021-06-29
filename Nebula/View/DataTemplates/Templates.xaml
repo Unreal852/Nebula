@@ -12,7 +12,7 @@
             <Border CornerRadius="4,4,0,0" Background="Black">
                 <Image Source="{Binding AnyThumbnailFromHighest}" Stretch="Uniform">
                     <Image.CacheMode>
-                        <BitmapCache />
+                        <BitmapCache  />
                     </Image.CacheMode>
                 </Image>
             </Border>

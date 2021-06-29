@@ -13,4 +13,16 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    <Style x:Key="TransparentSelectionListBoxItem" TargetType="ListBoxItem">
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+        </Style.Resources>
+    </Style>
 </ResourceDictionary>

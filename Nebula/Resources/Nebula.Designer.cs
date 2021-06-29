@@ -115,6 +115,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to restart nebula now ?.
+        /// </summary>
+        public static string dialog_restart {
+            get {
+                return ResourceManager.GetString("dialog_restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string dialog_title_error {
@@ -129,6 +138,15 @@ namespace Nebula.Resources {
         public static string dialog_title_info {
             get {
                 return ResourceManager.GetString("dialog_title_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart Required.
+        /// </summary>
+        public static string dialog_title_restart {
+            get {
+                return ResourceManager.GetString("dialog_title_restart", resourceCulture);
             }
         }
         
@@ -282,6 +300,15 @@ namespace Nebula.Resources {
         public static string global_show {
             get {
                 return ResourceManager.GetString("global_show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YOUR MUSIC.
+        /// </summary>
+        public static string global_your_music {
+            get {
+                return ResourceManager.GetString("global_your_music", resourceCulture);
             }
         }
         
@@ -637,6 +664,15 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string settings_general_lang {
+            get {
+                return ResourceManager.GetString("settings_general_lang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search Results Size.
         /// </summary>
         public static string settings_general_max_search_elements {
@@ -727,7 +763,7 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Avatar.
+        ///   Looks up a localized string similar to Avatar Url.
         /// </summary>
         public static string settings_profile_avatar {
             get {

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using LiteMVVM.Messenger;
 using Nebula.Core.Attributes;
 using static Nebula.Core.Settings.AppSettings;
@@ -22,9 +21,9 @@ namespace Nebula.Core.Settings
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    SetAndSave(ref _userName, "User" + new Random().Next(1000, 10000), true);
+                    Set(ref _userName, "User" + new Random().Next(1000, 10000), true);
                 else
-                    SetAndSave(ref _userName, value, true);
+                    Set(ref _userName, value, true);
                 Messenger.Default.Broadcast(this, this);
             }
         }
@@ -35,7 +34,7 @@ namespace Nebula.Core.Settings
             get => _avatarUrl;
             set
             {
-                SetAndSave(ref _avatarUrl, value, true);
+                Set(ref _avatarUrl, value, true);
                 Messenger.Default.Broadcast(this, this);
             }
         }

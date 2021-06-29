@@ -69,7 +69,7 @@
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
         </hc:NotifyIcon>
-        <views:SideBarView Grid.RowSpan="3" />
+        <views:SideBarView Grid.Row="0" Grid.RowSpan="3" />
         <controls:SimpleGrid Background="{DynamicResource SecondaryAppBackgroundBrush}" Grid.Column="1" Grid.Row="0" Effect="{StaticResource EffectShadow5}">
             <hc:SimpleStackPanel Orientation="Horizontal" Margin="10 0 0 0">
                 <hc:SimpleStackPanel x:Name="TitleBar" Orientation="Vertical" VerticalAlignment="Center">

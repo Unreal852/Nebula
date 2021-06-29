@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:view="clr-namespace:Nebula.View"
                     xmlns:converters="clr-namespace:Nebula.View.Converters"
-                    xmlns:hc="https://handyorg.github.io/handycontrol">
+                    xmlns:hc="https://handyorg.github.io/handycontrol"
+                    xmlns:selectors="clr-namespace:Nebula.View.DataTemplates.Selectors">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles/Geometry.xaml" />
         <ResourceDictionary Source="Styles/Button.xaml" />
@@ -14,6 +15,7 @@
         <hc:IntellisenseResources Source="/HandyControl;Component/DesignTime/DesignTimeResources.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <view:ViewModelsLocator x:Key="Locator" />
+    <selectors:UserMessageTemplateSelector x:Key="OnlineSessionMessageTemplateSelector" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converters:DoubleToTimeSpanStringConverter x:Key="DoubleToTimeSpanStringConverter" />
     <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter" />

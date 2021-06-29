@@ -253,7 +253,7 @@
         <value>Username</value>
     </data>
     <data name="settings_profile_avatar" xml:space="preserve">
-        <value>Avatar</value>
+        <value>Avatar Url</value>
     </data>
     <data name="settings_general_discord" xml:space="preserve">
         <value>Allow Discord Integration</value>
@@ -272,5 +272,17 @@
     </data>
     <data name="settings_personalization_appearance_theme_accent" xml:space="preserve">
         <value>Accent</value>
+    </data>
+    <data name="settings_general_lang" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="dialog_title_restart" xml:space="preserve">
+        <value>Restart Required</value>
+    </data>
+    <data name="dialog_restart" xml:space="preserve">
+        <value>Do you want to restart nebula now ?</value>
+    </data>
+    <data name="global_your_music" xml:space="preserve">
+        <value>YOUR MUSIC</value>
     </data>
 </root>

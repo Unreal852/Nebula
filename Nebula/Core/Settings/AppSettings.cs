@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Windows;
 using Nebula.Core.Json;
 using SharpToolbox.Safes;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Nebula.Core.Settings
 {
@@ -80,7 +77,7 @@ namespace Nebula.Core.Settings
             Serialize(Path.Combine(SettingsDirectory.FullName, UserProfileFileName), userprofile ?? NebulaClient.Settings?.UserProfile ?? new UserProfileSettings());
         }
 
-        public static void SetAndSave<T>(ref T storage, T value, bool isProfile = false)
+        public static void Set<T>(ref T storage, T value, bool isProfile = false)
         {
             if (EqualityComparer<object>.Default.Equals(storage, value))
                 return;

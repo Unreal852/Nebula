@@ -17,14 +17,14 @@ namespace Nebula.Core.Settings
         public bool AllowAnalytics
         {
             get => _allowAnalytics;
-            set => SetAndSave(ref _allowAnalytics, value);
+            set => Set(ref _allowAnalytics, value);
         }
 
         [LocalizedCategory("settings_privacy"), LocalizedDisplayName("settings_privacy_allow_crash")]
         public bool AllowCrashReports
         {
             get => _allowCrashReport;
-            set => SetAndSave(ref _allowCrashReport, value);
+            set => Set(ref _allowCrashReport, value);
         }
     }
 }

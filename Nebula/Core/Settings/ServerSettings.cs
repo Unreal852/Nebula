@@ -21,35 +21,35 @@ namespace Nebula.Core.Settings
         public int ServerPort
         {
             get => _serverPort;
-            set => SetAndSave(ref _serverPort, Ensure.GreaterThan(value, 1000));
+            set => Set(ref _serverPort, Ensure.GreaterThan(value, 1000));
         }
         
         [LocalizedCategory("settings_server"), LocalizedDisplayName("settings_server_size")]
         public int ServerSize
         {
             get => _serverSize;
-            set => SetAndSave(ref _serverSize, Ensure.GreaterThan(value, 2));
+            set => Set(ref _serverSize, Ensure.GreaterThan(value, 2));
         }
 
         [LocalizedCategory("settings_server"), LocalizedDisplayName("settings_server_ip")]
         public string ServerIp
         {
             get => _serverIp;
-            set => SetAndSave(ref _serverIp, value);
+            set => Set(ref _serverIp, value);
         }
 
         [LocalizedCategory("settings_server"), LocalizedDisplayName("settings_server_key")]
         public string ServerConnectionKey
         {
             get => _serverConnectionKey;
-            set => SetAndSave(ref _serverConnectionKey, value);
+            set => Set(ref _serverConnectionKey, value);
         }
 
         [LocalizedCategory("settings_server"), LocalizedDisplayName("settings_server_upnp")]
         public bool UseUpnp
         {
             get => _useUpnp;
-            set => SetAndSave(ref _useUpnp, value);
+            set => Set(ref _useUpnp, value);
         }
     }
 }

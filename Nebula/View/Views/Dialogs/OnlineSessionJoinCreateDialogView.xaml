@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:controls="clr-namespace:Nebula.View.Controls"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:dialogs="clr-namespace:Nebula.ViewModel.Dialogs"
         xmlns:resx="clr-namespace:Nebula.Resources"
         mc:Ignorable="d"
         CornerRadius="10"
@@ -18,9 +17,9 @@
                        Text="{Binding Title}"
                        Foreground="{DynamicResource AppForegroundBrush}" FontWeight="Bold" FontSize="18" />
         </Border>
-        <TabControl Background="Transparent"  Grid.Row="1" Margin="10 5" Width="300" SelectedIndex="{Binding TabIndex}"
+        <TabControl Background="Transparent" Grid.Row="1" Margin="10 5" Width="300" SelectedIndex="{Binding TabIndex}"
                     Style="{StaticResource TabControlCapsuleSolid}">
-            <TabItem Header="{x:Static resx:Nebula.online_join}" >
+            <TabItem Header="{x:Static resx:Nebula.online_join}">
                 <hc:SimpleStackPanel>
                     <hc:TextBox hc:TitleElement.Title="{x:Static resx:Nebula.online_ip}"
                                 hc:InfoElement.Necessary="True" Text="{Binding IpAddress}" />

@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:controls="clr-namespace:Nebula.View.Controls"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:dialogs="clr-namespace:Nebula.ViewModel.Dialogs"
         mc:Ignorable="d"
         CornerRadius="10"
         DataContext="{Binding Path=MessageDialogViewModel, Source={StaticResource Locator}}"
@@ -17,7 +16,7 @@
                        Text="{Binding Title}"
                        Foreground="{DynamicResource AppForegroundBrush}" FontWeight="Bold" FontSize="18" />
         </Border>
-        <hc:SimpleStackPanel Grid.Row="1" Orientation="Vertical" Margin="10 5">
+        <hc:SimpleStackPanel Grid.Row="1" Orientation="Vertical" Margin="10 5" MinWidth="150">
             <TextBlock Text="{Binding Message}" FontSize="18" Foreground="{DynamicResource AppForegroundBrush}" />
         </hc:SimpleStackPanel>
         <DockPanel Grid.Row="2" HorizontalAlignment="Center">

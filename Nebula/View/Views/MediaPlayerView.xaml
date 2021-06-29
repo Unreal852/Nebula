@@ -4,9 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:viewModel="clr-namespace:Nebula.ViewModel"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
-             xmlns:converters="clr-namespace:Nebula.View.Converters"
              DataContext="{Binding Path=MediaPlayerViewModel, Source={StaticResource Locator}}"
              mc:Ignorable="d">
     <controls:SimpleGrid Columns="250,*">
@@ -63,7 +61,7 @@
                 <Slider Width="100" Minimum="0" Maximum="100" Margin="0 0 10 0" VerticalAlignment="Center" Value="{Binding Volume}"
                         hc:TipElement.Visibility="Visible"
                         hc:TipElement.Placement="Top"
-                        hc:TipElement.StringFormat="##" />
+                        hc:TipElement.StringFormat="0" />
             </StackPanel>
         </controls:SimpleGrid>
     </controls:SimpleGrid>
