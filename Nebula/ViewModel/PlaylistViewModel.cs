@@ -6,6 +6,7 @@ using HandyControl.Tools.Extension;
 using LiteMVVM;
 using LiteMVVM.Command;
 using LiteMVVM.Navigation;
+using Nebula.Core.Playlists;
 using Nebula.Model;
 using Nebula.Utils.Collections.Paging;
 using Nebula.View;
@@ -59,48 +60,48 @@ namespace Nebula.ViewModel
 
         public string Name
         {
-            get => Playlist?.Name;
+            get => Playlist?.Info.Name;
             set
             {
-                if (Playlist == null || Playlist.Name == value)
+                if (Playlist == null || Playlist.Info.Name == value)
                     return;
-                Playlist.Name = value;
+                Playlist.Info.Name = value;
                 OnPropertyChanged();
             }
         }
 
         public string Description
         {
-            get => Playlist?.Description;
+            get => Playlist?.Info.Description;
             set
             {
-                if (Playlist == null || Playlist.Name == value)
+                if (Playlist == null || Playlist.Info.Name == value)
                     return;
-                Playlist.Description = value;
+                Playlist.Info.Description = value;
                 OnPropertyChanged();
             }
         }
 
         public string Author
         {
-            get => Playlist?.Author;
+            get => Playlist?.Info.AuthorName;
             set
             {
-                if (Playlist == null || Playlist.Name == value)
+                if (Playlist == null || Playlist.Info.AuthorName == value)
                     return;
-                Playlist.Author = value;
+                Playlist.Info.AuthorName = value;
                 OnPropertyChanged();
             }
         }
 
         public string Thumbnail
         {
-            get => Playlist?.AnyThumbnailFromHighest;
+            get => Playlist?.Info.AnyThumbnailFromHighest;
             set
             {
                 if (Playlist == null)
                     return;
-                Playlist.CustomThumbnail = value;
+                Playlist.Info.CustomThumbnail = value;
                 OnPropertyChanged();
             }
         }
@@ -146,8 +147,7 @@ namespace Nebula.ViewModel
             var result = await dialog.GetResultAsync<bool>();
             if (!result)
                 return;
-            Playlist.Medias.Remove(mediaInfo);
-            await NebulaClient.Database.RemovePlaylistMedia(Playlist, mediaInfo);
+            Playlist.RemoveMedia(mediaInfo);
         }
 
         private async Task SetIsActive(MediaInfo mediaInfo)
@@ -189,7 +189,7 @@ namespace Nebula.ViewModel
                 string[] split = loweredFilter.Split(':');
                 Predicate<MediaInfo> predicate = split[0] switch
                 {
-                    "by"      => media => media.Author.ToLower().Contains(split[1]),
+                    "by"      => media => media.AuthorName.ToLower().Contains(split[1]),
                     "active"  => media => media.IsActive,
                     "nactive" => media => !media.IsActive,
                     _         => media => media.Title.ToLower().Contains(loweredFilter)

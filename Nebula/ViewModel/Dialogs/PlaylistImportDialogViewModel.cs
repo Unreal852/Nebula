@@ -4,8 +4,8 @@ using HandyControl.Controls;
 using HandyControl.Data;
 using HandyControl.Tools.Extension;
 using LiteMVVM.Command;
-using Nebula.Core.Providers.Youtube;
-using Nebula.Model;
+using Nebula.Core.Playlists;
+using Nebula.Core.Providers;
 using Nebula.View.Views.Dialogs;
 
 namespace Nebula.ViewModel.Dialogs
@@ -51,12 +51,13 @@ namespace Nebula.ViewModel.Dialogs
                 Message = NebulaClient.GetLang("playlist_importing"),
                 ShowDateTime = false
             });
-            Playlist playlist = await NebulaClient.Providers.FindProviderByType<YoutubeMediaProvider>().GetPlaylist(PlaylistPath);
-            playlist.ValidateFields();
+            Playlist playlist = await NebulaClient.Providers.GetProvider(ProviderType.Youtube).GetPlaylist(PlaylistPath);
+            if (!KeepSync)
+                playlist.Info.LoaderType = PlaylistMediasLoaderType.Database;
             NebulaClient.Playlists.AddPlaylist(playlist);
             Growl.Success(new GrowlInfo
             {
-                Message = NebulaClient.GetLang("playlist_imported", playlist.Name),
+                Message = NebulaClient.GetLang("playlist_imported", playlist.Info.Name),
                 ShowDateTime = false
             });
         }
@@ -67,7 +68,7 @@ namespace Nebula.ViewModel.Dialogs
             var result = await dialog.GetResultAsync<Playlist>();
             if (result == null)
                 return;
-            PlaylistPath = result.Url;
+            PlaylistPath = NebulaClient.Providers.GetProvider(ProviderType.Youtube).GetPlaylistUrl(result);
         }
     }
 }

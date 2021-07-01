@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
-using Nebula.Model;
+using Nebula.Core.Playlists;
 using Nebula.View.Helper;
 
 namespace Nebula.ViewModel.Dialogs

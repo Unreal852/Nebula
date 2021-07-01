@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Nebula.Core.Playlists;
 using Nebula.Model;
 
 namespace Nebula.Core.Player
@@ -102,7 +103,7 @@ namespace Nebula.Core.Player
                 return null;
             MediaInfo mediaInfo = RecentDequeue[^1];
             RecentDequeue.Remove(mediaInfo);
-            //Enqueue(dequeueInfo.MediaInfo, dequeueInfo.Index);
+            //Enqueue(dequeueInfo.MediaInfo, dequeueInfo.PlaylistIndex);
             return mediaInfo;
         }
     }

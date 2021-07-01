@@ -1,59 +1,102 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HandyControl.Controls;
-using HandyControl.Data;
+using Nebula.Core.Playlists;
 using Nebula.Core.Settings;
 using Nebula.Model;
+using SharpToolbox.Safes;
 using SQLite;
 
 namespace Nebula.Core.Database
 {
     public class NebulaDatabase
     {
+        private const string SelectPlaylistMediasOrderQuery = "SELECT * FROM PlaylistsMedias WHERE PlaylistIndex=? ORDER BY MediaOrder ASC";
+        private const string SelectMediasFromMediaIdQuery   = "SELECT * FROM Medias WHERE MediaId=?";
+        private const string UpdatePlaylistMediaQuery       = "UPDATE PlaylistsMedias SET IsActive=? WHERE PlaylistIndex=? AND MediaId=?";
+        private const string InsertPlaylistMediasQuery      = "INSERT INTO PlaylistsMedias (PlaylistIndex, MediaId, MediaOrder, IsActive) VALUES(?,?,?,?)";
+        private const string DeletePlaylistsMediaQuery      = "DELETE FROM PlaylistsMedias WHERE PlaylistIndex=? AND MediaId=?";
+        private const string DeletePlaylistsMediasQuery     = "DELETE FROM PlaylistsMedias WHERE PlaylistIndex=?";
+        private const string DeletePlaylistQuery            = "DELETE FROM Playlists WHERE PlaylistIndex=?";
+
+        private const string DeleteUnusedMediasQuery =
+            "DELETE FROM Medias WHERE MediaId IN (SELECT Medias.MediaId FROM Medias LEFT JOIN PlaylistsMedias ON Medias.MediaId=PlaylistsMedias.MediaId WHERE PlaylistsMedias.MediaId IS NULL)";
+
         public NebulaDatabase()
         {
-            Database = new SQLiteAsyncConnection(Path.Combine(AppSettings.SettingsDirectory.FullName, AppSettings.PlaylistDatabaseFileName));
+            NebulaClient.Playlists.RegisterLoader(new DatabasePlaylistMediasLoader());
             LoadDatabase();
         }
 
         /// <summary>
-        /// The Database Connection
+        ///     The Database Connection
         /// </summary>
-        private SQLiteAsyncConnection Database { get; }
+        private SQLiteAsyncConnection Database { get; set; }
 
         /// <summary>
-        /// Initialize and load the database
+        ///     Initialize and load the database
         /// </summary>
         private async void LoadDatabase()
         {
-            await Database.CreateTablesAsync<MediaInfo, ArtistInfo, Playlist, PlaylistMediaInfo>();
+            string databaseFilePath = Path.Combine(AppSettings.SettingsDirectory.FullName, AppSettings.PlaylistDatabaseFileName);
+            Database = new SQLiteAsyncConnection(databaseFilePath);
+            SafeResult result = await Safe.TryAsync(async () => await Database.CreateTablesAsync<MediaInfo, ArtistInfo, PlaylistInfo, PlaylistMediaInfo>());
+            if (!result.IsSuccess)
+            {
+                Growl.Error($"Resetting Database because it failed to load.{Environment.NewLine}{result.Exception.Message}");
+                await Database.CloseAsync();
+                if (File.Exists(databaseFilePath))
+                    File.Delete(databaseFilePath);
+                LoadDatabase();
+                return;
+            }
+
             Database.Tracer += OnReceiveTrace;
-            Database.Trace = false;
+#if DEBUG
+            Database.Trace = true;
+#endif
             await Vacuum();
             await NebulaClient.Playlists.LoadPlaylists();
         }
 
-        public async Task<List<Playlist>> GetPlaylists() => await Database.Table<Playlist>().ToListAsync();
-        public async Task                 Vacuum()       => await Database.ExecuteAsync("VACUUM");
-
+        public async Task Vacuum()
+        {
+            await Database.ExecuteAsync("VACUUM");
+        }
 
         /// <summary>
-        /// Get all <see cref="MediaInfo"/> for the specified <see cref="Playlist"/>
+        ///     Get all playlists
+        /// </summary>
+        /// <returns>
+        ///     <see cref="IAsyncEnumerable{T}" />
+        /// </returns>
+        public async IAsyncEnumerable<Playlist> GetPlaylists()
+        {
+            List<PlaylistInfo> playlistInfos = await Database.Table<PlaylistInfo>().ToListAsync();
+            foreach (PlaylistInfo playlistInfo in playlistInfos)
+                yield return new Playlist(playlistInfo);
+        }
+
+        /// <summary>
+        ///     Get all <see cref="MediaInfo" /> for the specified <see cref="Playlist" />
         /// </summary>
         /// <param name="playlist">Playlist</param>
-        /// <returns><see cref="List{T}"/></returns>
+        /// <returns>
+        ///     <see cref="List{T}" />
+        /// </returns>
         public async Task<List<MediaInfo>> GetPlaylistMedias(Playlist playlist)
         {
             if (playlist == null)
                 return new List<MediaInfo>();
             List<PlaylistMediaInfo> playlistMediaInfos =
-                await Database.QueryAsync<PlaylistMediaInfo>($"SELECT * FROM PlaylistsMedias WHERE PlaylistId={playlist.Id} ORDER BY \"Order\" ASC");
-            List<MediaInfo> medias = new List<MediaInfo>(playlistMediaInfos.Count);
+                await Database.QueryAsync<PlaylistMediaInfo>(SelectPlaylistMediasOrderQuery, playlist.Info.PlaylistIndex);
+            var medias = new List<MediaInfo>(playlistMediaInfos.Count);
             foreach (PlaylistMediaInfo pInfo in playlistMediaInfos)
             {
-                MediaInfo mediaInfo = (await Database.QueryAsync<MediaInfo>("SELECT * FROM Medias WHERE Id=?", pInfo.MediaId)).FirstOrDefault();
+                MediaInfo mediaInfo = (await Database.QueryAsync<MediaInfo>(SelectMediasFromMediaIdQuery, pInfo.MediaId)).FirstOrDefault();
                 pInfo.ApplyTo(mediaInfo);
                 medias.Add(mediaInfo);
             }
@@ -62,21 +105,15 @@ namespace Nebula.Core.Database
         }
 
         /// <summary>
-        /// Create table if not exists into the database
+        ///     Update playlist media
         /// </summary>
-        /// <param name="tableName">The table name</param>
-        /// <param name="columns">The table columns</param>
-        private async Task CreateTable(string tableName, params string[] columns)
-        {
-            string query = $"CREATE TABLE IF NOT EXISTS {tableName} ({string.Join(',', columns)})";
-            await Database.ExecuteAsync(query);
-        }
-
+        /// <param name="playlist">The playlist to update</param>
+        /// <param name="mediaInfo">The media to update</param>
         public async Task UpdatePlaylistMedia(Playlist playlist, MediaInfo mediaInfo)
         {
             if (playlist == null || mediaInfo == null)
                 return;
-            await Database.ExecuteAsync("UPDATE PlaylistsMedias SET IsActive=? WHERE PlaylistId=? AND MediaId=?", mediaInfo.IsActive, playlist.Id, mediaInfo.Id);
+            await Database.ExecuteAsync(UpdatePlaylistMediaQuery, mediaInfo.IsActive, playlist.Info.PlaylistIndex, mediaInfo.MediaId);
         }
 
         public async Task InsertWholePlaylist(Playlist playlist)
@@ -85,16 +122,13 @@ namespace Nebula.Core.Database
                 return;
             await Database.RunInTransactionAsync(trans =>
             {
-                trans.Insert(playlist);
+                trans.Insert(playlist.Info);
                 if (playlist.MediasCount <= 0)
                     return;
-                int index = 0;
+                var index = 0;
+                trans.InsertAll(playlist.Medias, "OR REPLACE");
                 foreach (MediaInfo mediaInfo in playlist.Medias)
-                {
-                    trans.InsertOrReplace(mediaInfo);
-                    trans.Execute("INSERT INTO PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) VALUES(?,?,?,?)",
-                        playlist.Id, mediaInfo.Id, index++, true);
-                }
+                    trans.Execute(InsertPlaylistMediasQuery, playlist.Info.PlaylistIndex, mediaInfo.MediaId, index++, true);
             });
         }
 
@@ -104,10 +138,10 @@ namespace Nebula.Core.Database
                 return;
             await Database.RunInTransactionAsync(trans =>
             {
-                trans.InsertOrReplace(playlist);
+                trans.InsertOrReplace(playlist.Info);
                 trans.InsertOrReplace(mediaInfo);
-                trans.Execute("INSERT INTO PlaylistsMedias (PlaylistId, MediaId, \"Order\", IsActive) VALUES(?,?,?,?)",
-                    playlist.Id, mediaInfo.Id, order < 0 ? playlist.Medias.IndexOf(mediaInfo) : order, true);
+                trans.Execute(InsertPlaylistMediasQuery,
+                    playlist.Info.PlaylistIndex, mediaInfo.MediaId, order < 0 ? playlist.Medias.IndexOf(mediaInfo) : order, true);
             });
         }
 
@@ -115,7 +149,11 @@ namespace Nebula.Core.Database
         {
             if (playlist == null || mediaInfo == null)
                 return;
-            await Database.ExecuteAsync("DELETE FROM PlaylistsMedias WHERE PlaylistId=? AND MediaId=?", playlist.Id, mediaInfo.Id);
+            await Database.RunInTransactionAsync(trans =>
+            {
+                trans.Execute(DeletePlaylistsMediaQuery, playlist.Info.PlaylistIndex, mediaInfo.MediaId);
+                trans.Execute(DeleteUnusedMediasQuery);
+            });
         }
 
         public async Task DeletePlaylist(Playlist playlist)
@@ -124,18 +162,15 @@ namespace Nebula.Core.Database
                 return;
             await Database.RunInTransactionAsync(trans =>
             {
-                trans.Execute("DELETE FROM Playlists WHERE Id=?", playlist.Id);
-                trans.Execute("DELETE FROM PlaylistsMedias WHERE PlaylistId=?", playlist.Id);
-                trans.Execute(
-                    "DELETE FROM Medias WHERE Id IN (SELECT Medias.Id FROM Medias LEFT JOIN PlaylistsMedias ON Medias.Id=PlaylistsMedias.MediaId WHERE PlaylistsMedias.MediaId IS NULL)");
+                trans.Execute(DeletePlaylistQuery, playlist.Info.PlaylistIndex);
+                trans.Execute(DeletePlaylistsMediasQuery, playlist.Info.PlaylistIndex);
+                trans.Execute(DeleteUnusedMediasQuery);
             });
-            await Vacuum();
         }
 
         private void OnReceiveTrace(string obj)
         {
-            GrowlInfo info = new GrowlInfo {Message = obj, Token = ""};
-            Growl.Warning(info);
+            NebulaClient.Logger.Log(obj);
         }
     }
 }

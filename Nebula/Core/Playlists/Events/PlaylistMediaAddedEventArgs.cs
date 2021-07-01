@@ -1,13 +1,15 @@
 ﻿using System;
+using Nebula.Model;
 
-namespace Nebula.Model.Events
+namespace Nebula.Core.Playlists.Events
 {
-    public class PlaylistMediaRemovedEventArgs : EventArgs
+    public class PlaylistMediaAddedEventArgs : EventArgs
     {
-        public PlaylistMediaRemovedEventArgs(Playlist playlist, MediaInfo mediaInfo)
+        public PlaylistMediaAddedEventArgs(Playlist playlist, MediaInfo mediaInfo, int mediaIndex)
         {
             Playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
             AddedMedia = mediaInfo ?? throw new ArgumentNullException(nameof(mediaInfo));
+            MediaIndex = mediaIndex;
         }
 
         /// <summary>
@@ -16,8 +18,13 @@ namespace Nebula.Model.Events
         public Playlist Playlist { get; }
 
         /// <summary>
-        ///     Removed Media.
+        ///     New Media.
         /// </summary>
         public MediaInfo AddedMedia { get; }
+
+        /// <summary>
+        ///     New Media Insert PlaylistIndex.
+        /// </summary>
+        public int MediaIndex { get; }
     }
 }

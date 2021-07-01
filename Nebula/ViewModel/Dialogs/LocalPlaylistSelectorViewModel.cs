@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using Nebula.Model;
+using Nebula.Core.Playlists;
 using Nebula.View.Helper;
 
 namespace Nebula.ViewModel.Dialogs
@@ -32,7 +32,7 @@ namespace Nebula.ViewModel.Dialogs
             else
             {
                 value = value.ToLower();
-                Pager.ApplyFilter(playlist => playlist.Name.ToLower().Contains(value));
+                Pager.ApplyFilter(playlist => playlist.Info.Name.ToLower().Contains(value));
             }
 
             return null;

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using EasyLogger;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
 using Microsoft.AppCenter;
@@ -10,8 +11,10 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Nebula.Core;
 using Nebula.Core.Database;
+using Nebula.Core.Logs;
 using Nebula.Core.Online;
 using Nebula.Core.Player;
+using Nebula.Core.Playlists;
 using Nebula.Core.Providers;
 using Nebula.Core.Settings;
 using Nebula.Core.Update;
@@ -32,9 +35,12 @@ namespace Nebula
                     Settings.Privacy.AllowCrashReports ? typeof(Crashes) : null);
             }
 
-
-            Providers = new ProvidersManager();
+            Logger = new Logger();
+#if DEBUG
+            Logger.HandlersManager.AddHandler(new DebugLogHandler());
+#endif
             Playlists = new PlaylistsManager();
+            Providers = new ProvidersManager();
             Database = new NebulaDatabase();
             OnlineSession = new OnlineSessionManager();
             MediaPlayer = new NAudioPlayer();
@@ -60,6 +66,7 @@ namespace Nebula
         public static   OnlineSessionManager    OnlineSession           { get; }
         public static   UpdateManager           UpdateManager           { get; }
         public static   KeyboardHook            KeyboardHook            { get; }
+        public static   Logger                  Logger                  { get; }
         internal static CancellationTokenSource CancellationTokenSource { get; }
 
         public static event EventHandler Tick;
@@ -145,7 +152,7 @@ namespace Nebula
             if (ask)
             {
                 Dialog dialog = NebulaDialog.ShowWarningNoYes("dialog_restart", "dialog_title_restart");
-                bool result = await dialog.GetResultAsync<bool>();
+                var result = await dialog.GetResultAsync<bool>();
                 if (!result)
                     return;
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Nebula.Core.Playlists;
 using Nebula.Model;
 
 namespace Nebula.Core.Player.Events

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Nebula.Core.Playlists;
 using Nebula.Model;
 
 namespace Nebula.ViewModel.Dialogs
@@ -34,9 +34,8 @@ namespace Nebula.ViewModel.Dialogs
 
         protected override void OnConfirm()
         {
-            NebulaClient.Playlists.AddPlaylist(new Playlist(PlaylistName, PlaylistDescription, PlaylistAuthor,
-                "", "", "",
-                new List<MediaInfo>()));
+            var playlistInfo = new PlaylistInfo(PlaylistMediasLoaderType.Database, "", "user", PlaylistName, PlaylistAuthor, PlaylistDescription);
+            NebulaClient.Playlists.AddPlaylist(new Playlist(playlistInfo));
             Close();
         }
     }

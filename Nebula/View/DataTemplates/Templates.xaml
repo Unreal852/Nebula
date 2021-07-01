@@ -5,7 +5,8 @@
                     xmlns:converters="clr-namespace:Nebula.View.Converters"
                     xmlns:resx="clr-namespace:Nebula.Resources"
                     xmlns:controls="clr-namespace:Nebula.View.Controls"
-                    xmlns:data="clr-namespace:Nebula.Net.Data;assembly=Nebula.Net">
+                    xmlns:data="clr-namespace:Nebula.Net.Data;assembly=Nebula.Net"
+                    xmlns:playlists="clr-namespace:Nebula.Core.Playlists">
     <!--Template for medias search results -->
     <DataTemplate x:Key="MediaInfoCardTemplate" DataType="model:MediaInfo">
         <hc:Card Width="350" Height="200" BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="7" Footer="{Binding }" Cursor="Hand">
@@ -24,7 +25,7 @@
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 5" />
                         <TextBlock Grid.Row="1" Grid.Column="0" TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis"
                                    FontSize="14"
-                                   Text="{Binding Author, StringFormat={x:Static resx:Nebula.playlist_by}}"
+                                   Text="{Binding AuthorName, StringFormat={x:Static resx:Nebula.playlist_by}}"
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15 0 0 0" />
                         <hc:SimpleStackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Right"
                                              VerticalAlignment="Bottom">
@@ -48,13 +49,13 @@
     </DataTemplate>
 
     <!-- Template for Playlist in a List View ( Media, Playlist, Artist, etc) -->
-    <DataTemplate x:Key="PlaylistItemTemplate" DataType="model:Playlist">
+    <DataTemplate x:Key="PlaylistItemTemplate" DataType="playlists:Playlist">
         <Border CornerRadius="5" Margin="0 2">
             <controls:SimpleGrid Columns="80,250">
-                <Image Grid.Column="0" Source="{Binding MediumResThumbnail}" />
+                <Image Grid.Column="0" Source="{Binding Info.AnyThumbnailFromLowest}" />
                 <hc:SimpleStackPanel Grid.Column="1" Margin="2 0" Orientation="Vertical">
-                    <TextBlock Text="{Binding Name}" />
-                    <TextBlock Text="{Binding Author}" Foreground="Gray" FontSize="9" />
+                    <TextBlock Text="{Binding Info.Name}" />
+                    <TextBlock Text="{Binding Info.AuthorName}" Foreground="Gray" FontSize="9" />
                 </hc:SimpleStackPanel>
             </controls:SimpleGrid>
         </Border>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Nebula.Core;
 using Nebula.Core.Extensions;
+using Nebula.Core.Providers;
 using SQLite;
 
 namespace Nebula.Model
@@ -10,31 +11,33 @@ namespace Nebula.Model
     {
         public ArtistInfo()
         {
+            // For database deserialization
         }
 
-        public ArtistInfo(string id, string name, string url, string lowResThumbnail, string mediumResThumbnail, string highResThumbnail)
+        public ArtistInfo(ProviderType providerType, string artistId, string name, string lowResThumbnail, string mediumResThumbnail, string highResThumbnail)
         {
-            Id = id;
+            ArtistId = artistId;
+            ProviderType = providerType;
             Name = name;
-            Url = url;
             LowResThumbnail = lowResThumbnail;
             MediumResThumbnail = mediumResThumbnail;
             HighResThumbnail = highResThumbnail;
         }
 
-        [Indexed, PrimaryKey] public string Id                      { get; set; }
-        public                       string Name                    { get; set; }
-        public                       string Url                     { get; set; }
-        public                       string LowResThumbnail         { get; set; }
-        public                       string MediumResThumbnail      { get; set; }
-        public                       string HighResThumbnail        { get; set; }
-        public                       string CustomThumbnail         { get; set; }
-        public                       string AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
-        public                       string AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
+        [Indexed, PrimaryKey] public string       ArtistId                { get; set; }
+        public                       ProviderType ProviderType            { get; set; }
+        public                       string       Name                    { get; set; }
+        public                       string       LowResThumbnail         { get; set; }
+        public                       string       MediumResThumbnail      { get; set; }
+        public                       string       HighResThumbnail        { get; set; }
+        public                       string       CustomThumbnail         { get; set; }
+        public                       string       AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
+        public                       string       AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
-        public IAsyncEnumerable<MediaInfo> GetMedias()
+        public async IAsyncEnumerable<MediaInfo> GetMedias()
         {
-            throw new System.NotImplementedException();
+            await foreach (MediaInfo mediaInfo in NebulaClient.Providers.GetProvider(ProviderType).GetArtistMedias(ArtistId))
+                yield return mediaInfo;
         }
     }
 }

@@ -1,15 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using HandyControl.Controls;
 using LiteMVVM;
 using LiteMVVM.Command;
+using Nebula.Core.Playlists;
 using Nebula.Core.Settings;
-using Nebula.Model;
 using Nebula.View;
 using Nebula.View.Views;
 using Nebula.View.Views.Dialogs;
-using Nebula.ViewModel.Dialogs;
 using RelayCommand = HandyControl.Tools.Command.RelayCommand;
 
 namespace Nebula.ViewModel
@@ -58,7 +56,7 @@ namespace Nebula.ViewModel
 
         private void CreatePlaylist(object param)
         {
-            Dialog.Show<PlaylistCreationDialogView>().DataContext = new PlaylistCreationDialogViewModel();
+            NebulaDialog.ShowDialog<PlaylistCreationDialogView>();
         }
 
         private void ImportPlaylist(object param)

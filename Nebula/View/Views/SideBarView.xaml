@@ -10,6 +10,7 @@
              xmlns:converters="clr-namespace:Nebula.View.Converters"
              xmlns:controls="clr-namespace:Nebula.View.Controls"
              xmlns:resx="clr-namespace:Nebula.Resources"
+             xmlns:playlists="clr-namespace:Nebula.Core.Playlists"
              DataContext="{Binding Path=SideBarViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -45,13 +46,13 @@
                 <hc:ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="300">
                     <controls:ButtonGroupEx ItemsSource="{Binding Playlists}" Orientation="Vertical">
                         <controls:ButtonGroupEx.ItemTemplate>
-                            <DataTemplate DataType="model:Playlist">
+                            <DataTemplate DataType="playlists:Playlist">
                                 <RadioButton
                                     Style="{StaticResource NavigationRadioButton}"
                                     Command="{Binding DataContext.NavigateToPlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                     CommandParameter="{Binding}">
                                     <controls:SimpleGrid Columns="180,*">
-                                        <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                        <TextBlock Grid.Column="0" Text="{Binding Info.Name}"
                                                    FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
                                                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type RadioButton}}}"
                                                    TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="5 0 0 0" />

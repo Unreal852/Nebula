@@ -2,7 +2,7 @@
 using System.Linq;
 using YoutubeExplode.Common;
 
-namespace Nebula.Core.Providers.Youtube.Extensions
+namespace Nebula.Core.Providers.Youtube
 {
     public static class ThumbnailsExtensions
     {

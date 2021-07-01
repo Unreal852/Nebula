@@ -5,6 +5,7 @@ using HandyControl.Controls;
 using HandyControl.Tools.Extension;
 using LiteMVVM;
 using LiteMVVM.Command;
+using Nebula.Core.Playlists;
 using Nebula.Model;
 using Nebula.View.Controls;
 using Nebula.View.Views.Dialogs;

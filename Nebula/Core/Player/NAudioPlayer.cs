@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HandyControl.Controls;
 using NAudio.Wave;
 using Nebula.Core.Player.Events;
+using Nebula.Core.Playlists;
 using Nebula.Model;
 using Nebula.Net.Data;
 using Nebula.Net.Packet;
@@ -13,15 +14,15 @@ namespace Nebula.Core.Player
 {
     public class NAudioPlayer
     {
-        private MediaInfo _currentMedia;
-        private Playlist  _currentPlaylist;
-        private bool      _isMuted;
-        private TimeSpan  _lastPosition = TimeSpan.Zero;
-        private bool      _repeat;
-        private bool      _shuffle;
-        private bool      _stoppedByUSer;
-        private int       _volume;
-        private int       _volumeBeforeMute;
+        private MediaInfo      _currentMedia;
+        private Playlist _currentPlaylist;
+        private bool           _isMuted;
+        private TimeSpan       _lastPosition = TimeSpan.Zero;
+        private bool           _repeat;
+        private bool           _shuffle;
+        private bool           _stoppedByUSer;
+        private int            _volume;
+        private int            _volumeBeforeMute;
 
         public NAudioPlayer()
         {
@@ -147,8 +148,8 @@ namespace Nebula.Core.Player
                     {
                         Media = new NetMediaInfo
                         {
-                            Id = mediaInfo.Id,
-                            Author = mediaInfo.Author,
+                            Id = mediaInfo.MediaId,
+                            Author = mediaInfo.AuthorName,
                             Title = mediaInfo.Title
                         }
                     });

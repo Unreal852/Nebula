@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Nebula.Core;
 using Nebula.Core.Extensions;
 using Nebula.Core.Providers;
-using Nebula.Core.Providers.Youtube;
 using SQLite;
 
 namespace Nebula.Model
@@ -13,64 +12,61 @@ namespace Nebula.Model
     {
         public MediaInfo()
         {
+            // For database deserialization
         }
 
-        public MediaInfo(string id, string authorId, string title, string author, string description, string providerName, string lowResThumbnail,
-                         string mediumResThumbnail, string highResThumbnail, TimeSpan duration, DateTime creationDate)
+        public MediaInfo(ProviderType providerType, string mediaId, string authorId, string title, string authorName, string lowResThumbnail,
+                         string mediumResThumbnail, string highResThumbnail, TimeSpan duration)
         {
-            Id = id;
+            ProviderType = providerType;
+            MediaId = mediaId;
             AuthorId = authorId;
             Title = title;
-            Author = author;
-            Description = description;
-            ProviderName = providerName;
+            AuthorName = authorName;
             LowResThumbnail = lowResThumbnail;
             MediumResThumbnail = mediumResThumbnail;
             HighResThumbnail = highResThumbnail;
             Duration = duration;
-            CreationDate = creationDate;
             Title = Validator.ValidateMediaTitle(this);
         }
 
-        [Indexed] [PrimaryKey] public string   Id                      { get; set; }
-        public                        string   AuthorId                { get; set; }
-        public                        string   Title                   { get; set; }
-        public                        string   Author                  { get; set; }
-        public                        string   Description             { get; set; }
-        public                        string   ProviderName            { get; set; }
-        public                        string   LowResThumbnail         { get; set; }
-        public                        string   MediumResThumbnail      { get; set; }
-        public                        string   HighResThumbnail        { get; set; }
-        public                        string   CustomThumbnail         { get; set; }
-        public                        TimeSpan Duration                { get; set; }
-        public                        DateTime CreationDate            { get; set; }
-        [Ignore] public               bool     IsActive                { get; set; } = true;
-        public                        string   AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
-        public                        string   AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
+        [Indexed] [PrimaryKey] public string       MediaId                 { get; set; }
+        public                        string       AuthorId                { get; set; }
+        public                        string       Title                   { get; set; }
+        public                        string       AuthorName              { get; set; }
+        public                        string       LowResThumbnail         { get; set; }
+        public                        string       MediumResThumbnail      { get; set; }
+        public                        string       HighResThumbnail        { get; set; }
+        public                        string       CustomThumbnail         { get; set; }
+        public                        ProviderType ProviderType            { get; set; }
+        public                        TimeSpan     Duration                { get; set; }
+        [Ignore] public               bool         IsActive                { get; set; } = true;
+        public                        string       AnyThumbnailFromHighest => this.AnyThumbnailFromHighest();
+        public                        string       AnyThumbnailFromLowest  => this.AnyThumbnailFromLowest();
 
-        public Task<ArtistInfo> GetArtistInfo()
+        public async Task<ArtistInfo> GetArtistInfo()
         {
-            throw new NotImplementedException();
+            return await GetMediaProvider().GetArtistInfo(AuthorId);
         }
 
         public async Task<Uri> GetAudioStreamUri()
         {
-            return await NebulaClient.Providers.FindProviderByType<YoutubeMediaProvider>().GetAudioStreamUri(this);
+            return await GetMediaProvider().GetAudioStreamUri(this);
         }
 
-        public Task<Uri> GetVideoStreamUri()
+        public async Task<Uri> GetVideoStreamUri()
         {
-            throw new NotImplementedException();
+            return await GetMediaProvider().GetVideoStreamUri(this);
         }
 
-        public Task<Uri> GetMuxedStreamUri()
+        public async Task<Uri> GetMuxedStreamUri()
         {
-            throw new NotImplementedException();
+            return await GetMediaProvider().GetMuxedStreamUri(this);
         }
 
         public IMediasProvider GetMediaProvider()
         {
-            throw new NotImplementedException();
+            return NebulaClient.Providers.GetProvider(ProviderType);
         }
 
         public override string ToString()

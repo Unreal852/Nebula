@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Nebula.Core.Playlists;
 using Nebula.Model;
 
 namespace Nebula.Core.Providers
@@ -21,9 +22,31 @@ namespace Nebula.Core.Providers
         public string Name { get; }
 
         /// <summary>
-        ///     Media Provider Color
+        ///     Media Provider Type
         /// </summary>
-        public string NameColorEx { get; }
+        public ProviderType ProviderType { get; }
+
+
+        /// <summary>
+        ///     Get the artist url
+        /// </summary>
+        /// <param name="artistInfo">Artist</param>
+        /// <returns>Artist Url</returns>
+        string GetArtistUrl(ArtistInfo artistInfo);
+
+        /// <summary>
+        ///     Get the media url
+        /// </summary>
+        /// <param name="mediaInfo">Media</param>
+        /// <returns>Media Url</returns>
+        string GetMediaUrl(MediaInfo mediaInfo);
+
+        /// <summary>
+        ///     Get the playlist url
+        /// </summary>
+        /// <param name="playlistInfo">Playlist</param>
+        /// <returns>Playlist Url</returns>
+        string GetPlaylistUrl(Playlist playlistInfo);
 
         /// <summary>
         ///     Search medias
