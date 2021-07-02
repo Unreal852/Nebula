@@ -11,7 +11,6 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Nebula.Core;
 using Nebula.Core.Database;
-using Nebula.Core.Logs;
 using Nebula.Core.Online;
 using Nebula.Core.Player;
 using Nebula.Core.Playlists;
@@ -30,9 +29,11 @@ namespace Nebula
             Settings = AppSettings.LoadSettings();
             if (Settings.Privacy.AllowAnalytics || Settings.Privacy.AllowCrashReports)
             {
+#if RELEASE
                 AppCenter.Start("df3a859e-110a-43b2-892d-71f4650c9c70",
                     Settings.Privacy.AllowAnalytics ? typeof(Analytics) : null,
                     Settings.Privacy.AllowCrashReports ? typeof(Crashes) : null);
+#endif
             }
 
             Logger = new Logger();
