@@ -94,7 +94,11 @@ namespace Nebula.ViewModel
 
         private void OnUserConnected(object sender, UserConnectedEventArgs e)
         {
-            NebulaClient.Invoke(() => Users.Add(e.UserInfo));
+            NebulaClient.Invoke(() =>
+            {
+                Users.Add(e.UserInfo);
+                Messages.Add(new UserMessage(e.UserInfo, new NetMessage {MessageType = 2}));
+            });
         }
 
         private void OnUserDisconnected(object sender, UserDisconnectedEventArgs e)
@@ -106,6 +110,7 @@ namespace Nebula.ViewModel
                     if (Users[i].Id == e.UserInfo.Id)
                         Users.RemoveAt(i);
                 }
+                Messages.Add(new UserMessage(e.UserInfo, new NetMessage {MessageType = 3}));
             });
         }
 

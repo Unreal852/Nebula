@@ -484,6 +484,24 @@ namespace Nebula.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} joined.
+        /// </summary>
+        public static string online_user_joined {
+            get {
+                return ResourceManager.GetString("online_user_joined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} left.
+        /// </summary>
+        public static string online_user_left {
+            get {
+                return ResourceManager.GetString("online_user_left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By {0}.
         /// </summary>
         public static string playlist_by {

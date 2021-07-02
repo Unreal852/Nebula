@@ -245,4 +245,10 @@
     <data name="dialog_title_error" xml:space="preserve">
         <value>Erreur</value>
     </data>
+    <data name="online_user_joined" xml:space="preserve">
+        <value>{0} a rejoint la session</value>
+    </data>
+    <data name="online_user_left" xml:space="preserve">
+        <value>{0} a quitté la session</value>
+    </data>
 </root>

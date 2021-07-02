@@ -285,4 +285,10 @@
     <data name="global_your_music" xml:space="preserve">
         <value>YOUR MUSIC</value>
     </data>
+    <data name="online_user_joined" xml:space="preserve">
+        <value>{0} joined</value>
+    </data>
+    <data name="online_user_left" xml:space="preserve">
+        <value>{0} left</value>
+    </data>
 </root>

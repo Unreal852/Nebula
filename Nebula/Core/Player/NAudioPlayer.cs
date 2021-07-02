@@ -14,15 +14,15 @@ namespace Nebula.Core.Player
 {
     public class NAudioPlayer
     {
-        private MediaInfo      _currentMedia;
-        private Playlist _currentPlaylist;
-        private bool           _isMuted;
-        private TimeSpan       _lastPosition = TimeSpan.Zero;
-        private bool           _repeat;
-        private bool           _shuffle;
-        private bool           _stoppedByUSer;
-        private int            _volume;
-        private int            _volumeBeforeMute;
+        private MediaInfo _currentMedia;
+        private Playlist  _currentPlaylist;
+        private bool      _isMuted;
+        private TimeSpan  _lastPosition = TimeSpan.Zero;
+        private bool      _repeat;
+        private bool      _shuffle;
+        private bool      _stoppedByUSer;
+        private int       _volume;
+        private int       _volumeBeforeMute;
 
         public NAudioPlayer()
         {
@@ -165,8 +165,9 @@ namespace Nebula.Core.Player
             }
             catch (Exception ex)
             {
-                Growl.Error(ex.StackTrace);
+                Growl.Error(ex.Message);
                 StateChanged?.Invoke(this, new PlayerStateChangedEventArgs(State));
+                Forward(false);
                 return;
             }
 

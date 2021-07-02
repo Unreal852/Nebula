@@ -5,7 +5,6 @@
                     xmlns:hc="https://handyorg.github.io/handycontrol"
                     xmlns:selectors="clr-namespace:Nebula.View.DataTemplates.Selectors">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Styles/Geometry.xaml" />
         <ResourceDictionary Source="Styles/Button.xaml" />
         <ResourceDictionary Source="Styles/RadioButton.xaml" />
         <ResourceDictionary Source="Styles/ToggleButton.xaml" />

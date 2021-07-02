@@ -13,6 +13,8 @@ namespace Nebula.View.DataTemplates.Selectors
             {
                 return message.Message.MessageType switch
                 {
+                    3 => ResourcesHelper.GetResource<DataTemplate>("MessageUserLeftTemplate"),
+                    2 => ResourcesHelper.GetResource<DataTemplate>("MessageUserJoinedTemplate"),
                     1 => ResourcesHelper.GetResource<DataTemplate>("MessageMediaItemTemplate"),
                     _ => ResourcesHelper.GetResource<DataTemplate>("MessageItemTemplate"),
                 };

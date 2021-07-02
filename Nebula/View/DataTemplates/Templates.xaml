@@ -13,7 +13,7 @@
             <Border CornerRadius="4,4,0,0" Background="Black">
                 <Image Source="{Binding AnyThumbnailFromHighest}" Stretch="Uniform">
                     <Image.CacheMode>
-                        <BitmapCache  />
+                        <BitmapCache />
                     </Image.CacheMode>
                 </Image>
             </Border>
@@ -34,13 +34,13 @@
                                     Style="{DynamicResource ButtonIcon}"
                                     Command="{Binding DataContext.OpenMediaCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
-                                    hc:IconElement.Geometry="{DynamicResource PlayGeometry}" />
+                                    hc:IconElement.Geometry="{StaticResource PlayGeometry}" />
                             <Button Width="30" Height="30"
                                     Foreground="{DynamicResource PrimaryTextBrush}"
                                     Style="{DynamicResource ButtonIcon}"
                                     Command="{Binding DataContext.AddToCommand,RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding}"
-                                    hc:IconElement.Geometry="{DynamicResource PlusGeometry}" />
+                                    hc:IconElement.Geometry="{StaticResource PlusGeometry}" />
                         </hc:SimpleStackPanel>
                     </controls:SimpleGrid>
                 </DataTemplate>
@@ -79,9 +79,9 @@
     <DataTemplate x:Key="MessageMediaItemTemplate" DataType="model:UserMessage">
         <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" BorderBrush="#4CD351" Margin="5">
             <controls:SimpleGrid Margin="5" Columns="Auto,*">
-                <ContentControl Grid.Column="0" BorderBrush="Transparent" Background="Transparent">
-                    <ContentControl.Content >
-                        <Path Data="{DynamicResource PlayGeometry}" Fill="{DynamicResource AppForegroundBrush}" />
+                <ContentControl Grid.Column="0" BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Center">
+                    <ContentControl.Content>
+                        <Path Data="{StaticResource PlayGeometry}" Fill="{DynamicResource AppForegroundBrush}" />
                     </ContentControl.Content>
                 </ContentControl>
                 <TextBlock VerticalAlignment="Center" Grid.Column="1" Margin="5 0" FontWeight="Bold" FontSize="12" Foreground="#09A4EC">
@@ -92,6 +92,35 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+            </controls:SimpleGrid>
+        </Border>
+    </DataTemplate>
+
+    <!-- Template for Online Session User Join Message in a List Box -->
+    <DataTemplate x:Key="MessageUserJoinedTemplate" DataType="model:UserMessage">
+        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" Margin="5">
+            <controls:SimpleGrid Margin="5" Columns="Auto,*">
+                <ContentControl Grid.Column="0" BorderBrush="Transparent" Background="Transparent">
+                    <ContentControl.Content>
+                        <Path Data="{StaticResource RightArrowGeometry}" Fill="{DynamicResource AppForegroundBrush}" />
+                    </ContentControl.Content>
+                </ContentControl>
+                <TextBlock VerticalAlignment="Center" Grid.Column="1" Margin="5 0" FontWeight="Bold" FontSize="12" Foreground="Green"
+                           Text="{Binding Sender.Username , StringFormat={x:Static resx:Nebula.online_user_joined}}" />
+            </controls:SimpleGrid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MessageUserLeftTemplate" DataType="model:UserMessage">
+        <Border CornerRadius="10" Background="{DynamicResource SecondaryAppBackgroundBrush}" Margin="5">
+            <controls:SimpleGrid Margin="5" Columns="Auto,*">
+                <ContentControl Grid.Column="0" BorderBrush="Transparent" Background="Transparent">
+                    <ContentControl.Content>
+                        <Path Data="{StaticResource LeftArrowGeometry}" Fill="{DynamicResource AppForegroundBrush}" />
+                    </ContentControl.Content>
+                </ContentControl>
+                <TextBlock VerticalAlignment="Center" Grid.Column="1" Margin="5 0" FontWeight="Bold" FontSize="12" Foreground="Red"
+                           Text="{Binding Sender.Username , StringFormat={x:Static resx:Nebula.online_user_left}}" />
             </controls:SimpleGrid>
         </Border>
     </DataTemplate>

@@ -19,6 +19,7 @@
                     </hc:ThemeResources.ThemeDictionaries>
                 </hc:ThemeResources>
                 <hc:Theme />
+                <ResourceDictionary Source="View/Styles/Geometry.xaml" />
                 <ResourceDictionary Source="View/ApplicationResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
