@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -39,7 +38,7 @@ namespace Nebula.Core.Update
         public async Task<UpdateCheckResult> CheckForUpdate()
         {
             Release release = await Client.Release.GetLatest(RepositoryOwner, RepositoryName);
-            string releaseVersion = release.TagName.Replace("v", "");
+            string releaseVersion = release.TagName.Split('-')[0].Replace("v", "");
             if (releaseVersion != AssemblyVersion)
                 return new UpdateCheckResult(true, AssemblyVersion, releaseVersion, release.Assets[0].BrowserDownloadUrl);
             return new UpdateCheckResult(false, AssemblyVersion);
