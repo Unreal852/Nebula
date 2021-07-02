@@ -41,7 +41,7 @@ namespace Nebula.Core.Update
             Release release = await Client.Release.GetLatest(RepositoryOwner, RepositoryName);
             string releaseVersion = release.TagName.Split('-')[0].Replace("v", "");
             if (releaseVersion != AssemblyVersion)
-                return new UpdateCheckResult(true, AssemblyVersion, releaseVersion, release.Assets[0].BrowserDownloadUrl);
+                return new UpdateCheckResult(true, AssemblyVersion, releaseVersion, release.TagName, release.Assets[0].BrowserDownloadUrl);
             return new UpdateCheckResult(false, AssemblyVersion);
         }
 
@@ -53,7 +53,7 @@ namespace Nebula.Core.Update
                 GrowlInfo growlInfo = new GrowlInfo
                 {
                     Type = InfoType.Ask,
-                    Message = NebulaClient.GetLang("update_available", result.NewVersion),
+                    Message = NebulaClient.GetLang("update_available", result.NewVersionFull),
                     ConfirmStr = NebulaClient.GetLang("update_update_now"),
                     CancelStr = NebulaClient.GetLang("dialog_no"),
                     StaysOpen = true,
