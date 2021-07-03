@@ -179,6 +179,8 @@ namespace Nebula.Core.Player
         {
             if (playlist == null)
                 return;
+            if (!playlist.IsLoaded)
+                await playlist.Load();
             CurrentPlaylist = playlist;
             MediaQueue.Enqueue(playlist);
             await OpenMedia(MediaQueue.Dequeue(Shuffle));

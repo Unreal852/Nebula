@@ -1,4 +1,9 @@
-﻿using System;
+﻿#if RELEASE
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+#endif
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,9 +11,6 @@ using System.Windows;
 using EasyLogger;
 using HandyControl.Controls;
 using HandyControl.Tools.Extension;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using Nebula.Core;
 using Nebula.Core.Database;
 using Nebula.Core.Online;
@@ -19,6 +21,10 @@ using Nebula.Core.Settings;
 using Nebula.Core.Update;
 using SharpToolbox.Windows.Hookers;
 using SharpToolbox.Windows.Hookers.Keyboard;
+#if DEBUG
+using Nebula.Core.Logs;
+
+#endif
 
 namespace Nebula
 {

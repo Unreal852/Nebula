@@ -99,7 +99,7 @@ namespace Nebula.Net.Server
             SessionInfoPacket packet = new SessionInfoPacket
             {
                 SessionInfo = new NetSessionInfo {Id = Id, ClientsCount = NetManager.ConnectedPeersCount, MaxClients = Settings.MaxClients},
-                Users = Clients.Select(kvp => kvp.Value.UserInfo).ToArray()
+                Users = Clients.Where(kvp => kvp.Value.HasDefaultInfo).Select(kvp => kvp.Value.UserInfo).ToArray()
             };
             return packet;
         }
@@ -150,6 +150,7 @@ namespace Nebula.Net.Server
             if (serverClient == null)
                 return;
             BroadcastPacket(new UserDisconnectedPacket {User = serverClient.UserInfo});
+            BroadcastPacket(GetSessionInfoPacket());
             ClientDisconnected?.Invoke(this, new ClientDisconnectedEventArgs(serverClient));
         }
 
@@ -182,6 +183,7 @@ namespace Nebula.Net.Server
             }
             else
                 BroadcastPacket(new UserInfoPacket {UserInfo = client.UserInfo});
+            BroadcastPacket(GetSessionInfoPacket());
         }
 
         private void OnReceiveUserMessage(UserMessagePacket packet, NetServerClient client)
