@@ -1,0 +1,50 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
+             xmlns:medias="clr-namespace:Nebula.Common.Playlist;assembly=Nebula.Common"
+             xmlns:controls="clr-namespace:Nebula.Desktop.Controls"
+             xmlns:controls1="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Nebula.Desktop.View.LibraryPageView">
+    <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
+    <Design.DataContext>
+        <viewModel:LibraryPageViewModel />
+    </Design.DataContext>
+    <UserControl.Styles>
+        <Styles>
+            <Style Selector="Border.result:pointerover">
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}" />
+            </Style>
+        </Styles>
+    </UserControl.Styles>
+    <UserControl.Resources>
+        <DataTemplate x:Key="MediaItemTemplate" DataType="{x:Type medias:Playlist}">
+            <controls:DisplayItem Header="{Binding Name}"
+                                  Navigates="True"
+                                  NavigationCommand="{Binding $parent[UserControl].DataContext.OpenPlaylistCommand}"
+                                  NavigationCommandParameter="{Binding .}">
+                <controls:DisplayItem.Description>
+                    <MultiBinding StringFormat="{}{0} | {1}">
+                        <Binding Path="Author" />
+                        <Binding Path="Description" />
+                    </MultiBinding>
+                </controls:DisplayItem.Description>
+                <controls:DisplayItem.ActionButton>
+                    <Button
+                        Content="Listen"
+                        Command="{Binding $parent[UserControl].DataContext.PlayPlaylistCommand}"
+                        CommandParameter="{Binding .}">
+                    </Button>
+                </controls:DisplayItem.ActionButton>
+            </controls:DisplayItem>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="5">
+            <ItemsControl Items="{Binding Playlists}" ItemTemplate="{StaticResource MediaItemTemplate}">
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

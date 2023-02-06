@@ -1,0 +1,54 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:medias="clr-namespace:Nebula.Common.Medias;assembly=Nebula.Common"
+             xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
+             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:ail="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Nebula.Desktop.View.SearchResultsPageView" x:Name="SearchResultsPage">
+    <Design.DataContext>
+        <viewModel:SearchResultsPageViewModel />
+    </Design.DataContext>
+    <UserControl.Styles>
+        <Styles>
+            <Style Selector="Border.result:pointerover">
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"/>
+            </Style>
+        </Styles>
+    </UserControl.Styles>
+    <UserControl.Resources>
+        <DataTemplate x:Key="MediaItemTemplate" DataType="{x:Type medias:IMediaInfo}">
+            <Border Classes="result" CornerRadius="10" Background="#272727" BorderThickness="1">
+                <Grid ColumnDefinitions="Auto *">
+                    <ail:AdvancedImage Grid.Column="0" Width="128" Height="72"
+                                       Stretch="Uniform"
+                                       Source="{Binding Thumbnail}" CornerRadius="10 0 0 10" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                                Orientation="Vertical" Spacing="2" Margin="5 0">
+                        <TextBlock Text="{Binding Title}" />
+                        <TextBlock Text="{Binding Author}" FontSize="11" Foreground="Gray" />
+                    </StackPanel>
+                    <Button Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                            CornerRadius="0 0 10 0"
+                            Command="{Binding Path=DataContext.OpenMediaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding .}">
+                        <Button.Content>
+                            <controls:SymbolIcon Symbol="PlayFilled" />
+                        </Button.Content>
+                    </Button>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="5">
+        <ItemsRepeater Items="{Binding SearchResults}" ItemTemplate="{StaticResource MediaItemTemplate}">
+            <ItemsRepeater.Layout>
+                <UniformGridLayout Orientation="Horizontal"
+                                   MinItemWidth="550"
+                                   MinRowSpacing="5" MinColumnSpacing="5" />
+            </ItemsRepeater.Layout>
+        </ItemsRepeater>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,14 @@
+<fawindow:AppWindow
+    x:Class="Nebula.Desktop.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:view="clr-namespace:Nebula.Desktop.View"
+    xmlns:fawindow="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia.UI.Windowing"
+    Background="Transparent"
+    TransparencyLevelHint="Mica"
+    WindowStartupLocation="CenterScreen"
+    MinWidth="980" Width="1195"
+    MinHeight="400"
+    Icon="/Assets/app_icon.ico" Title="Nebula">
+    <view:MainView />
+</fawindow:AppWindow>

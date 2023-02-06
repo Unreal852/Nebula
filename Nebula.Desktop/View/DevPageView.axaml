@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Nebula.Desktop.View.DevPageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
+             mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModel:DevPageViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto *">
+        <Grid Grid.Row="0" RowDefinitions="Auto Auto Auto">
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBox Width="450" Margin="5,5" Text="{Binding VideoUrl}" Watermark="Youtube video Url" />
+                <Button Command="{Binding RequestVideoChangeCommand}" Content="Request" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBox Width="450" Margin="5,5" Text="{Binding PlaylistUrl}" Watermark="Youtube playlist Url" />
+                <Button Command="{Binding RequestPlaylistChangeCommand}" Content="Request" />
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Vertical">
+                <Button Command="{Binding FillDatabaseCommand}" Content="Fill Database with playlist" />
+                <Button Command="{Binding LoadDatabaseCommand}" Content="Load playlist from Database" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

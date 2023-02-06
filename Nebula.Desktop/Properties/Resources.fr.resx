@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+  </resheader>
+  <data name="MediasProviderAll" xml:space="preserve">
+        <value>Tous</value>
+    </data>
+  <data name="PageDev" xml:space="preserve">
+        <value>Page développeur</value>
+    </data>
+  <data name="PageSettings" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+  <data name="PageSharedSession" xml:space="preserve">
+        <value>Session Partagée</value>
+    </data>
+  <data name="Search" xml:space="preserve">
+        <value>Rechercher</value>
+    </data>
+  <data name="SettingsThemeDescription" xml:space="preserve">
+        <value>Modifier le thème de l'application ainsi que la couleur d'accentuation</value>
+    </data>
+  <data name="SettingsAccent" xml:space="preserve">
+        <value>Couleur d'accentuation</value>
+    </data>
+  <data name="SearchResults" xml:space="preserve">
+        <value>Résultats de la recherche</value>
+    </data>
+  <data name="SettingsLanguage" xml:space="preserve">
+        <value>Langue</value>
+    </data>
+  <data name="SettingsLanguageDescription" xml:space="preserve">
+        <value>Modifier la langue de l'application</value>
+    </data>
+  <data name="SettingsLocalLibrary" xml:space="preserve">
+    <value>Dossier local de la librairie</value>
+  </data>
+  <data name="SettingsLocalLibraryDescription" xml:space="preserve">
+    <value>Le chemin de la librairie locale</value>
+  </data>
+  <data name="SettingsCheckForUpdates" xml:space="preserve">
+    <value>Rechercher des mises à jour</value>
+  </data>
+  <data name="SettingsUpdateNow" xml:space="preserve">
+    <value>Mettre à jour maintenant</value>
+  </data>
+</root>

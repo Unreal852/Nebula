@@ -1,0 +1,54 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Nebula.Desktop.View.Dialogs.ConnectHostDialogView">
+    <UserControl.DataContext>
+        <viewModel:ConnectHostViewModel />
+    </UserControl.DataContext>
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Width" Value="200" />
+        </Style>
+        <Style Selector="NumericUpDown">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="ShowButtonSpinner" Value="False" />
+        </Style>
+    </UserControl.Styles>
+    <Grid RowDefinitions="Auto,*">
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Connection string" />
+            <TextBox Text="{Binding ConnectionString}" Watermark="Connection string" />
+        </StackPanel>
+        <Expander Grid.Row="1" ExpandDirection="Down" Header="Host Settings" Margin="0 5">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto">
+                <StackPanel Grid.Row="0" Margin="0,5" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Server Port" />
+                    <NumericUpDown Maximum="50000" Minimum="9000" Value="{Binding ServerPort}" />
+                </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,5" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Server Slots" />
+                    <NumericUpDown ShowButtonSpinner="False" Maximum="20" Minimum="2" Value="{Binding ServerSlots}" />
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Server Password" />
+                    <TextBox
+                        Classes.revealPasswordButton="True"
+                        PasswordChar="●"
+                        Text="{Binding ServerPassword}"
+                        Watermark="Server password" />
+                </StackPanel>
+                <StackPanel Grid.Row="3" Margin="0,5" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Use Upnp" />
+                    <ToggleSwitch IsChecked="{Binding UseUpnp}" />
+                </StackPanel>
+            </Grid>
+        </Expander>
+    </Grid>
+</UserControl>

@@ -1,0 +1,9 @@
+<Application x:Class="Nebula.Desktop.App" xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia">
+    <Application.Styles>
+        <fa:FluentAvaloniaTheme PreferSystemTheme="True" />
+        <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
+        <StyleInclude Source="/Styles/AppStyles.axaml" />
+    </Application.Styles>
+</Application>
