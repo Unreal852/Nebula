@@ -103,9 +103,9 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
                         AllowMultiple = false
                 });
 
-        if (result.Count == 1 && result[0].TryGetUri(out var pathUri))
+        if (result.Count == 1)
         {
-            LocalLibraryPath = pathUri.LocalPath;
+            LocalLibraryPath = result[0].Path.ToString();
         }
     }
 

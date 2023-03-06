@@ -17,7 +17,7 @@ public sealed class ViewLocator : IDataTemplate
         _logger = logger;
     }
 
-    public IControl Build(object? data)
+    public Control Build(object? data)
     {
         if (data == null)
             return NotFoundView("Not found, data is null");
@@ -30,7 +30,7 @@ public sealed class ViewLocator : IDataTemplate
             object? instance = Activator.CreateInstance(type);
             if (instance == null)
                 return NotFoundView($"Not found: {name}");
-            return (IControl)instance;
+            return (Control)instance;
         }
 
         return NotFoundView($"Not found: {name}");
@@ -41,7 +41,7 @@ public sealed class ViewLocator : IDataTemplate
         return data is ViewModelBase;
     }
 
-    private static IControl NotFoundView(string message)
+    private static Control NotFoundView(string message)
     {
         return new TextBlock
         {

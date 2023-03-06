@@ -23,18 +23,17 @@ public sealed class DisplayItem : TemplatedControl
     public static readonly StyledProperty<bool> NavigatesProperty =
             AvaloniaProperty.Register<DisplayItem, bool>(nameof(Navigates));
 
-    public static readonly StyledProperty<IControl> ActionButtonProperty =
-            AvaloniaProperty.Register<DisplayItem, IControl>(nameof(ActionButton));
+    public static readonly StyledProperty<Control> ActionButtonProperty =
+            AvaloniaProperty.Register<DisplayItem, Control>(nameof(ActionButton));
 
     public static readonly StyledProperty<bool> ExpandsProperty =
             AvaloniaProperty.Register<DisplayItem, bool>(nameof(Expands));
 
-    public static readonly StyledProperty<object?> ContentProperty =
-            ContentControl.ContentProperty.AddOwner<DisplayItem>();
+    public static readonly StyledProperty<object> ContentProperty =
+            ContentControl.ContentProperty.AddOwner<DisplayItem>()!;
 
-    public static readonly DirectProperty<DisplayItem, bool> IsExpandedProperty =
-            Expander.IsExpandedProperty.AddOwner<DisplayItem>(x => x.IsExpanded,
-                    (x, v) => x.IsExpanded = v);
+    public static readonly StyledProperty<bool> IsExpandedProperty =
+            Expander.IsExpandedProperty.AddOwner<DisplayItem>();
 
     public static readonly StyledProperty<ICommand> NavigationCommandProperty =
             AvaloniaProperty.Register<DisplayItem, ICommand>(nameof(NavigationCommand));
@@ -43,12 +42,11 @@ public sealed class DisplayItem : TemplatedControl
             AvaloniaProperty.Register<DisplayItem, object?>(nameof(NavigationCommandParameter));
 
     public static readonly RoutedEvent<RoutedEventArgs> NavigationRequestedEvent =
-            RoutedEvent.Register<DisplayItem, RoutedEventArgs>(nameof(NavigationRequested),
-                    RoutingStrategies.Bubble);
+            RoutedEvent.Register<DisplayItem, RoutedEventArgs>(nameof(NavigationRequested), RoutingStrategies.Bubble);
 
-    private bool    _isExpanded;
-    private bool    _isPressed;
-    private Border? _layoutRoot;
+    private bool   _isPressed;
+    private bool   _isExpanded;
+    private Border _layoutRoot;
 
     public string Header
     {
@@ -74,7 +72,7 @@ public sealed class DisplayItem : TemplatedControl
         set => SetValue(NavigatesProperty, value);
     }
 
-    public IControl ActionButton
+    public Control ActionButton
     {
         get => GetValue(ActionButtonProperty);
         set => SetValue(ActionButtonProperty, value);
@@ -86,7 +84,7 @@ public sealed class DisplayItem : TemplatedControl
         set => SetValue(ExpandsProperty, value);
     }
 
-    public object? Content
+    public object Content
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
@@ -94,8 +92,8 @@ public sealed class DisplayItem : TemplatedControl
 
     public bool IsExpanded
     {
-        get => _isExpanded;
-        set => SetAndRaise(IsExpandedProperty, ref _isExpanded, value);
+        get => GetValue(IsExpandedProperty);
+        set => SetValue(IsExpandedProperty, value);
     }
 
     public ICommand NavigationCommand
@@ -149,15 +147,12 @@ public sealed class DisplayItem : TemplatedControl
         base.OnApplyTemplate(e);
 
         _layoutRoot = e.NameScope.Find<Border>("LayoutRoot");
-        if (_layoutRoot != null)
-        {
-            _layoutRoot.PointerPressed += OnLayoutRootPointerPressed;
-            _layoutRoot.PointerReleased += OnLayoutRootPointerReleased;
-            _layoutRoot.PointerCaptureLost += OnLayoutRootPointerCaptureLost;
-        }
+        _layoutRoot.PointerPressed += OnLayoutRootPointerPressed;
+        _layoutRoot.PointerReleased += OnLayoutRootPointerReleased;
+        _layoutRoot.PointerCaptureLost += OnLayoutRootPointerCaptureLost;
     }
 
-    private void OnLayoutRootPointerPressed(object? sender, PointerPressedEventArgs e)
+    private void OnLayoutRootPointerPressed(object sender, PointerPressedEventArgs e)
     {
         if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
         {
@@ -166,9 +161,9 @@ public sealed class DisplayItem : TemplatedControl
         }
     }
 
-    private void OnLayoutRootPointerReleased(object? sender, PointerReleasedEventArgs e)
+    private void OnLayoutRootPointerReleased(object sender, PointerReleasedEventArgs e)
     {
-        PointerPoint pt = e.GetCurrentPoint(this);
+        var pt = e.GetCurrentPoint(this);
         if (_isPressed && pt.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased)
         {
             _isPressed = false;
@@ -186,7 +181,7 @@ public sealed class DisplayItem : TemplatedControl
         }
     }
 
-    private void OnLayoutRootPointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
+    private void OnLayoutRootPointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
     {
         _isPressed = false;
         PseudoClasses.Set(":pressed", false);
