@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="clr-namespace:Nebula.Desktop.View"
-    xmlns:fawindow="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia.UI.Windowing"
+    xmlns:fawindow="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
     Background="Transparent"
     TransparencyLevelHint="Mica"
     WindowStartupLocation="CenterScreen"

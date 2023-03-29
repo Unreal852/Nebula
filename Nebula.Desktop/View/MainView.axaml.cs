@@ -12,9 +12,4 @@ public sealed partial class MainView : UserControl
         InitializeComponent();
         DataContext = Ioc.Default.GetRequiredService<MainViewModel>();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

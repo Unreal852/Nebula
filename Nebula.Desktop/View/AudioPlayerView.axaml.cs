@@ -15,10 +15,6 @@ public sealed partial class AudioPlayerView : UserControl
         DataContext = Ioc.Default.GetRequiredService<AudioPlayerViewModel>();
     }
 
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
@@ -27,7 +23,7 @@ public sealed partial class AudioPlayerView : UserControl
         {
             double mousePos = e.GetPosition(progressBar).X;
             double ratio = mousePos / progressBar.Bounds.Width;
-            double value = ratio    * progressBar.Maximum;
+            double value = ratio * progressBar.Maximum;
             viewModel.SetPosition(TimeSpan.FromSeconds(value));
         }
     }

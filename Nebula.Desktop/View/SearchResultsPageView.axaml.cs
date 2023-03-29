@@ -13,9 +13,4 @@ public sealed partial class SearchResultsPageView : UserControl
         if (ImageLoader.AsyncImageLoader is not BaseWebImageLoader)
             ImageLoader.AsyncImageLoader = new BaseWebImageLoader();
     }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
 }

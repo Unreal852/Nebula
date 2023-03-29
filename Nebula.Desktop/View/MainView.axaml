@@ -12,12 +12,12 @@
         <fa:NavigationView Grid.Row="1" AlwaysShowHeader="False" IsSettingsVisible="False"
                            IsPaneToggleButtonVisible="True"
                            CompactPaneLength="62" PaneDisplayMode="LeftCompact"
-                           MenuItems="{Binding MenuPages}"
-                           FooterMenuItems="{Binding FooterPages}"
+                           MenuItemsSource="{Binding MenuPages}"
+                           FooterMenuItemsSource="{Binding FooterPages}"
                            SelectedItem="{Binding CurrentPage}">
             <fa:NavigationView.MenuItemTemplate>
                 <DataTemplate DataType="{x:Type viewModel:ViewModelPageBase}">
-                    <fa:NavigationViewItem MenuItems="{Binding SubItems}" Content="{Binding PageName}"
+                    <fa:NavigationViewItem MenuItemsSource="{Binding SubItems}" Content="{Binding PageName}"
                                            IconSource="{Binding PageIcon}" />
 
                 </DataTemplate>

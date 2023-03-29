@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             xmlns:faWindow="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia.UI.Windowing"
+             xmlns:faWindow="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
              xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
              xmlns:converters="clr-namespace:Nebula.Desktop.Converters"
              xmlns:p="clr-namespace:Nebula.Desktop.Properties"
