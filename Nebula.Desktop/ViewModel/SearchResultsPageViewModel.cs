@@ -30,7 +30,7 @@ public sealed partial class SearchResultsPageViewModel : ViewModelPageBase
         {
             if (Equals(media, MediaInfo.Empty))
                 continue;
-            SearchResults.Add(new MediaInfoRef(media));
+            SearchResults.Add(media);
         }
     }
 
