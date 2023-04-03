@@ -13,6 +13,12 @@
         <FileVersion>1.0.0</FileVersion>
     </PropertyGroup>
     <ItemGroup>
+      <AvaloniaXaml Remove="Services\Medias\**" />
+      <Compile Remove="Services\Medias\**" />
+      <EmbeddedResource Remove="Services\Medias\**" />
+      <None Remove="Services\Medias\**" />
+    </ItemGroup>
+    <ItemGroup>
         <None Remove=".gitignore" />
     </ItemGroup>
     <ItemGroup>
@@ -79,8 +85,5 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Services\Medias" />
     </ItemGroup>
 </Project>
