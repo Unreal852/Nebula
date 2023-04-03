@@ -15,7 +15,6 @@ public class AudioPlayerService : IAudioPlayerService
 {
     private readonly IAudioService _audioService;
     private readonly List<IMediaInfo> _mediasQueue = new();
-    private readonly Random _random = new();
     private readonly IMediasProviderService _youtubeService;
 
     public AudioPlayerService(IAudioService audioService, IMediasProviderService youtubeService)
@@ -45,16 +44,16 @@ public class AudioPlayerService : IAudioPlayerService
 
     public async Task OpenMedia(IMediaInfo media, bool force = false)
     {
-        if(!force && !AudioPlayerController.OpenMedia(media))
+        if (!force && !AudioPlayerController.OpenMedia(media))
             return;
 
         MediaChanging?.Invoke(this,
                 new MediaChangingEventArgs(CurrentMedia, media));
 
-        if(!media.HasValidStreamUri())
+        if (!media.HasValidStreamUri())
         {
             var youtubeMedia = await _youtubeService.GetMediaAsync(media.Id!);
-            if(youtubeMedia == null)
+            if (youtubeMedia == null)
                 return;
             _audioService.OpenMedia(youtubeMedia);
         }
@@ -63,66 +62,66 @@ public class AudioPlayerService : IAudioPlayerService
             _audioService.OpenMedia(media);
         }
 
-        if(AudioPlayerController.Play())
+        if (AudioPlayerController.Play())
             _audioService.Play();
     }
 
     public async Task OpenPlaylist(Playlist playlist, bool force = false)
     {
         EnqueueMedias(playlist.Medias);
-        if(TakeMedia() is { } media)
+        if (TakeMedia() is { } media)
             await OpenMedia(media);
     }
 
     public void Play(bool force = false)
     {
-        if(!force && !AudioPlayerController.Play())
+        if (!force && !AudioPlayerController.Play())
             return;
         _audioService.Play();
     }
 
     public void Pause(bool force = false)
     {
-        if(!force && !AudioPlayerController.Pause())
+        if (!force && !AudioPlayerController.Pause())
             return;
         _audioService.Pause();
     }
 
     public Task Skip(bool force = false)
     {
-        if(!force && !AudioPlayerController.Skip())
+        if (!force && !AudioPlayerController.Skip())
             return Task.CompletedTask;
-        if(TakeMedia() is { } media)
+        if (TakeMedia() is { } media)
             return OpenMedia(media);
         return Task.CompletedTask;
     }
 
     public void Stop(bool force = false)
     {
-        if(!force && !AudioPlayerController.Stop())
+        if (!force && !AudioPlayerController.Stop())
             return;
         _audioService.Stop();
     }
 
     public void SetPosition(in TimeSpan position, bool force = false)
     {
-        if(!force && !AudioPlayerController.SetPosition(in position))
+        if (!force && !AudioPlayerController.SetPosition(in position))
             return;
         _audioService.Position = position;
     }
 
     private IMediaInfo? TakeMedia()
     {
-        if(_mediasQueue.Count == 0)
+        if (_mediasQueue.Count == 0)
             return default;
-        var media = _mediasQueue[Shuffle ? _random.Next(0, _mediasQueue.Count) : 0];
+        var media = _mediasQueue[Shuffle ? Random.Shared.Next(0, _mediasQueue.Count) : 0];
         _mediasQueue.RemoveAt(0);
         return media;
     }
 
     private void EnqueueMedias(IList<MediaInfo> infos)
     {
-        if(infos.Count == 0)
+        if (infos.Count == 0)
             // TODO: Maybe log this ? as it should not happen
             return;
 
