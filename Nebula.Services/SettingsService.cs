@@ -1,8 +1,9 @@
 ﻿using System.Text.Json;
 using Nebula.Common.Settings;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Services;
+
 public sealed class SettingsService : ISettingsService
 {
     // TODO: Add an event when the settings are changed
@@ -27,7 +28,7 @@ public sealed class SettingsService : ISettingsService
 
     private void LoadOrCreateSettings()
     {
-        if(File.Exists(_settingsPath))
+        if (File.Exists(_settingsPath))
         {
             var fileContent = File.ReadAllText(_settingsPath);
             Settings = JsonSerializer.Deserialize<AppSettings>(fileContent, _serializerOptions) ?? throw new Exception("Failed to read app settings");
@@ -42,7 +43,7 @@ public sealed class SettingsService : ISettingsService
     public void SaveSettings()
     {
         var serialized = JsonSerializer.Serialize(Settings, _serializerOptions);
-        if(File.Exists(_settingsPath))
+        if (File.Exists(_settingsPath))
             File.Delete(_settingsPath);
         File.WriteAllText(_settingsPath, serialized);
         SettingsChanged?.Invoke(this, EventArgs.Empty);
@@ -50,7 +51,7 @@ public sealed class SettingsService : ISettingsService
 
     public void ResetSettings()
     {
-        if(File.Exists(_settingsPath))
+        if (File.Exists(_settingsPath))
             File.Delete(_settingsPath);
         LoadOrCreateSettings();
     }

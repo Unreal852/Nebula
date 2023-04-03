@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Nebula.Common;
 using Nebula.Common.Extensions;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 using Octokit;
 using Semver;
 using Serilog;

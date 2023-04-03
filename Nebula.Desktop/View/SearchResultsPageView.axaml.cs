@@ -1,7 +1,6 @@
 ﻿using AsyncImageLoader;
 using AsyncImageLoader.Loaders;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 
 namespace Nebula.Desktop.View;
 

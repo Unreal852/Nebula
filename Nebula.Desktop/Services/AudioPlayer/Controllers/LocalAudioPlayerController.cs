@@ -1,6 +1,6 @@
 ﻿using System;
 using Nebula.Common.Medias;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 // ReSharper disable InconsistentNaming
 

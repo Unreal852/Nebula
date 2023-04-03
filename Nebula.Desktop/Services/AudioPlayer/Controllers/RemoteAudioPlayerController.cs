@@ -6,7 +6,7 @@ using Nebula.Net;
 using Nebula.Net.Packets.Requests;
 using Nebula.Net.Packets.Responses;
 using Nebula.Net.Services.Client;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 using Serilog;
 
 namespace Nebula.Desktop.Services.AudioPlayer.Controllers;

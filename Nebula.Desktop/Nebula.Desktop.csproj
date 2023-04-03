@@ -41,7 +41,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Nebula.Common\Nebula.Common.csproj" />
         <ProjectReference Include="..\Nebula.Net\Nebula.Net.csproj" />
-        <ProjectReference Include="..\Nebula.Services.Abstractions\Nebula.Services.Abstractions.csproj" />
         <ProjectReference Include="..\Nebula.Services\Nebula.Services.csproj" />
     </ItemGroup>
     <ItemGroup>

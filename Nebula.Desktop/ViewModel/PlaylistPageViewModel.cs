@@ -10,7 +10,7 @@ using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
 using Nebula.Common.Utils;
 using Nebula.Desktop.ViewModel.Messages;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 

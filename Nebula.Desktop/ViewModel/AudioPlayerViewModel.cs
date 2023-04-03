@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nebula.Common.Audio;
 using Nebula.Common.Medias;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 

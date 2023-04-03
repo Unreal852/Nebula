@@ -7,7 +7,7 @@
              xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
              xmlns:converters="clr-namespace:Nebula.Desktop.Converters"
              xmlns:p="clr-namespace:Nebula.Desktop.Properties"
-             xmlns:abstractions="clr-namespace:Nebula.Services.Abstractions;assembly=Nebula.Services.Abstractions"
+             xmlns:contracts="clr-namespace:Nebula.Services.Contracts;assembly=Nebula.Services"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Nebula.Desktop.View.TitleBarView">
     <Design.DataContext>
@@ -26,7 +26,7 @@
                           Items="{Binding MediasProviderServices}"
                           SelectedItem="{Binding CurrentMediasProviderService}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type abstractions:IMediasProviderService}">
+                        <DataTemplate DataType="{x:Type contracts:IMediasProviderService}">
                             <StackPanel Orientation="Horizontal" Spacing="5">
                                 <fa:FAPathIcon VerticalAlignment="Center"
                                     Data="{Binding ServiceIcon,

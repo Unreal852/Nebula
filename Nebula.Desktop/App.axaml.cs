@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Nebula.Desktop.DataTemplates;
 using Nebula.Net.Services.Server;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop;
 

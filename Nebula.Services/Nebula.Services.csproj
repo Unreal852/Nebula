@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nebula.Common\Nebula.Common.csproj" />
-    <ProjectReference Include="..\Nebula.Services.Abstractions\Nebula.Services.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

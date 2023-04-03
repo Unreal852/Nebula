@@ -6,7 +6,7 @@ using Nebula.Desktop.ViewModel;
 using Nebula.Net.Services.Client;
 using Nebula.Net.Services.Server;
 using Nebula.Services;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 using Nebula.Services.Audio;
 using Nebula.Services.Localization;
 using Nebula.Services.Logging;

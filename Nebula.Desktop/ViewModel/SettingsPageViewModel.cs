@@ -11,7 +11,7 @@ using FluentAvalonia.UI.Controls;
 using Nebula.Common;
 using Nebula.Common.Localization;
 using Nebula.Desktop.Properties;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 using Serilog;
 
 namespace Nebula.Desktop.ViewModel;

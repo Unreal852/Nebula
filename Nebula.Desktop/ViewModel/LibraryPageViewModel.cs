@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using FluentAvalonia.UI.Controls;
 using Nebula.Common.Playlist;
 using Nebula.Desktop.ViewModel.Messages;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 

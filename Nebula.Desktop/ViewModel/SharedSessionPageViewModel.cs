@@ -12,7 +12,7 @@ using Nebula.Desktop.View.Dialogs;
 using Nebula.Net;
 using Nebula.Net.Services.Client;
 using Nebula.Net.Services.Server;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 

@@ -16,8 +16,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nebula.Common", "Nebula.Com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nebula.Net", "Nebula.Net\Nebula.Net.csproj", "{1A43004B-CF2F-4D37-940D-CF23F113B412}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nebula.Services.Abstractions", "Nebula.Services.Abstractions\Nebula.Services.Abstractions.csproj", "{180AABDF-2BD8-47B3-8F01-BA61F03C00E8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nebula.Services", "Nebula.Services\Nebula.Services.csproj", "{AB3A5C2B-BD20-4D9B-88B4-C915E0BE95DD}"
 EndProject
 Global
@@ -38,10 +36,6 @@ Global
 		{1A43004B-CF2F-4D37-940D-CF23F113B412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A43004B-CF2F-4D37-940D-CF23F113B412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A43004B-CF2F-4D37-940D-CF23F113B412}.Release|Any CPU.Build.0 = Release|Any CPU
-		{180AABDF-2BD8-47B3-8F01-BA61F03C00E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{180AABDF-2BD8-47B3-8F01-BA61F03C00E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{180AABDF-2BD8-47B3-8F01-BA61F03C00E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{180AABDF-2BD8-47B3-8F01-BA61F03C00E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB3A5C2B-BD20-4D9B-88B4-C915E0BE95DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB3A5C2B-BD20-4D9B-88B4-C915E0BE95DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB3A5C2B-BD20-4D9B-88B4-C915E0BE95DD}.Release|Any CPU.ActiveCfg = Release|Any CPU

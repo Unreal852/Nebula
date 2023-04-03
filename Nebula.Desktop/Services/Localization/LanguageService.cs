@@ -6,7 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Nebula.Common.Localization;
 using Nebula.Desktop.Properties;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Services.Localization;
 

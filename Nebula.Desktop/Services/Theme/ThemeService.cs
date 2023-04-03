@@ -2,9 +2,9 @@
 using Avalonia;
 using FluentAvalonia.Styling;
 using Nebula.Desktop.Styles.Themes;
-using Nebula.Services.Abstractions;
 using Nebula.Common.Settings;
 using Avalonia.Media;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.Services.Theme;
 

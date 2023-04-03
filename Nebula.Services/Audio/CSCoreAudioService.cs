@@ -5,7 +5,7 @@ using Nebula.Common.Audio;
 using Nebula.Common.Audio.Events;
 using Nebula.Common.Extensions;
 using Nebula.Common.Medias;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 using Serilog;
 using SerilogTimings.Extensions;
 

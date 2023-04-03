@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Nebula.Desktop.ViewModel;
 

@@ -1,6 +1,6 @@
 ﻿using Nebula.Common.Extensions;
 using Nebula.Common.Medias;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 using Serilog;
 using SerilogTimings.Extensions;
 using YoutubeExplode;

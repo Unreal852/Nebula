@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
-using Nebula.Services.Abstractions;
+using Nebula.Services.Contracts;
 
 namespace Nebula.Services.Medias;
 
