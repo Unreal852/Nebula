@@ -1,6 +1,6 @@
 ﻿namespace Nebula.Common.Utils;
 
-public class Pager<T>
+public sealed class Pager<T>
 {
     public Pager(IList<T> list, int pageSize = 20)
     {
@@ -9,16 +9,14 @@ public class Pager<T>
         Refresh();
     }
 
-    public int      PageSize    { get; set; }
-    public int      CurrentPage { get; private set; } = 1;
-    public int      MaxPage     { get; private set; }
-    public IList<T> Source      { get; }
+    public int PageSize { get; set; }
+    public int CurrentPage { get; private set; } = 1;
+    public int MaxPage { get; private set; }
+    public IList<T> Source { get; }
 
     public IEnumerable<T> PageElements => Source.Skip((CurrentPage - 1) * PageSize).Take(PageSize);
-    public IEnumerable<T> this[int page] => Source.Skip((page      - 1) * PageSize).Take(PageSize);
-
-    public IEnumerable<T> ApplyPaging(IEnumerable<T> enumerable) =>
-            enumerable.Skip((CurrentPage - 1) * PageSize).Take(PageSize);
+    public IEnumerable<T> this[int page] => Source.Skip((page - 1) * PageSize).Take(PageSize);
+    public IEnumerable<T> ApplyPaging(IEnumerable<T> enumerable) => enumerable.Skip((CurrentPage - 1) * PageSize).Take(PageSize);
 
     public int NextPage()
     {

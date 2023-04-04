@@ -32,7 +32,7 @@ public sealed partial class ConnectHostViewModel : ViewModelBase
 #endif
     }
 
-    partial void OnConnectionStringChanged(string? value)
+    partial void OnConnectionStringChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             return;
