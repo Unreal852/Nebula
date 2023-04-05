@@ -26,8 +26,10 @@ public static class Program
         {
             Ioc.Default.ConfigureServices(new ServiceProvider());
 
+#if DEBUG
             Trace.Listeners.Clear();
             Trace.Listeners.Add(Ioc.Default.GetService<AvaloniaLoggerService>()!);
+#endif
 
             TaskScheduler.UnobservedTaskException += (sender, e) =>
             {
@@ -67,14 +69,12 @@ public static class Program
         Log.Logger = new LoggerConfiguration()
                     .Enrich
                     .WithProperty("ClassContext", "*")
-#if RELEASE
-                        .WriteTo.Sentry(
-                                 dsn: "https://3bcd43f6dd3446efb6c34805c4f31eeb@o4504038153912320.ingest.sentry.io/4504038166102016",
-                                 sampleRate: 1.0f,
-                                 debug: true, initializeSdk: true,
-                                 minimumBreadcrumbLevel: Serilog.Events.LogEventLevel.Warning,
-                                 minimumEventLevel: Serilog.Events.LogEventLevel.Warning)
-#endif
+                    //#if RELEASE
+                    //                    .WriteTo.Sentry(
+                    //                                 dsn: "https://3bcd43f6dd3446efb6c34805c4f31eeb@o4504038153912320.ingest.sentry.io/4504038166102016",
+                    //                                 minimumBreadcrumbLevel: Serilog.Events.LogEventLevel.Warning,
+                    //                                 minimumEventLevel: Serilog.Events.LogEventLevel.Warning)
+                    //#endif
                     .WriteTo.File(
                              filePath,
                              rollingInterval: RollingInterval.Day,

@@ -2,6 +2,7 @@
 using LiteNetLib.Utils;
 using Mono.Nat;
 using Nebula.Net.Nat;
+using Realms.Sync;
 using Serilog;
 
 // ReSharper disable InconsistentNaming
@@ -16,8 +17,8 @@ public class NetServerService : NetListener, INetServerService
     {
     }
 
-    private Mapping?    UpnpMapping { get; set; }
-    private INatDevice? NatDevice   { get; set; }
+    private Mapping? UpnpMapping { get; set; }
+    private INatDevice? NatDevice { get; set; }
 
     public void SubscribePacket<TPacket, TUserData>(Action<TPacket, TUserData> packetHandler)
             where TPacket : INetSerializable, new()
@@ -57,7 +58,8 @@ public class NetServerService : NetListener, INetServerService
     {
         if (!IsRunning)
             return;
-        NetPacketProcessor.SendNetSerializable(user, ref packet, method);
+        NetPacketProcessor.WriteNetSerializable(NetDataWriter, ref packet);
+        user.Send(NetDataWriter, method);
     }
 
     public void BroadcastPacket<TPacket>(ref TPacket packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered)
@@ -65,7 +67,8 @@ public class NetServerService : NetListener, INetServerService
     {
         if (!IsRunning)
             return;
-        NetPacketProcessor.SendNetSerializable(NetManager, ref packet, method);
+        NetPacketProcessor.WriteNetSerializable(NetDataWriter, ref packet);
+        NetManager.SendToAll(NetDataWriter, method);
     }
 
     private async Task CreateUpnpMapping()
@@ -98,6 +101,8 @@ public class NetServerService : NetListener, INetServerService
 
     public override void OnConnectionRequest(ConnectionRequest request)
     {
+        Logger.Debug("Connection requested");
+        
         if (NetManager.ConnectedPeersCount >= NetOptions!.ServerSlots)
         {
             request.Reject(NetDataWriter.FromString("Server full"));

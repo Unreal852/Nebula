@@ -49,6 +49,6 @@ public sealed partial class ConnectHostViewModel : ViewModelBase
 
     public NetOptions GetNetOptions()
     {
-        return new NetOptions(ServerAddress, ServerPort, ServerPort, ServerPassword, UseUpnp);
+        return new NetOptions(ServerAddress, ServerPort, ServerSlots, ServerPassword, UseUpnp);
     }
 }

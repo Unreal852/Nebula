@@ -10,13 +10,14 @@ namespace Nebula.Net;
 
 public abstract class NetListener : INetEventListener
 {
-    protected readonly ILogger     Logger;
-    private            NetOptions? _netOptions;
+    protected readonly ILogger Logger;
+    private NetOptions? _netOptions;
 
     protected NetListener(ILogger logger, string? loggerContext = null)
     {
         Logger = logger.ForContext("ClassContext", loggerContext ?? nameof(NetListener));
         NetManager = new NetManager(this) { UnsyncedEvents = true, AutoRecycle = true };
+        NetDataWriter = new NetDataWriter();
         NetPacketProcessor = new NetPacketProcessor();
 
         NetPacketProcessor.RegisterNestedType<YoutubeMusicRequestPacket>();
@@ -30,10 +31,11 @@ public abstract class NetListener : INetEventListener
         NetPacketProcessor.RegisterNestedType<ClientReadyRequestPacket>();
     }
 
-    public NetManager         NetManager         { get; }
+    public NetManager NetManager { get; }
+    public NetDataWriter NetDataWriter { get; }
     public NetPacketProcessor NetPacketProcessor { get; }
-    public bool               IsRunning          => NetManager.IsRunning;
-    public bool               CanStart           => !IsRunning && NetOptions != null;
+    public bool IsRunning => NetManager.IsRunning;
+    public bool CanStart => !IsRunning && NetOptions != null;
 
     public NetOptions? NetOptions
     {

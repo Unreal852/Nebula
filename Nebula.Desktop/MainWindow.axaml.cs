@@ -20,9 +20,6 @@ public partial class MainWindow : AppWindow
         Instance = this;
         InitializeComponent();
         Application.Current!.ActualThemeVariantChanged += OnActualThemeVariantChanged;
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 
     private void OnActualThemeVariantChanged(object? sender, EventArgs e)

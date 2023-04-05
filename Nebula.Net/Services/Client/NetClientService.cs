@@ -13,8 +13,8 @@ public sealed class NetClientService : NetListener, INetClientService
     private NetPeer? ServerPeer { get; set; }
 
     public event EventHandler<EventArgs>? Connecting;
-    public event EventHandler<NetPeer>?   Connected;
-    public event EventHandler<NetPeer>?   Disconnected;
+    public event EventHandler<NetPeer>? Connected;
+    public event EventHandler<NetPeer>? Disconnected;
 
     public override Task Start()
     {
@@ -50,7 +50,8 @@ public sealed class NetClientService : NetListener, INetClientService
     {
         if (!IsRunning)
             return;
-        NetPacketProcessor.SendNetSerializable(ServerPeer, ref packet, method);
+        NetPacketProcessor.WriteNetSerializable(NetDataWriter, ref packet);
+        ServerPeer!.Send(NetDataWriter, method);
     }
 
     public override void OnPeerConnected(NetPeer peer)
