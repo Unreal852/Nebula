@@ -50,6 +50,7 @@ public partial class ServiceProvider
 [Singleton<ViewLocator>]
 [Singleton<MainViewModel>]
 [Singleton<TitleBarViewModel>]
+[Singleton<PartyFlyoutViewModel>]
 [Singleton<AudioPlayerViewModel>]
 #if DEBUG
 [Singleton<ViewModelPageBase, DevPageViewModel>]

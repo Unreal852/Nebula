@@ -6,47 +6,58 @@
              xmlns:faWindow="clr-namespace:FluentAvalonia.UI.Windowing;assembly=FluentAvalonia"
              xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
              xmlns:converters="clr-namespace:Nebula.Desktop.Converters"
+             xmlns:views="clr-namespace:Nebula.Desktop.View"
              xmlns:p="clr-namespace:Nebula.Desktop.Properties"
              xmlns:contracts="clr-namespace:Nebula.Services.Contracts;assembly=Nebula.Services"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Nebula.Desktop.View.TitleBarView">
-    <Design.DataContext>
-        <viewModel:TitleBarViewModel />
-    </Design.DataContext>
-    <UserControl.Resources>
-        <converters:StringToIconElementConverter x:Key="StringToGeometryConverter" />
-    </UserControl.Resources>
-    <Grid x:Name="TitleGrid" ColumnDefinitions="Auto,*,140">
-        <TextBlock Grid.Column="0" Margin="10,0" Text="{x:Static p:Resources.AppName}" VerticalAlignment="Center"
+	<Design.DataContext>
+		<viewModel:TitleBarViewModel />
+	</Design.DataContext>
+	<UserControl.Resources>
+		<converters:StringToIconElementConverter x:Key="StringToGeometryConverter" />
+	</UserControl.Resources>
+	<Grid x:Name="TitleGrid" ColumnDefinitions="Auto,*,140">
+		<TextBlock Grid.Column="0" Margin="10,0" Text="{x:Static p:Resources.AppName}" VerticalAlignment="Center"
                    FontWeight="Bold" />
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" faWindow:AppWindow.AllowInteractionInTitleBar="True"
+		<StackPanel Grid.Column="0" Grid.ColumnSpan="3" faWindow:AppWindow.AllowInteractionInTitleBar="True"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="5">
-            <StackPanel Orientation="Horizontal">
-                <ComboBox Width="150"
+			<StackPanel Orientation="Horizontal">
+				<ComboBox Width="150"
                           Items="{Binding MediasProviderServices}"
                           SelectedItem="{Binding CurrentMediasProviderService}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type contracts:IMediasProviderService}">
-                            <StackPanel Orientation="Horizontal" Spacing="5">
-                                <fa:FAPathIcon VerticalAlignment="Center"
+					<ComboBox.ItemTemplate>
+						<DataTemplate DataType="{x:Type contracts:IMediasProviderService}">
+							<StackPanel Orientation="Horizontal" Spacing="5">
+								<fa:FAPathIcon VerticalAlignment="Center"
                                     Data="{Binding ServiceIcon,
                                      Converter={StaticResource StringToGeometryConverter}}"
                                     Width="16" Height="16" Foreground="{Binding ServiceIconColor }" />
-                                <TextBlock Text="{Binding ServiceName }" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-            </StackPanel>
-            <AutoCompleteBox x:Name="SearchBox" Watermark="{x:Static p:Resources.Search}" Width="450"
+								<TextBlock Text="{Binding ServiceName }" />
+							</StackPanel>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</StackPanel>
+			<AutoCompleteBox x:Name="SearchBox" Watermark="{x:Static p:Resources.Search}" Width="450"
                              Items="{Binding SearchSuggestions}" />
-            <Button IsDefault="True" Command="{Binding SearchMediasCommand}"
+			<Button IsDefault="True" Command="{Binding SearchMediasCommand}"
                     CommandParameter="{Binding #SearchBox.Text}"
                     VerticalAlignment="Center" Height="32">
-                <Button.Content>
-                    <fa:SymbolIcon Symbol="Find" />
-                </Button.Content>
-            </Button>
-        </StackPanel>
-    </Grid>
+				<Button.Content>
+					<fa:SymbolIcon Symbol="Find" />
+				</Button.Content>
+			</Button>
+			<Button Height="32">
+				<Button.Content>
+					<fa:SymbolIcon Symbol="People" />
+				</Button.Content>
+				<Button.Flyout>
+					<Flyout>
+						<views:PartyFlyoutView />
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		</StackPanel>
+	</Grid>
 </UserControl>

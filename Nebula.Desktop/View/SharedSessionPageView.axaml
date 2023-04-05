@@ -1,9 +1,0 @@
-﻿<UserControl x:Class="Nebula.Desktop.View.SharedSessionPageView"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel">
-    <Design.DataContext>
-        <viewModel:SharedSessionPageViewModel />
-    </Design.DataContext>
-    <Grid />
-</UserControl>

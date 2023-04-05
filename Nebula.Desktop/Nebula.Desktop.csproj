@@ -62,10 +62,6 @@
             <DependentUpon>SettingsView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Update="View\SharedSessionPageView.axaml.cs">
-            <DependentUpon>SharedSessionView.axaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
         <Compile Update="MainWindow.axaml.cs">
             <DependentUpon>MainWindow.axaml</DependentUpon>
             <SubType>Code</SubType>
@@ -85,5 +81,8 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="View\PartyFlyoutView.axaml" />
     </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 
-public partial class PlaylistPageViewModel : ViewModelPageBase, IRecipient<PlaylistChangeMessage>
+public sealed partial class PlaylistPageViewModel : ViewModelPageBase, IRecipient<PlaylistChangeMessage>
 {
     private readonly IDatabaseService    _databaseService;
     private readonly IAudioPlayerService _audioPlayerService;

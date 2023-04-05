@@ -28,13 +28,13 @@ public sealed class NatDiscoverer : IDisposable
                 token.ThrowIfCancellationRequested();
                 await Task.Delay(5, token);
             }
+            NatUtility.StopDiscovery();
         }
         catch(Exception e)
         {
             if(e is not OperationCanceledException)
                 Log.Error(e, "[NatDiscoverer] Error while discovering nat devices");
         }
-
 
         return NatDevice;
     }
