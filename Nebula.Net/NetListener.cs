@@ -41,11 +41,11 @@ public abstract class NetListener : INetEventListener
         get => _netOptions;
         set
         {
-            if (IsRunning)
-            {
-                _logger.Warning("Network options can't be changed if the network manager is running");
-                return;
-            }
+            //if (IsRunning)
+            //{
+            //    _logger.Warning("Network options can't be changed if the network manager is running");
+            //    return;
+            //}
 
             _netOptions = value;
         }

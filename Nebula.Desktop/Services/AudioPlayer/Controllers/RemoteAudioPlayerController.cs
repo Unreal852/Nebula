@@ -13,42 +13,61 @@ namespace Nebula.Desktop.Services.AudioPlayer.Controllers;
 
 public sealed class RemoteAudioPlayerController : IAudioPlayerController
 {
+    private readonly ILogger _logger;
     private readonly IAudioPlayerService _audioPlayerService;
-    public readonly INetClientService NetClientService;
+    private readonly INetClientService _netClientService;
     private bool _isInitialized;
 
-    public RemoteAudioPlayerController(IAudioPlayerService audioPlayerService, INetClientService netClientService)
+    public RemoteAudioPlayerController(ILogger logger, IAudioPlayerService audioPlayerService, INetClientService netClientService)
     {
+        _logger = logger.ForContext("ClassContext", nameof(RemoteAudioPlayerController));
         _audioPlayerService = audioPlayerService;
-        NetClientService = netClientService;
+        _netClientService = netClientService;
+
+        _netClientService.SubscribePacket<YoutubeMusicResponsePacket>(OnReceiveYoutubeMusicResponse);
+        _netClientService.SubscribePacket<PlayerPlayResponsePacket>(OnReceivePlayerPlayResponse);
+        _netClientService.SubscribePacket<PlayerPauseResponsePacket>(OnReceivePlayerPauseResponse);
+        _netClientService.SubscribePacket<PlayerPositionResponsePacket>(OnReceivePlayerPositionResponse);
+        _netClientService.Disconnected += OnNetClientServiceDisconnected;
+    }
+
+    public event EventHandler<NetPeer> Connected
+    {
+        add => _netClientService.Connected += value;
+        remove => _netClientService.Connected -= value;
+    }
+
+    public event EventHandler<NetPeer> Disconnected
+    {
+        add => _netClientService.Disconnected += value;
+        remove => _netClientService.Disconnected -= value;
+    }
+
+    public void Connect(NetOptions netOptions, string username)
+    {
+        _netClientService.Connect(netOptions, username);
     }
 
     public void Initialize(params object[] args)
     {
-        if (_isInitialized)
-            return;
-        if (args.Length != 1 || args[0] is not NetOptions options)
-            return;
-        _isInitialized = true;
-        NetClientService.SubscribePacket<YoutubeMusicResponsePacket>(OnReceiveYoutubeMusicResponse);
-        NetClientService.SubscribePacket<PlayerPlayResponsePacket>(OnReceivePlayerPlayResponse);
-        NetClientService.SubscribePacket<PlayerPauseResponsePacket>(OnReceivePlayerPauseResponse);
-        NetClientService.SubscribePacket<PlayerPositionResponsePacket>(OnReceivePlayerPositionResponse);
-        NetClientService.Disconnected += OnNetClientServiceDisconnected;
-        //NetClientService.NetOptions = options;
-        //NetClientService.Start();
+        if (args.Length == 2 && args[0] is NetOptions options && args[1] is string username)
+        {
+            Connect(options, username);
+        }
+        else
+            _logger.Warning("Failed to initialize ! Unsupported params");
     }
 
     public bool OpenMedia(IMediaInfo media)
     {
         if (!media.HasValidId())
         {
-            Log.Warning("[RemoteAudioPlayerController] Received media will invalid id");
+            _logger.Warning("Received media will invalid id");
             return false;
         }
 
         var requestPacket = new YoutubeMusicRequestPacket { VideoId = media.Id! };
-        NetClientService.SendPacket(ref requestPacket);
+        _netClientService.SendPacket(ref requestPacket);
         return false;
     }
 
@@ -62,7 +81,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
         if (_audioPlayerService.IsPlaying)
             return false;
         var requestPacket = new PlayerPlayRequestPacket();
-        NetClientService.SendPacket(ref requestPacket);
+        _netClientService.SendPacket(ref requestPacket);
         return false;
     }
 
@@ -71,7 +90,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
         if (_audioPlayerService.IsPaused)
             return false;
         var requestPacket = new PlayerPauseRequestPacket();
-        NetClientService.SendPacket(ref requestPacket);
+        _netClientService.SendPacket(ref requestPacket);
         return false;
     }
 
@@ -90,7 +109,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
         if (!_audioPlayerService.IsPlaying)
             return false;
         var requestPacket = new PlayerPositionRequestPacket { Position = position.TotalSeconds };
-        NetClientService.SendPacket(ref requestPacket);
+        _netClientService.SendPacket(ref requestPacket);
         return false;
     }
 
@@ -100,7 +119,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
         //NetClientService.UnsubscribePacketHandler<PlayerPlayResponsePacket>();
         //NetClientService.UnsubscribePacketHandler<PlayerPauseResponsePacket>();
         //NetClientService.UnsubscribePacketHandler<YoutubeMusicResponsePacket>();
-        NetClientService.Disconnected -= OnNetClientServiceDisconnected;
+        //NetClientService.Disconnected -= OnNetClientServiceDisconnected;
     }
 
     private void OnNetClientServiceDisconnected(object? sender, NetPeer? peer)
@@ -113,7 +132,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
     {
         await _audioPlayerService.OpenMedia(MediaInfo.FromId(packet.VideoId), true);
         var readyPacket = new ClientReadyRequestPacket();
-        NetClientService.SendPacket(ref readyPacket);
+        _netClientService.SendPacket(ref readyPacket);
     }
 
     private void OnReceivePlayerPlayResponse(PlayerPlayResponsePacket packet)

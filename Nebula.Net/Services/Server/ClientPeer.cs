@@ -4,10 +4,10 @@ namespace Nebula.Net.Services.Server;
 
 public sealed class ClientPeer
 {
-    public ClientPeer(NetPeer peer)
+    public ClientPeer(NetPeer peer, string username)
     {
         Peer = peer;
-        Username = peer.Tag as string ?? $"UnknownUser{Random.Shared.Next(1000, 10000)}";
+        Username = username;
     }
 
     public NetPeer Peer { get; }

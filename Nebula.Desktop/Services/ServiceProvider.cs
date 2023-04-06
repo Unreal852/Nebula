@@ -37,7 +37,7 @@ namespace Nebula.Desktop.Services;
 [Singleton<INetServerService, NebulaServerService>]
 [Singleton<INetClientService, NetClientService>]
 [Singleton<LocalAudioPlayerController>]
-[Transient<RemoteAudioPlayerController>]
+[Singleton<RemoteAudioPlayerController>]
 public partial class ServiceProvider
 {
     public ServiceProvider()

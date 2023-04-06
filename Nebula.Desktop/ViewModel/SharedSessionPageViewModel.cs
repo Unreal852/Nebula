@@ -37,7 +37,7 @@ public sealed partial class SharedSessionPageViewModel : ViewModelPageBase
 
     public override void OnNavigatedTo()
     {
-        if(!IsClientConnected)
+        if (!IsClientConnected)
             ShowConnectHostDialog();
     }
 
@@ -58,11 +58,11 @@ public sealed partial class SharedSessionPageViewModel : ViewModelPageBase
     {
         IAudioPlayerController? remoteController
                 = _audioPlayerService.UpdateController(AudioPlayerControllerType.Remote);
-        if(remoteController is RemoteAudioPlayerController remote)
+        if (remoteController is RemoteAudioPlayerController remote)
         {
-            remote.NetClientService.Connecting += OnClientServiceConnecting;
-            remote.NetClientService.Connected += OnClientServiceConnected;
-            remote.NetClientService.Disconnected += OnClientServiceDisconnected;
+            //remote.NetClientService.Connecting += OnClientServiceConnecting;
+            //remote.NetClientService.Connected += OnClientServiceConnected;
+            //remote.NetClientService.Disconnected += OnClientServiceDisconnected;
             remoteController.Initialize(netOptions);
         }
     }
@@ -70,14 +70,14 @@ public sealed partial class SharedSessionPageViewModel : ViewModelPageBase
     [RelayCommand]
     public async void ShowConnectHostDialog()
     {
-        if(_netServerService is { IsRunning: true })
+        if (_netServerService is { IsRunning: true })
             return;
 
         ContentDialog dialog
                 = Dialog.CreateDialog<ConnectHostDialogView>("Shared session", "Connect", "Host", "Cancel");
         ContentDialogResult dialogResult = await dialog.ShowAsync();
-        if(dialog.Content is UserControl { DataContext: ConnectHostViewModel viewModel })
-            switch(dialogResult)
+        if (dialog.Content is UserControl { DataContext: ConnectHostViewModel viewModel })
+            switch (dialogResult)
             {
                 case ContentDialogResult.Primary:
                     ConnectToServer(viewModel.GetNetOptions());
@@ -100,7 +100,7 @@ public sealed partial class SharedSessionPageViewModel : ViewModelPageBase
 
     private void OnClientServiceDisconnected(object? sender, NetPeer e)
     {
-        if(sender is NetClientService client)
+        if (sender is NetClientService client)
         {
             client.Connecting -= OnClientServiceConnecting;
             client.Connected -= OnClientServiceConnected;

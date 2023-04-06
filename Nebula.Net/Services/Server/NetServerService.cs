@@ -117,7 +117,8 @@ public class NetServerService : NetListener, INetServerService
             var netPeer = request.Accept();
             if (netPeer != null)
             {
-                netPeer.Tag = username;
+                var clientPeer = new ClientPeer(netPeer, username);
+                _connectedClients.Add(netPeer.Id, clientPeer);
             }
         }
         else
@@ -126,9 +127,7 @@ public class NetServerService : NetListener, INetServerService
 
     public override void OnPeerConnected(NetPeer peer)
     {
-        var clientPeer = new ClientPeer(peer);
-        _connectedClients.Add(peer.Id, clientPeer);
-        _logger.Information("Peer {EndPoint} connected ({PeerUsername})", peer.EndPoint, clientPeer.Username);
+        _logger.Information("Peer {EndPoint} connected", peer.EndPoint);
     }
 
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
