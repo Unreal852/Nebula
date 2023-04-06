@@ -16,42 +16,48 @@ public sealed class NetClientService : NetListener, INetClientService
     public event EventHandler<NetPeer>? Connected;
     public event EventHandler<NetPeer>? Disconnected;
 
-    public override Task Start()
+    public void Connect(NetOptions netOptions, string clientUsername)
     {
-        if (!CanStart)
-            return Task.CompletedTask;
-        NetManager.Start();
-        Logger.Information("Connecting to server... Options: {@Options}", NetOptions);
+        if (IsRunning || !netOptions.IsValidForClient)
+            return;
+
         Connecting?.Invoke(this, EventArgs.Empty);
-        NetManager.Connect(NetOptions!.ServerAddress, NetOptions.ServerPort, NetOptions.ServerPassword);
-        return Task.CompletedTask;
+        _logger.Information("Connecting to server... {@NetOptions}", netOptions);
+        if (_netManager.Start())
+        {
+            var netPeer = _netManager.Connect(netOptions.ServerAddress, netOptions.ServerPort, NetDataWriter.FromString(clientUsername));
+            if (netPeer != null)
+                NetOptions = netOptions;
+        }
+        else
+            _logger.Error("Failed to start net manager ! {@NetOptions}", netOptions);
     }
 
-    public override Task Stop()
+    public void Disconnect()
     {
         if (!IsRunning)
-            return Task.CompletedTask;
-        NetManager.Stop(true);
-        return Task.CompletedTask;
+            return;
+        _netManager.Stop(true);
+        NetOptions = null;
     }
 
     public void SubscribePacket<TPacket>(Action<TPacket> packetHandler) where TPacket : INetSerializable, new()
     {
-        NetPacketProcessor.SubscribeNetSerializable(packetHandler);
+        _netPacketProcessor.SubscribeNetSerializable(packetHandler);
     }
 
-    public void UnsubscribePacketHandler<TPacket>() where TPacket : INetSerializable, new()
-    {
-        NetPacketProcessor.RemoveSubscription<TPacket>();
-    }
-
-    public void SendPacket<TPacket>(ref TPacket packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered)
-            where TPacket : INetSerializable, new()
+    public void SendPacket<TPacket>(ref TPacket packet, NetPeer user, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new()
     {
         if (!IsRunning)
             return;
-        NetPacketProcessor.WriteNetSerializable(NetDataWriter, ref packet);
-        ServerPeer!.Send(NetDataWriter, method);
+        _netPacketProcessor.WriteNetSerializable(_netDataWriter, ref packet);
+        ServerPeer!.Send(_netDataWriter, method);
+        _netDataWriter.Reset();
+    }
+
+    public void SendPacket<TPacket>(ref TPacket packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new()
+    {
+        SendPacket(ref packet, ServerPeer!, method);
     }
 
     public override void OnPeerConnected(NetPeer peer)
@@ -59,7 +65,7 @@ public sealed class NetClientService : NetListener, INetClientService
         ServerPeer = peer;
         if (ServerPeer != null)
         {
-            Logger.Information("Connected to server");
+            _logger.Information("Connected to server");
             Connected?.Invoke(this, peer);
         }
     }
@@ -67,7 +73,7 @@ public sealed class NetClientService : NetListener, INetClientService
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         ServerPeer = null;
-        Logger.Information("Disconnected from server | Reason: {Reason} | Data: {Data} | SocketError: {SocketError} ",
+        _logger.Information("Disconnected from server | Reason: {Reason} | Data: {Data} | SocketError: {SocketError} ",
                 disconnectInfo.Reason,
                 disconnectInfo.AdditionalData.EndOfData ? "NULL" : disconnectInfo.AdditionalData.GetString(),
                 disconnectInfo.SocketErrorCode);

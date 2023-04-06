@@ -10,7 +10,7 @@ public sealed class SettingsService : ISettingsService
 
     private readonly JsonSerializerOptions _serializerOptions = new()
     {
-        WriteIndented = true,
+        WriteIndented = true
     };
 
     private readonly string _settingsPath = default!;

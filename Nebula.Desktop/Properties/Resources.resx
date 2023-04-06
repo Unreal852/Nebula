@@ -67,4 +67,19 @@
   <data name="SettingsUpdateNow" xml:space="preserve">
     <value>Update now</value>
   </data>
+  <data name="SettingsParty" xml:space="preserve">
+    <value>Party</value>
+  </data>
+  <data name="SettingsPartyDescription" xml:space="preserve">
+    <value>I don't know what to put here</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="ServerIp" xml:space="preserve">
+    <value>Server IP</value>
+  </data>
+  <data name="ServerPort" xml:space="preserve">
+    <value>ServerPort</value>
+  </data>
 </root>

@@ -7,95 +7,117 @@
              xmlns:p="clr-namespace:Nebula.Desktop.Properties"
              xmlns:localization="clr-namespace:Nebula.Common.Localization;assembly=Nebula.Common"
              xmlns:converters="clr-namespace:Nebula.Desktop.Converters">
-    <Design.DataContext>
-        <viewModel:SettingsPageViewModel />
-    </Design.DataContext>
-    <UserControl.Styles>
-        <Style Selector="fa|ColorPickerButton /template/ Button">
-            <Setter Property="MaxWidth" Value="200" />
-            <Setter Property="MinWidth" Value="200" />
-            <Setter Property="Width" Value="200" />
-        </Style>
-        <Style Selector="fa|ColorPickerButton /template/ Border">
-            <Setter Property="MaxWidth" Value="150" />
-            <Setter Property="MinWidth" Value="150" />
-            <Setter Property="Width" Value="150" />
-        </Style>
-    </UserControl.Styles>
-    <UserControl.Resources>
-        <converters:UpdateInfoToStringConverter x:Key="UpdateToStringConverter" />
-    </UserControl.Resources>
-    <ScrollViewer Padding="20">
-        <Grid RowDefinitions="Auto *">
-            <Grid Grid.Row="0" ColumnDefinitions="Auto *">
-                <Image Grid.Column="0" Source="../Assets/app_icon.ico" Width="64" Height="64" />
-                <StackPanel Grid.Column="1" Orientation="Vertical" Spacing="2" Margin="10 0">
-                    <TextBlock Text="{x:Static p:Resources.AppName}" />
-                    <TextBlock Text="{Binding AppVersion}" />
-                    <fa:HyperlinkButton Content="https://github.com/Unreal852/Nebula" Padding="0"
+	<Design.DataContext>
+		<viewModel:SettingsPageViewModel />
+	</Design.DataContext>
+	<UserControl.Styles>
+		<Style Selector="fa|ColorPickerButton /template/ Button">
+			<Setter Property="MaxWidth" Value="200" />
+			<Setter Property="MinWidth" Value="200" />
+			<Setter Property="Width" Value="200" />
+		</Style>
+		<Style Selector="fa|ColorPickerButton /template/ Border">
+			<Setter Property="MaxWidth" Value="150" />
+			<Setter Property="MinWidth" Value="150" />
+			<Setter Property="Width" Value="150" />
+		</Style>
+	</UserControl.Styles>
+	<UserControl.Resources>
+		<converters:UpdateInfoToStringConverter x:Key="UpdateToStringConverter" />
+	</UserControl.Resources>
+	<ScrollViewer Padding="20">
+		<Grid RowDefinitions="Auto *">
+			<Grid Grid.Row="0" ColumnDefinitions="Auto *">
+				<Image Grid.Column="0" Source="../Assets/app_icon.ico" Width="64" Height="64" />
+				<StackPanel Grid.Column="1" Orientation="Vertical" Spacing="2" Margin="10 0">
+					<TextBlock Text="{x:Static p:Resources.AppName}" />
+					<TextBlock Text="{Binding AppVersion}" />
+					<fa:HyperlinkButton Content="https://github.com/Unreal852/Nebula" Padding="0"
                                         NavigateUri="{Binding Content, RelativeSource={RelativeSource Self}}" />
-                </StackPanel>
-                <Grid Grid.Column="1" HorizontalAlignment="Right">
-                    <Button Content="{Binding UpdateVersion, Converter={StaticResource UpdateToStringConverter}}"
+				</StackPanel>
+				<Grid Grid.Column="1" HorizontalAlignment="Right">
+					<Button Content="{Binding UpdateVersion, Converter={StaticResource UpdateToStringConverter}}"
                             MinWidth="200" VerticalAlignment="Bottom"
                             Command="{Binding UpdateCommand}" />
-                </Grid>
-            </Grid>
-            <StackPanel Grid.Row="1" Orientation="Vertical" Spacing="5" Margin="0 10 0 0">
-                <!-- Application Lang -->
-                <controls:DisplayItem Header="{DynamicResource LocSettingsLanguage}"
+				</Grid>
+			</Grid>
+			<StackPanel Grid.Row="1" Orientation="Vertical" Spacing="5" Margin="0 10 0 0">
+				<!-- Application Lang -->
+				<controls:DisplayItem Header="{DynamicResource LocSettingsLanguage}"
                                               Description="{DynamicResource LocSettingsLanguageDescription}"
                                               Icon="Character" Expands="False">
-                    <controls:DisplayItem.ActionButton>
-                        <ComboBox Width="200"
+					<controls:DisplayItem.ActionButton>
+						<ComboBox Width="200"
                                   Items="{Binding ApplicationLanguages}"
                                   SelectedItem="{Binding CurrentApplicationLanguage}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type localization:LanguageInfo}">
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </controls:DisplayItem.ActionButton>
-                </controls:DisplayItem>
+							<ComboBox.ItemTemplate>
+								<DataTemplate DataType="{x:Type localization:LanguageInfo}">
+									<TextBlock Text="{Binding Name}"></TextBlock>
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
+					</controls:DisplayItem.ActionButton>
+				</controls:DisplayItem>
 
-                <!-- Application Theme -->
-                <controls:DisplayItem Header="{DynamicResource LocSettingsTheme}"
+				<!-- Application Theme -->
+				<controls:DisplayItem Header="{DynamicResource LocSettingsTheme}"
                                               Description="{DynamicResource LocSettingsThemeDescription}"
                                               Icon="DarkTheme" Expands="True">
-                    <controls:DisplayItem.Content>
-                        <Grid RowDefinitions="Auto Auto" ColumnDefinitions="* *">
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource LocSettingsTheme}"
+					<controls:DisplayItem.Content>
+						<Grid RowDefinitions="Auto Auto" ColumnDefinitions="* *">
+							<TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource LocSettingsTheme}"
                                        HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource LocSettingsAccent}"
+							<TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource LocSettingsAccent}"
                                        HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <ComboBox Grid.Row="0" Grid.Column="1" Width="200" Items="{Binding ApplicationThemes}"
+							<ComboBox Grid.Row="0" Grid.Column="1" Width="200" Items="{Binding ApplicationThemes}"
                                       HorizontalAlignment="Right" VerticalAlignment="Center"
                                       SelectedItem="{Binding CurrentApplicationTheme}" />
-                            <fa:ColorPickerButton Grid.Row="1" Grid.Column="1" Width="200"
+							<fa:ColorPickerButton Grid.Row="1" Grid.Column="1" Width="200"
                                                   UseSpectrum="False" UseColorTriangle="False" UseColorWheel="False"
                                                   UseColorPalette="False"
                                                   HorizontalAlignment="Right" VerticalAlignment="Center"
                                                   Color="{Binding CurrentAccentColor}" />
-                        </Grid>
-                    </controls:DisplayItem.Content>
-                </controls:DisplayItem>
+						</Grid>
+					</controls:DisplayItem.Content>
+				</controls:DisplayItem>
 
-                <!-- Local Library -->
-                <controls:DisplayItem Header="{DynamicResource LocSettingsLocalLibrary}"
+				<!-- Local Library -->
+				<controls:DisplayItem Header="{DynamicResource LocSettingsLocalLibrary}"
                                               Description="{DynamicResource LocSettingsLocalLibraryDescription}"
                                               Icon="Library" Expands="True">
-                    <controls:DisplayItem.Content>
-                        <Grid ColumnDefinitions="* Auto">
-                            <fa:HyperlinkButton HorizontalAlignment="Stretch"
+					<controls:DisplayItem.Content>
+						<Grid ColumnDefinitions="* Auto">
+							<fa:HyperlinkButton HorizontalAlignment="Stretch"
                                                 Content="{Binding LocalLibraryPath}"
                                                 NavigateUri="{Binding Content, RelativeSource={RelativeSource Self}}" />
-                            <Button Grid.Column="1" Width="200" Content="Select"
+							<Button Grid.Column="1" Width="200" Content="Select"
                                     Command="{Binding SelectLocalLibraryCommand}" />
-                        </Grid>
-                    </controls:DisplayItem.Content>
-                </controls:DisplayItem>
-            </StackPanel>
-        </Grid>
-    </ScrollViewer>
+						</Grid>
+					</controls:DisplayItem.Content>
+				</controls:DisplayItem>
+
+				<!-- Party -->
+				<controls:DisplayItem Header="{DynamicResource LocSettingsParty}"
+							  Description="{DynamicResource LocSettingsPartyDescription}"
+							  Icon="People" Expands="True">
+					<controls:DisplayItem.Content>
+						<Grid RowDefinitions="Auto Auto Auto" ColumnDefinitions="Auto *">
+							<TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
+									   Text="{DynamicResource LocServerIp}"/>
+							<TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
+									   Text="{DynamicResource LocServerPort}"/>
+							<TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
+									   Text="{DynamicResource LocUsername}"/>
+							<TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"  Width="200"
+									 Text="{Binding PartyServerIp}" />
+							<NumericUpDown Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Increment="1"
+										   Minimum="5000" Maximum="99999" Value="{Binding PartyServerPort}" />
+							<TextBox Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Width="200"
+									 Text="{Binding PartyUsername}" />
+						</Grid>
+					</controls:DisplayItem.Content>
+				</controls:DisplayItem>
+			</StackPanel>
+		</Grid>
+	</ScrollViewer>
 </UserControl>

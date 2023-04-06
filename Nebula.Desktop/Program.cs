@@ -27,8 +27,8 @@ public static class Program
             Ioc.Default.ConfigureServices(new ServiceProvider());
 
 #if DEBUG
-            Trace.Listeners.Clear();
-            Trace.Listeners.Add(Ioc.Default.GetService<AvaloniaLoggerService>()!);
+            //Trace.Listeners.Clear();
+            // Trace.Listeners.Add(Ioc.Default.GetService<AvaloniaLoggerService>()!);
 #endif
 
             TaskScheduler.UnobservedTaskException += (sender, e) =>

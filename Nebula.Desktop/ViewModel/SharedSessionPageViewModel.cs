@@ -10,8 +10,8 @@ using Nebula.Desktop.Properties;
 using Nebula.Desktop.Services.AudioPlayer.Controllers;
 using Nebula.Desktop.View.Dialogs;
 using Nebula.Net;
+using Nebula.Net.Services;
 using Nebula.Net.Services.Client;
-using Nebula.Net.Services.Server;
 using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
@@ -43,8 +43,8 @@ public sealed partial class SharedSessionPageViewModel : ViewModelPageBase
 
     public async Task StartServerAndConnect(NetOptions netOptions)
     {
-        _netServerService.NetOptions = netOptions;
-        await _netServerService.Start();
+        //_netServerService.NetOptions = netOptions;
+        //await _netServerService.Start();
         IsServerHost = true;
         ConnectToServer(netOptions);
     }

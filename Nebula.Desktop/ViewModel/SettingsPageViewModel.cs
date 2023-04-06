@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media;
@@ -18,11 +19,11 @@ namespace Nebula.Desktop.ViewModel;
 
 public sealed partial class SettingsPageViewModel : ViewModelPageBase
 {
-    private readonly IAppService      _appService;
-    private readonly IThemeService    _themeService;
+    private readonly IAppService _appService;
+    private readonly IThemeService _themeService;
     private readonly ISettingsService _settingsService;
     private readonly ILanguageService _languageService;
-    private readonly IUpdateService   _updateService;
+    private readonly IUpdateService _updateService;
 
     [ObservableProperty]
     private IReadOnlyList<string> _applicationThemes = default!;
@@ -41,6 +42,15 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
 
     [ObservableProperty]
     private string _localLibraryPath = string.Empty;
+
+    [ObservableProperty]
+    private string _partyServerIp = string.Empty;
+
+    [ObservableProperty]
+    private string _partyUsername = string.Empty;
+
+    [ObservableProperty]
+    private int _partyServerPort = 0;
 
     [ObservableProperty]
     private UpdateInfo? _updateVersion;
@@ -78,6 +88,10 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         CurrentApplicationLanguage = _languageService.CurrentLanguage;
 
         LocalLibraryPath = _settingsService.Settings.LocalLibraryPath;
+
+        PartyServerIp = _settingsService.Settings.PartyServerIp;
+        PartyServerPort = _settingsService.Settings.PartyServerPort;
+        PartyUsername = _settingsService.Settings.PartyUsername;
     }
 
     [RelayCommand]
@@ -99,8 +113,8 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         var result = await MainWindow.Instance.StorageProvider.OpenFolderPickerAsync(
                 new Avalonia.Platform.Storage.FolderPickerOpenOptions()
                 {
-                        Title = "Select local library",
-                        AllowMultiple = false
+                    Title = "Select local library",
+                    AllowMultiple = false
                 });
 
         if (result.Count == 1)
@@ -149,6 +163,28 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         if (string.IsNullOrWhiteSpace(value) || !Directory.Exists(value))
             return;
         _settingsService.Settings.LocalLibraryPath = value;
+        _settingsService.SaveSettings();
+    }
+
+    partial void OnPartyServerIpChanged(string value)
+    {
+        if (!IPAddress.TryParse(value, out _))
+            return;
+        _settingsService.Settings.PartyServerIp = value;
+        _settingsService.SaveSettings();
+    }
+
+    partial void OnPartyServerPortChanged(int value)
+    {
+        _settingsService.Settings.PartyServerPort = value;
+        _settingsService.SaveSettings();
+    }
+
+    partial void OnPartyUsernameChanged(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length < 3)
+            return;
+        _settingsService.Settings.PartyUsername = value;
         _settingsService.SaveSettings();
     }
 }

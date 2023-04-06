@@ -13,6 +13,7 @@ using Nebula.Services.Logging;
 using Nebula.Services.Medias;
 using Serilog;
 using Jab;
+using Nebula.Net.Services;
 
 namespace Nebula.Desktop.Services;
 

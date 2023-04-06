@@ -2,7 +2,6 @@
 using LiteNetLib.Utils;
 using Mono.Nat;
 using Nebula.Net.Nat;
-using Realms.Sync;
 using Serilog;
 
 // ReSharper disable InconsistentNaming
@@ -11,7 +10,7 @@ namespace Nebula.Net.Services.Server;
 
 public class NetServerService : NetListener, INetServerService
 {
-    protected readonly Dictionary<int, ClientPeer> ConnectedClients = new();
+    protected readonly Dictionary<int, ClientPeer> _connectedClients = new();
 
     public NetServerService(ILogger logger) : base(logger, nameof(NetServerService))
     {
@@ -20,74 +19,61 @@ public class NetServerService : NetListener, INetServerService
     private Mapping? UpnpMapping { get; set; }
     private INatDevice? NatDevice { get; set; }
 
-    public void SubscribePacket<TPacket, TUserData>(Action<TPacket, TUserData> packetHandler)
-            where TPacket : INetSerializable, new()
+    public async Task Start(NetOptions netOptions)
     {
-        NetPacketProcessor.SubscribeNetSerializable(packetHandler);
-    }
-
-    public void UnsubscribePacketHandler<TPacket>() where TPacket : INetSerializable, new()
-    {
-        NetPacketProcessor.RemoveSubscription<TPacket>();
-    }
-
-    public override async Task Start()
-    {
-        if (!CanStart)
+        if (IsRunning || !netOptions.IsValidForServer)
             return;
-        ConnectedClients.Clear();
 
-        if (NetOptions!.UseUpnp) await CreateUpnpMapping();
+        _connectedClients.Clear();
 
-        NetManager.Start(NetOptions!.ServerPort);
-        Logger.Information("Server started ! {@NetOptions}", NetOptions);
+        if (netOptions.UseUpnp)
+        {
+            var upnpMappingResult = await CreateUpnpMapping(netOptions.ServerPort);
+            if (!upnpMappingResult)
+                return;
+        }
+
+        if (_netManager.Start(netOptions.ServerPort))
+        {
+            NetOptions = netOptions;
+            _logger.Information("Server started ! {@NetOptions}", netOptions);
+        }
+        else
+            _logger.Error("Failed to start server ! {@NetOptions}", netOptions);
+
     }
 
-    public override async Task Stop()
+    public async Task Stop()
     {
         if (!IsRunning)
             return;
-        NetManager.Stop(true);
+        _netManager.Stop(true);
         await DeleteUpnpMapping();
-        Logger.Information("Server stopped !");
+        NetOptions = null;
+        _logger.Information("Server stopped !");
     }
 
-    public void SendPacket<TPacket>(ref TPacket packet, NetPeer user,
-                                    DeliveryMethod method = DeliveryMethod.ReliableOrdered)
-            where TPacket : INetSerializable, new()
-    {
-        if (!IsRunning)
-            return;
-        NetPacketProcessor.WriteNetSerializable(NetDataWriter, ref packet);
-        user.Send(NetDataWriter, method);
-    }
-
-    public void BroadcastPacket<TPacket>(ref TPacket packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered)
-            where TPacket : INetSerializable, new()
-    {
-        if (!IsRunning)
-            return;
-        NetPacketProcessor.WriteNetSerializable(NetDataWriter, ref packet);
-        NetManager.SendToAll(NetDataWriter, method);
-    }
-
-    private async Task CreateUpnpMapping()
+    private async Task<bool> CreateUpnpMapping(int port)
     {
         using var discoverer = new NatDiscoverer();
         var cancellationSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         NatDevice = await discoverer.DiscoverDeviceAsync(cancellationSource.Token);
         if (NatDevice == null)
         {
-            Logger.Warning("No device found, upnp discovery failed");
-            return;
+            _logger.Warning("No device found, upnp discovery failed");
+            return false;
         }
 
-        var mapping = new Mapping(Protocol.Udp, NetOptions!.ServerPort, NetOptions!.ServerPort, 0, "NebulaServer");
+        var mapping = new Mapping(Protocol.Udp, port, port, 0, "NebulaServer");
         UpnpMapping = await NatDevice.CreatePortMapAsync(mapping);
         if (UpnpMapping == null)
-            Logger.Warning("Failed to create upnp mapping");
-        else
-            Logger.Information("Successfully mapped upnp port");
+        {
+            _logger.Warning("Failed to create upnp mapping");
+            return false;
+        }
+
+        _logger.Information("Successfully mapped upnp port");
+        return true;
     }
 
     private async Task DeleteUpnpMapping()
@@ -99,31 +85,55 @@ public class NetServerService : NetListener, INetServerService
         UpnpMapping = null;
     }
 
+    public void SendPacket<TPacket>(ref TPacket packet, NetPeer user,
+                                    DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new()
+    {
+        if (!IsRunning)
+            return;
+        _netPacketProcessor.WriteNetSerializable(_netDataWriter, ref packet);
+        user.Send(_netDataWriter, method);
+        _netDataWriter.Reset();
+    }
+
+    public void BroadcastPacket<TPacket>(ref TPacket packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new()
+    {
+        if (!IsRunning)
+            return;
+        _netPacketProcessor.WriteNetSerializable(_netDataWriter, ref packet);
+        _netManager.SendToAll(_netDataWriter, method);
+        _netDataWriter.Reset();
+    }
+
     public override void OnConnectionRequest(ConnectionRequest request)
     {
-        Logger.Debug("Connection requested");
-        
-        if (NetManager.ConnectedPeersCount >= NetOptions!.ServerSlots)
+        if (_netManager.ConnectedPeersCount >= NetOptions!.ServerSlots)
         {
             request.Reject(NetDataWriter.FromString("Server full"));
             return;
         }
 
-        if (NetOptions!.HasPassword)
-            request.Accept();
+        if (request.Data.TryGetString(out var username))
+        {
+            var netPeer = request.Accept();
+            if (netPeer != null)
+            {
+                netPeer.Tag = username;
+            }
+        }
         else
-            request.AcceptIfKey(NetOptions!.ServerPassword);
+            request.Reject(NetDataWriter.FromString("Missing username"));
     }
 
     public override void OnPeerConnected(NetPeer peer)
     {
-        ConnectedClients.Add(peer.Id, new ClientPeer(peer));
-        Logger.Information("Peer connected from {EndPoint}", peer.EndPoint);
+        var clientPeer = new ClientPeer(peer);
+        _connectedClients.Add(peer.Id, clientPeer);
+        _logger.Information("Peer {EndPoint} connected ({PeerUsername})", peer.EndPoint, clientPeer.Username);
     }
 
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
-        ConnectedClients.Remove(peer.Id);
-        Logger.Information("Peer {EndPoint} disconnected", $"{peer.EndPoint.Address}:{peer.EndPoint.Port}");
+        _connectedClients.Remove(peer.Id);
+        _logger.Information("Peer {EndPoint} disconnected", $"{peer.EndPoint.Address}:{peer.EndPoint.Port}");
     }
 }

@@ -1,13 +1,12 @@
-﻿using LiteNetLib.Utils;
+﻿using LiteNetLib;
+using LiteNetLib.Utils;
 
 namespace Nebula.Net.Services;
 
 public interface INetService
 {
-    NetOptions? NetOptions { get; set; }
-    bool        IsRunning  { get; }
+    NetOptions? NetOptions { get; }
+    bool IsRunning { get; }
 
-    Task Start();
-    Task Stop();
-    void UnsubscribePacketHandler<TPacket>() where TPacket : INetSerializable, new();
+    void SendPacket<TPacket>(ref TPacket packet, NetPeer user, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new();
 }

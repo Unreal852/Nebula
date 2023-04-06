@@ -17,16 +17,16 @@ public sealed class NebulaServerService : NetServerService
         SubscribePacket<ClientReadyRequestPacket, NetPeer>(OnReceiveClientReadyRequest);
     }
 
-    public  AudioServiceState PlayerState    { get; set; }
-    private bool              IsOpeningMedia { get; set; }
+    public AudioServiceState PlayerState { get; set; }
+    private bool IsOpeningMedia { get; set; }
 
     private void OnReceiveYoutubeMusicRequest(YoutubeMusicRequestPacket packet, NetPeer peer)
     {
-        if (IsOpeningMedia) // Don't open a new media if we are already opening a media
+        if (IsOpeningMedia)
             return;
         IsOpeningMedia = true;
 
-        foreach (KeyValuePair<int, ClientPeer> connectedClient in ConnectedClients)
+        foreach (KeyValuePair<int, ClientPeer> connectedClient in _connectedClients)
             connectedClient.Value.IsReady = false;
 
         var responsePacket = new YoutubeMusicResponsePacket { VideoId = packet.VideoId };
@@ -35,7 +35,7 @@ public sealed class NebulaServerService : NetServerService
 
     private void OnReceivePlayerPlayRequest(PlayerPlayRequestPacket packet, NetPeer peer)
     {
-        if (IsOpeningMedia) // Don't send the play packet if a media is being opened
+        if (IsOpeningMedia)
             return;
         var responsePacket = new PlayerPlayResponsePacket();
         BroadcastPacket(ref responsePacket);
@@ -43,7 +43,7 @@ public sealed class NebulaServerService : NetServerService
 
     private void OnReceivePlayerPauseRequest(PlayerPauseRequestPacket packet, NetPeer peer)
     {
-        if (IsOpeningMedia) // Same as play
+        if (IsOpeningMedia)
             return;
         var responsePacket = new PlayerPauseResponsePacket();
         BroadcastPacket(ref responsePacket);
@@ -51,7 +51,7 @@ public sealed class NebulaServerService : NetServerService
 
     private void OnReceivePlayerPositionRequest(PlayerPositionRequestPacket packet, NetPeer peer)
     {
-        if (IsOpeningMedia) // Same as play
+        if (IsOpeningMedia)
             return;
         var responsePacket = new PlayerPositionResponsePacket { Position = packet.Position };
         BroadcastPacket(ref responsePacket);
@@ -59,19 +59,20 @@ public sealed class NebulaServerService : NetServerService
 
     private void OnReceiveClientReadyRequest(ClientReadyRequestPacket packet, NetPeer peer)
     {
-        if (!IsOpeningMedia) // Ignore, this should not happen
+        if (!IsOpeningMedia)
         {
-            Logger.Warning("Received a {PacketType} but we are not opening any media",
-                    nameof(ClientReadyRequestPacket));
+            _logger.Warning("Received a {PacketType} but we are not opening any media", nameof(ClientReadyRequestPacket));
             return;
         }
 
-        if (ConnectedClients.TryGetValue(peer.Id, out ClientPeer? value))
+        if (_connectedClients.TryGetValue(peer.Id, out ClientPeer? value))
             value.IsReady = true;
 
-        foreach (KeyValuePair<int, ClientPeer> connectedClient in ConnectedClients)
+        foreach (KeyValuePair<int, ClientPeer> connectedClient in _connectedClients)
+        {
             if (!connectedClient.Value.IsReady)
                 return;
+        }
 
         var responsePacket = new PlayerPlayResponsePacket();
         BroadcastPacket(ref responsePacket);

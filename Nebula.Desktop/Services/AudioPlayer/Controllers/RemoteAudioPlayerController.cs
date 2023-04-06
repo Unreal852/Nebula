@@ -1,5 +1,4 @@
-﻿using System;
-using LiteNetLib;
+﻿using LiteNetLib;
 using Nebula.Common.Audio;
 using Nebula.Common.Medias;
 using Nebula.Net;
@@ -8,6 +7,7 @@ using Nebula.Net.Packets.Responses;
 using Nebula.Net.Services.Client;
 using Nebula.Services.Contracts;
 using Serilog;
+using System;
 
 namespace Nebula.Desktop.Services.AudioPlayer.Controllers;
 
@@ -25,9 +25,9 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
 
     public void Initialize(params object[] args)
     {
-        if(_isInitialized)
+        if (_isInitialized)
             return;
-        if(args.Length != 1 || args[0] is not NetOptions options)
+        if (args.Length != 1 || args[0] is not NetOptions options)
             return;
         _isInitialized = true;
         NetClientService.SubscribePacket<YoutubeMusicResponsePacket>(OnReceiveYoutubeMusicResponse);
@@ -35,13 +35,13 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
         NetClientService.SubscribePacket<PlayerPauseResponsePacket>(OnReceivePlayerPauseResponse);
         NetClientService.SubscribePacket<PlayerPositionResponsePacket>(OnReceivePlayerPositionResponse);
         NetClientService.Disconnected += OnNetClientServiceDisconnected;
-        NetClientService.NetOptions = options;
-        NetClientService.Start();
+        //NetClientService.NetOptions = options;
+        //NetClientService.Start();
     }
 
     public bool OpenMedia(IMediaInfo media)
     {
-        if(!media.HasValidId())
+        if (!media.HasValidId())
         {
             Log.Warning("[RemoteAudioPlayerController] Received media will invalid id");
             return false;
@@ -59,7 +59,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
 
     public bool Play()
     {
-        if(_audioPlayerService.IsPlaying)
+        if (_audioPlayerService.IsPlaying)
             return false;
         var requestPacket = new PlayerPlayRequestPacket();
         NetClientService.SendPacket(ref requestPacket);
@@ -68,7 +68,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
 
     public bool Pause()
     {
-        if(_audioPlayerService.IsPaused)
+        if (_audioPlayerService.IsPaused)
             return false;
         var requestPacket = new PlayerPauseRequestPacket();
         NetClientService.SendPacket(ref requestPacket);
@@ -87,7 +87,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
 
     public bool SetPosition(in TimeSpan position)
     {
-        if(!_audioPlayerService.IsPlaying)
+        if (!_audioPlayerService.IsPlaying)
             return false;
         var requestPacket = new PlayerPositionRequestPacket { Position = position.TotalSeconds };
         NetClientService.SendPacket(ref requestPacket);
@@ -96,10 +96,10 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
 
     public void OnRemoved()
     {
-        NetClientService.Stop();
-        NetClientService.UnsubscribePacketHandler<PlayerPlayResponsePacket>();
-        NetClientService.UnsubscribePacketHandler<PlayerPauseResponsePacket>();
-        NetClientService.UnsubscribePacketHandler<YoutubeMusicResponsePacket>();
+        //NetClientService.Stop();
+        //NetClientService.UnsubscribePacketHandler<PlayerPlayResponsePacket>();
+        //NetClientService.UnsubscribePacketHandler<PlayerPauseResponsePacket>();
+        //NetClientService.UnsubscribePacketHandler<YoutubeMusicResponsePacket>();
         NetClientService.Disconnected -= OnNetClientServiceDisconnected;
     }
 

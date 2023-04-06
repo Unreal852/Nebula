@@ -10,32 +10,31 @@ namespace Nebula.Net;
 
 public abstract class NetListener : INetEventListener
 {
-    protected readonly ILogger Logger;
+    protected readonly ILogger _logger;
+    protected readonly NetManager _netManager;
+    protected readonly NetDataWriter _netDataWriter;
+    protected readonly NetPacketProcessor _netPacketProcessor;
     private NetOptions? _netOptions;
 
     protected NetListener(ILogger logger, string? loggerContext = null)
     {
-        Logger = logger.ForContext("ClassContext", loggerContext ?? nameof(NetListener));
-        NetManager = new NetManager(this) { UnsyncedEvents = true, AutoRecycle = true };
-        NetDataWriter = new NetDataWriter();
-        NetPacketProcessor = new NetPacketProcessor();
+        _logger = logger.ForContext("ClassContext", loggerContext ?? nameof(NetListener));
+        _netManager = new NetManager(this) { UnsyncedEvents = true, AutoRecycle = true };
+        _netDataWriter = new NetDataWriter();
+        _netPacketProcessor = new NetPacketProcessor();
 
-        NetPacketProcessor.RegisterNestedType<YoutubeMusicRequestPacket>();
-        NetPacketProcessor.RegisterNestedType<YoutubeMusicResponsePacket>();
-        NetPacketProcessor.RegisterNestedType<PlayerPlayRequestPacket>();
-        NetPacketProcessor.RegisterNestedType<PlayerPlayResponsePacket>();
-        NetPacketProcessor.RegisterNestedType<PlayerPauseRequestPacket>();
-        NetPacketProcessor.RegisterNestedType<PlayerPauseResponsePacket>();
-        NetPacketProcessor.RegisterNestedType<PlayerPositionRequestPacket>();
-        NetPacketProcessor.RegisterNestedType<PlayerPositionResponsePacket>();
-        NetPacketProcessor.RegisterNestedType<ClientReadyRequestPacket>();
+        _netPacketProcessor.RegisterNestedType<YoutubeMusicRequestPacket>();
+        _netPacketProcessor.RegisterNestedType<YoutubeMusicResponsePacket>();
+        _netPacketProcessor.RegisterNestedType<PlayerPlayRequestPacket>();
+        _netPacketProcessor.RegisterNestedType<PlayerPlayResponsePacket>();
+        _netPacketProcessor.RegisterNestedType<PlayerPauseRequestPacket>();
+        _netPacketProcessor.RegisterNestedType<PlayerPauseResponsePacket>();
+        _netPacketProcessor.RegisterNestedType<PlayerPositionRequestPacket>();
+        _netPacketProcessor.RegisterNestedType<PlayerPositionResponsePacket>();
+        _netPacketProcessor.RegisterNestedType<ClientReadyRequestPacket>();
     }
 
-    public NetManager NetManager { get; }
-    public NetDataWriter NetDataWriter { get; }
-    public NetPacketProcessor NetPacketProcessor { get; }
-    public bool IsRunning => NetManager.IsRunning;
-    public bool CanStart => !IsRunning && NetOptions != null;
+    public bool IsRunning => _netManager.IsRunning;
 
     public NetOptions? NetOptions
     {
@@ -44,12 +43,21 @@ public abstract class NetListener : INetEventListener
         {
             if (IsRunning)
             {
-                Logger.Warning("Network options can't be changed if the network manager is running");
+                _logger.Warning("Network options can't be changed if the network manager is running");
                 return;
             }
 
             _netOptions = value;
         }
+    }
+    public void SubscribePacket<TPacket, TUserData>(Action<TPacket, TUserData> packetHandler) where TPacket : INetSerializable, new()
+    {
+        _netPacketProcessor.SubscribeNetSerializable(packetHandler);
+    }
+
+    public void UnsubscribePacketHandler<TPacket>() where TPacket : INetSerializable, new()
+    {
+        _netPacketProcessor.RemoveSubscription<TPacket>();
     }
 
     public virtual void OnPeerConnected(NetPeer peer)
@@ -62,24 +70,22 @@ public abstract class NetListener : INetEventListener
 
     public virtual void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
     {
-        Logger.Warning("Network error from {EndPoint} | {SocketError}", endPoint, socketError.ToString());
+        _logger.Warning("Network error '{SocketError}' from {EndPoint}", socketError, endPoint);
     }
 
-    public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber,
-                                 DeliveryMethod deliveryMethod)
+    public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
     {
         try
         {
-            NetPacketProcessor.ReadAllPackets(reader, peer);
+            _netPacketProcessor.ReadAllPackets(reader, peer);
         }
         catch (Exception e)
         {
-            Logger.Error(e, "Network receive error");
+            _logger.Error(e, "Network receive error");
         }
     }
 
-    public virtual void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader,
-                                                    UnconnectedMessageType messageType)
+    public virtual void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
     {
     }
 
@@ -90,7 +96,4 @@ public abstract class NetListener : INetEventListener
     public virtual void OnConnectionRequest(ConnectionRequest request)
     {
     }
-
-    public abstract Task Start();
-    public abstract Task Stop();
 }
