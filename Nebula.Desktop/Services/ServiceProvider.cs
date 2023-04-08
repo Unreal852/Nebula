@@ -34,6 +34,7 @@ namespace Nebula.Desktop.Services;
 [Singleton<IMediasProviderService, YoutubeMediasProviderService>]
 [Singleton<IAudioService, CsCoreAudioService>]
 [Singleton<IAudioPlayerService, AudioPlayerService>]
+[Singleton<INatMapperService, NatMapperService>]
 [Singleton<INetServerService, NebulaServerService>]
 [Singleton<INetClientService, NetClientService>]
 [Singleton<LocalAudioPlayerController>]

@@ -10,14 +10,15 @@ namespace Nebula.Net.Services.Server;
 
 public class NetServerService : NetListener, INetServerService
 {
+    private readonly INatMapperService _natMapperService;
     protected readonly Dictionary<int, ClientPeer> _connectedClients = new();
 
-    public NetServerService(ILogger logger) : base(logger, nameof(NetServerService))
+    public NetServerService(ILogger logger, INatMapperService natMapperService) : base(logger, nameof(NetServerService))
     {
+        _natMapperService = natMapperService;
     }
 
-    private Mapping? UpnpMapping { get; set; }
-    private INatDevice? NatDevice { get; set; }
+    private NatMapping? NatMapping { get; set; }
 
     public async Task Start(NetOptions netOptions)
     {
@@ -28,8 +29,8 @@ public class NetServerService : NetListener, INetServerService
 
         if (netOptions.UseUpnp)
         {
-            var upnpMappingResult = await CreateUpnpMapping(netOptions.ServerPort);
-            if (!upnpMappingResult)
+            NatMapping = await _natMapperService.Map(Protocol.Udp, netOptions.ServerPort, "NebulaParty");
+            if (NatMapping == null)
                 return;
         }
 
@@ -48,45 +49,17 @@ public class NetServerService : NetListener, INetServerService
         if (!IsRunning)
             return;
         _netManager.Stop(true);
-        await DeleteUpnpMapping();
+        if (NatMapping != null)
+        {
+            await _natMapperService.Unmap(NatMapping);
+            NatMapping = null;
+        }
+
         NetOptions = null;
         _logger.Information("Server stopped !");
     }
 
-    private async Task<bool> CreateUpnpMapping(int port)
-    {
-        using var discoverer = new NatDiscoverer();
-        var cancellationSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-        NatDevice = await discoverer.DiscoverDeviceAsync(cancellationSource.Token);
-        if (NatDevice == null)
-        {
-            _logger.Warning("No device found, upnp discovery failed");
-            return false;
-        }
-
-        var mapping = new Mapping(Protocol.Udp, port, port, 0, "NebulaServer");
-        UpnpMapping = await NatDevice.CreatePortMapAsync(mapping);
-        if (UpnpMapping == null)
-        {
-            _logger.Warning("Failed to create upnp mapping");
-            return false;
-        }
-
-        _logger.Information("Successfully mapped upnp port");
-        return true;
-    }
-
-    private async Task DeleteUpnpMapping()
-    {
-        if (NatDevice == null || UpnpMapping == null)
-            return;
-        await NatDevice.DeletePortMapAsync(UpnpMapping);
-        NatDevice = null;
-        UpnpMapping = null;
-    }
-
-    public void SendPacket<TPacket>(ref TPacket packet, NetPeer user,
-                                    DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new()
+    public void SendPacket<TPacket>(ref TPacket packet, NetPeer user, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new()
     {
         if (!IsRunning)
             return;

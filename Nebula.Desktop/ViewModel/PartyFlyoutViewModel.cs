@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using LiteNetLib;
 using Nebula.Common.Audio;
 using Nebula.Desktop.Services.AudioPlayer.Controllers;
-using Nebula.Net;
 using Nebula.Net.Extensions;
 using Nebula.Net.Services;
 using Nebula.Net.Services.Client;

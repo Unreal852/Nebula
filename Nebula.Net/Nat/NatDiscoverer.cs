@@ -11,9 +11,10 @@ public sealed class NatDiscoverer : IDisposable
 
     public void Dispose()
     {
-        if(_isDisposed)
+        if (_isDisposed)
             return;
         _isDisposed = true;
+        NatUtility.StopDiscovery();
         NatUtility.DeviceFound -= OnNatDeviceFound;
     }
 
@@ -23,16 +24,15 @@ public sealed class NatDiscoverer : IDisposable
         NatUtility.StartDiscovery(NatProtocol.Upnp);
         try
         {
-            while(NatDevice == null)
+            while (NatDevice == null)
             {
                 token.ThrowIfCancellationRequested();
                 await Task.Delay(5, token);
             }
-            NatUtility.StopDiscovery();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            if(e is not OperationCanceledException)
+            if (e is not OperationCanceledException)
                 Log.Error(e, "[NatDiscoverer] Error while discovering nat devices");
         }
 

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Nebula.Desktop.Services;
-using Nebula.Services.Logging;
 using Serilog;
 
 namespace Nebula.Desktop;

@@ -8,7 +8,7 @@ namespace Nebula.Net.Services.Server;
 
 public sealed class NebulaServerService : NetServerService
 {
-    public NebulaServerService() : base(Log.Logger)
+    public NebulaServerService(ILogger logger, INatMapperService natMapperService) : base(logger, natMapperService)
     {
         SubscribePacket<YoutubeMusicRequestPacket, NetPeer>(OnReceiveYoutubeMusicRequest);
         SubscribePacket<PlayerPlayRequestPacket, NetPeer>(OnReceivePlayerPlayRequest);
