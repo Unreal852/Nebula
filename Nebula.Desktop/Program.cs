@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Nebula.Desktop.Services;
+using Nebula.Services.Logging;
 using Serilog;
 
 namespace Nebula.Desktop;
@@ -25,8 +27,8 @@ public static class Program
             Ioc.Default.ConfigureServices(new ServiceProvider());
 
 #if DEBUG
-            //Trace.Listeners.Clear();
-            // Trace.Listeners.Add(Ioc.Default.GetService<AvaloniaLoggerService>()!);
+            Trace.Listeners.Clear();
+            Trace.Listeners.Add(Ioc.Default.GetService<AvaloniaLoggerService>()!);
 #endif
 
             TaskScheduler.UnobservedTaskException += (sender, e) =>

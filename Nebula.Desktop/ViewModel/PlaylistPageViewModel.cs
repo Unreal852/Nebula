@@ -11,12 +11,13 @@ using Nebula.Common.Playlist;
 using Nebula.Common.Utils;
 using Nebula.Desktop.ViewModel.Messages;
 using Nebula.Services.Contracts;
+using Serilog;
 
 namespace Nebula.Desktop.ViewModel;
 
 public sealed partial class PlaylistPageViewModel : ViewModelPageBase, IRecipient<PlaylistChangeMessage>
 {
-    private readonly IDatabaseService    _databaseService;
+    private readonly IDatabaseService _databaseService;
     private readonly IAudioPlayerService _audioPlayerService;
 
     private Pager<MediaInfo> _pager = default!;
@@ -41,13 +42,13 @@ public sealed partial class PlaylistPageViewModel : ViewModelPageBase, IRecipien
         _audioPlayerService = audioPlayerService;
         PageIcon = Symbol.ListFilled;
         PageIsAlwaysVisible = false;
-        
+
         StrongReferenceMessenger.Default.RegisterAll(this);
     }
 
-    public string  Name        => Playlist.Name;
+    public string Name => Playlist.Name;
     public string? Description => Playlist.Description;
-    public string? Author      => Playlist.Author;
+    public string? Author => Playlist.Author;
 
     public IEnumerable<MediaInfo> Medias => string.IsNullOrWhiteSpace(SearchFilter)
             ? _pager.PageElements

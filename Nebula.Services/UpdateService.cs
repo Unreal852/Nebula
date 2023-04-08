@@ -10,16 +10,15 @@ namespace Nebula.Services;
 
 public class UpdateService : IUpdateService
 {
-    private const    string     RepositoryOwner = "Unreal852";
-    private const    string     RepositoryName  = "Nebula";
+    private const string RepositoryOwner = "Unreal852";
+    private const string RepositoryName = "Nebula";
     private readonly HttpClient _httpClient;
-    private readonly ILogger    _logger;
+    private readonly ILogger _logger;
 
     public UpdateService(ILogger logger)
     {
         _logger = logger.WithPrefix(nameof(UpdateService));
-        _httpClient = new(new SocketsHttpHandler
-                { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
+        _httpClient = new(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
         var product = new ProductHeaderValue(RepositoryName);
         var apiConn = new ApiConnection(new Connection(product));
         GithubClient = new RepositoriesClient(apiConn);
@@ -47,12 +46,13 @@ public class UpdateService : IUpdateService
 
         return remoteVersion.ComparePrecedenceTo(localVersion) switch
         {
-                1 => new UpdateInfo
-                {
-                        NewVersion = remoteVersion.ToString(), AssetUrl = release.Assets[0].BrowserDownloadUrl,
-                        UpdateAvailable = true
-                },
-                _ => UpdateInfo.UpToDate
+            1 => new UpdateInfo
+            {
+                NewVersion = remoteVersion.ToString(),
+                AssetUrl = release.Assets[0].BrowserDownloadUrl,
+                UpdateAvailable = true
+            },
+            _ => UpdateInfo.UpToDate
         };
     }
 
@@ -64,8 +64,7 @@ public class UpdateService : IUpdateService
         await remoteStream.CopyToAsync(fs);
         await remoteStream.DisposeAsync();
         await fs.DisposeAsync();
-        Process.Start(new ProcessStartInfo(updateFile)
-                { UseShellExecute = true });
+        Process.Start(new ProcessStartInfo(updateFile) { UseShellExecute = true });
     }
 
     private async Task<Release?> GetLatestRelease()
@@ -87,7 +86,6 @@ public class UpdateService : IUpdateService
 
     private SemVersion ParseVersion(string version)
     {
-        return SemVersion.Parse(version,
-                SemVersionStyles.Strict | SemVersionStyles.AllowV);
+        return SemVersion.Parse(version, SemVersionStyles.Strict | SemVersionStyles.AllowV);
     }
 }
