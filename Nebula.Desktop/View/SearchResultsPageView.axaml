@@ -22,7 +22,7 @@
         <DataTemplate x:Key="MediaItemTemplate" DataType="{x:Type medias:IMediaInfo}">
             <Border Classes="result" CornerRadius="10" Background="#272727" BorderThickness="1">
                 <Grid ColumnDefinitions="Auto *">
-                    <ail:AdvancedImage Grid.Column="0" Width="92" Height="72"
+                    <ail:AdvancedImage Grid.Column="0" Width="91" Height="70"
                                        Stretch="Uniform"
                                        Source="{Binding Thumbnail}" CornerRadius="10 0 0 10" />
                     <StackPanel Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Stretch"
@@ -32,6 +32,7 @@
                     </StackPanel>
                     <Button Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
                             CornerRadius="0 0 10 0"
+                            Margin="0 0 0 1"
                             Command="{Binding Path=DataContext.OpenMediaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding .}">
                         <Button.Content>
