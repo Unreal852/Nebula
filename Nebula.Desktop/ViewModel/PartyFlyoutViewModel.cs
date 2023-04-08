@@ -4,10 +4,12 @@ using LiteNetLib;
 using Nebula.Common.Audio;
 using Nebula.Desktop.Services.AudioPlayer.Controllers;
 using Nebula.Net.Extensions;
+using Nebula.Net.Packets.Responses;
 using Nebula.Net.Services;
 using Nebula.Net.Services.Client;
 using Nebula.Services.Contracts;
 using Serilog;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace Nebula.Desktop.ViewModel;
@@ -16,6 +18,7 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
 {
     private readonly IAudioPlayerService _audioPlayerService;
     private readonly INetServerService _netServerService;
+    private readonly INetClientService _netClientService;
     private readonly ISettingsService _settingsService;
     private readonly ILogger _logger;
 
@@ -25,22 +28,30 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isServerHost;
 
-    public PartyFlyoutViewModel(ILogger logger, ISettingsService settingsService, IAudioPlayerService audioPlayerService, INetServerService netServerService)
+    [ObservableProperty]
+    private ObservableCollection<RemoteClient> _remoteClients = new();
+
+    public PartyFlyoutViewModel(ILogger logger, ISettingsService settingsService, IAudioPlayerService audioPlayerService,
+        INetServerService netServerService,
+        INetClientService netClientService)
     {
         _logger = logger;
         _settingsService = settingsService;
         _audioPlayerService = audioPlayerService;
         _netServerService = netServerService;
+        _netClientService = netClientService;
+
+        _netClientService.Connected += OnClientServiceConnected;
+        _netClientService.Disconnected += OnClientServiceDisconnected;
+        _netClientService.SubscribePacket<ClientConnectedPacket>(OnRemoteClientConnected);
     }
 
     [RelayCommand]
     private void JoinSession()
     {
         var remoteController = _audioPlayerService.UpdateController(AudioPlayerControllerType.Remote);
-        if (remoteController is RemoteAudioPlayerController remote)
+        if (remoteController is RemoteAudioPlayerController)
         {
-            remote.Connected += OnClientServiceConnected;
-            remote.Disconnected += OnClientServiceDisconnected;
             remoteController.Initialize(_settingsService.Settings.GetNetOptions(), _settingsService.Settings.PartyUsername);
         }
     }
@@ -60,12 +71,17 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
 
     private void OnClientServiceDisconnected(object? sender, NetPeer e)
     {
-        if (sender is NetClientService client)
-        {
-            client.Connected -= OnClientServiceConnected;
-            client.Disconnected -= OnClientServiceDisconnected;
-        }
-
         IsClientConnected = false;
     }
+
+    private void OnRemoteClientConnected(ClientConnectedPacket packet)
+    {
+        RemoteClients.Add(new RemoteClient { Id = packet.Id, Username = packet.Username });
+    }
+}
+
+public sealed class RemoteClient
+{
+    public required uint Id { get; init; }
+    public required string Username { get; init; }
 }

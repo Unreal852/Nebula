@@ -11,7 +11,6 @@ using Nebula.Common.Playlist;
 using Nebula.Common.Utils;
 using Nebula.Desktop.ViewModel.Messages;
 using Nebula.Services.Contracts;
-using Serilog;
 
 namespace Nebula.Desktop.ViewModel;
 

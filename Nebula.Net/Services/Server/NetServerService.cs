@@ -2,6 +2,7 @@
 using LiteNetLib.Utils;
 using Mono.Nat;
 using Nebula.Net.Nat;
+using Nebula.Net.Packets.Responses;
 using Serilog;
 
 // ReSharper disable InconsistentNaming
@@ -92,6 +93,9 @@ public class NetServerService : NetListener, INetServerService
             {
                 var clientPeer = new ClientPeer(netPeer, username);
                 _connectedClients.Add(netPeer.Id, clientPeer);
+
+                var clientConnectedPacket = new ClientConnectedPacket { Id = (uint)netPeer.Id, Username = username };
+                BroadcastPacket(ref clientConnectedPacket);
             }
         }
         else

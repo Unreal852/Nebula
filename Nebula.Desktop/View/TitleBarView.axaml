@@ -54,7 +54,7 @@
 				</Button.Content>
 				<Button.Flyout>
 					<Flyout>
-						<views:PartyFlyoutView />
+						<views:PartyFlyoutView Width="300" />
 					</Flyout>
 				</Button.Flyout>
 			</Button>
