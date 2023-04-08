@@ -41,16 +41,17 @@ public sealed class ViewLocator : IDataTemplate
         return data is ViewModelBase;
     }
 
-    private static Control NotFoundView(string message)
+    private Control NotFoundView(string message)
     {
+        _logger.Error("{Message}", message);
         return new TextBlock
         {
-                Text = message,
-                Foreground = Brushes.Red,
-                FontSize = 24,
-                FontWeight = FontWeight.Bold,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
+            Text = message,
+            Foreground = Brushes.Red,
+            FontSize = 24,
+            FontWeight = FontWeight.Bold,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
         };
     }
 }
