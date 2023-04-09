@@ -24,7 +24,7 @@
 				</ItemsControl>
 			</ScrollViewer>
 			<Grid Grid.Row="2" RowDefinitions="Auto Auto">
-				<Button Grid.Row="0" Content="Copy Address" Background="DodgerBlue" HorizontalAlignment="Stretch" IsVisible="{Binding IsServerHost}" />
+				<Button Grid.Row="0" Content="Copy Address" Background="DodgerBlue" HorizontalAlignment="Stretch" Command="{Binding CopyPublicIpAddressCommand}" IsVisible="{Binding IsServerHost}" />
 				<Button Grid.Row="1" Content="Leave party" Background="Red" HorizontalAlignment="Stretch" Command="{Binding DisconnectCommand}" Margin="0 5 0 0"/>
 			</Grid>
 		</Grid>

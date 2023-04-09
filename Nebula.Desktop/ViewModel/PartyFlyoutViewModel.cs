@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia;
+using Avalonia.Input.Platform;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteNetLib;
 using Nebula.Common.Audio;
@@ -9,13 +11,20 @@ using Nebula.Net.Services;
 using Nebula.Net.Services.Client;
 using Nebula.Services.Contracts;
 using Serilog;
+using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Nebula.Desktop.ViewModel;
 
 public sealed partial class PartyFlyoutViewModel : ViewModelBase
 {
+    private const string IpInfoUrl = "https://ipinfo.io/ip";
+    private readonly HttpClient _httpClient = new(new SocketsHttpHandler()
+    {
+        PooledConnectionLifetime = TimeSpan.FromMinutes(1)
+    });
     private readonly IAudioPlayerService _audioPlayerService;
     private readonly INetServerService _netServerService;
     private readonly INetClientService _netClientService;
@@ -75,6 +84,16 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
         if (IsServerHost)
         {
             await _netServerService.Stop();
+        }
+    }
+
+    [RelayCommand]
+    private async Task CopyPublicIpAddress()
+    {
+        var result = await _httpClient.GetStringAsync(IpInfoUrl);
+        if (!string.IsNullOrEmpty(result) && Application.Current is { Clipboard: { } clipboard })
+        {
+            await clipboard.SetTextAsync(result);
         }
     }
 

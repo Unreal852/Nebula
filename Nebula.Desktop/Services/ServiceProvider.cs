@@ -57,7 +57,6 @@ public partial class ServiceProvider
 #if DEBUG
 [Singleton<ViewModelPageBase, DevPageViewModel>]
 #endif
-[Singleton<ViewModelPageBase, SharedSessionPageViewModel>]
 [Singleton<ViewModelPageBase, SettingsPageViewModel>]
 [Singleton<ViewModelPageBase, LibraryPageViewModel>]
 [Singleton<ViewModelPageBase, PlaylistPageViewModel>]
