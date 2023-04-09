@@ -1,9 +1,7 @@
 ﻿using Avalonia;
-using Avalonia.Input.Platform;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteNetLib;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Nebula.Common.Audio;
 using Nebula.Desktop.Services.AudioPlayer.Controllers;
 using Nebula.Net;
@@ -14,7 +12,6 @@ using Nebula.Net.Services.Client;
 using Nebula.Services.Contracts;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;

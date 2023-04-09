@@ -1,6 +1,4 @@
-﻿using LiteNetLib.Utils;
-
-namespace Nebula.Net.Packets.Responses;
+﻿namespace Nebula.Net.Packets.Responses;
 
 public class ClientsListPacket
 {
