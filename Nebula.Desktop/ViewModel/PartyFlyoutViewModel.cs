@@ -64,14 +64,30 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
         JoinSession();
     }
 
+    [RelayCommand]
+    private async Task Disconnect()
+    {
+        if (IsClientConnected)
+        {
+            _netClientService.Disconnect();
+        }
+
+        if (IsServerHost)
+        {
+            await _netServerService.Stop();
+        }
+    }
+
     private void OnClientServiceConnected(object? sender, NetPeer e)
     {
         IsClientConnected = true;
     }
 
-    private void OnClientServiceDisconnected(object? sender, NetPeer e)
+    private void OnClientServiceDisconnected(object? sender, NetPeer? e)
     {
+        RemoteClients.Clear();
         IsClientConnected = false;
+        IsServerHost = false;
     }
 
     private void OnRemoteClientConnected(ClientConnectedPacket packet)

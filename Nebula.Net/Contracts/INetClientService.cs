@@ -7,7 +7,7 @@ public interface INetClientService : INetService
 {
     public event EventHandler<EventArgs>? Connecting;
     public event EventHandler<NetPeer>? Connected;
-    public event EventHandler<NetPeer>? Disconnected;
+    public event EventHandler<NetPeer?>? Disconnected;
 
     void Connect(NetOptions netOptions, string clientUsername);
     void Disconnect();

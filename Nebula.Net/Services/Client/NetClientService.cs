@@ -14,7 +14,7 @@ public sealed class NetClientService : NetListener, INetClientService
 
     public event EventHandler<EventArgs>? Connecting;
     public event EventHandler<NetPeer>? Connected;
-    public event EventHandler<NetPeer>? Disconnected;
+    public event EventHandler<NetPeer?>? Disconnected;
 
     public void Connect(NetOptions netOptions, string clientUsername)
     {
@@ -39,6 +39,7 @@ public sealed class NetClientService : NetListener, INetClientService
             return;
         _netManager.Stop(true);
         NetOptions = null;
+        Disconnected?.Invoke(this, null);
     }
 
     public void SubscribePacket<TPacket>(Action<TPacket> packetHandler) where TPacket : INetSerializable, new()

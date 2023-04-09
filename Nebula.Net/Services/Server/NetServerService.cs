@@ -42,7 +42,6 @@ public class NetServerService : NetListener, INetServerService
         }
         else
             _logger.Error("Failed to start server ! {@NetOptions}", netOptions);
-
     }
 
     public async Task Stop()
@@ -93,6 +92,8 @@ public class NetServerService : NetListener, INetServerService
             {
                 var clientPeer = new ClientPeer(netPeer, username);
                 _connectedClients.Add(netPeer.Id, clientPeer);
+
+                // var connectedClients = _connectedClients.Values.ToArray();
 
                 var clientConnectedPacket = new ClientConnectedPacket { Id = (uint)netPeer.Id, Username = username };
                 BroadcastPacket(ref clientConnectedPacket);
