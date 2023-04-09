@@ -2,8 +2,7 @@
 
 namespace Nebula.Net.Packets.Responses;
 
-public struct ClientsListPacket
+public class ClientsListPacket
 {
-    public ClientInfo[] Clients;
-
+    public ClientInfo[] Clients { get; set; }
 }

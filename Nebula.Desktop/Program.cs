@@ -12,6 +12,8 @@ namespace Nebula.Desktop;
 
 public static class Program
 {
+    private static bool RegisterAvaloniaLogger = false;
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -27,8 +29,11 @@ public static class Program
             Ioc.Default.ConfigureServices(new ServiceProvider());
 
 #if DEBUG
-            Trace.Listeners.Clear();
-            Trace.Listeners.Add(Ioc.Default.GetService<AvaloniaLoggerService>()!);
+            if (RegisterAvaloniaLogger)
+            {
+                Trace.Listeners.Clear();
+                Trace.Listeners.Add(Ioc.Default.GetService<AvaloniaLoggerService>()!);
+            }
 #endif
 
             TaskScheduler.UnobservedTaskException += (sender, e) =>

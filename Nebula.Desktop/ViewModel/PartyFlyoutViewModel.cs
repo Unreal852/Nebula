@@ -3,8 +3,10 @@ using Avalonia.Input.Platform;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteNetLib;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Nebula.Common.Audio;
 using Nebula.Desktop.Services.AudioPlayer.Controllers;
+using Nebula.Net;
 using Nebula.Net.Extensions;
 using Nebula.Net.Packets.Responses;
 using Nebula.Net.Services;
@@ -12,6 +14,7 @@ using Nebula.Net.Services.Client;
 using Nebula.Services.Contracts;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -37,9 +40,6 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isServerHost;
 
-    [ObservableProperty]
-    private ObservableCollection<RemoteClient> _remoteClients = new();
-
     public PartyFlyoutViewModel(ILogger logger, ISettingsService settingsService, IAudioPlayerService audioPlayerService,
         INetServerService netServerService,
         INetClientService netClientService)
@@ -52,8 +52,11 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
 
         _netClientService.Connected += OnClientServiceConnected;
         _netClientService.Disconnected += OnClientServiceDisconnected;
-        _netClientService.SubscribePacket<ClientConnectedPacket>(OnRemoteClientConnected);
+        _netClientService.SubscribePacket<ClientsListPacket>(OnReceiveClientsListPacket);
     }
+
+    public ObservableCollection<ClientInfo> RemoteClients { get; set; } = new();
+
 
     [RelayCommand]
     private void JoinSession()
@@ -109,14 +112,18 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
         IsServerHost = false;
     }
 
-    private void OnRemoteClientConnected(ClientConnectedPacket packet)
+    private void OnReceiveClientsListPacket(ClientsListPacket packet)
     {
-        RemoteClients.Add(new RemoteClient { Id = packet.Id, Username = packet.Username });
+        if (packet.Clients == null)
+        {
+            _logger.Warning("Received empty {PacketType}", nameof(ClientsListPacket));
+            return;
+        }
+        RemoteClients = new(); // RemoteClients.Clear() does nothing ????? 
+        OnPropertyChanged(nameof(RemoteClients));
+        foreach (var client in packet.Clients)
+        {
+            RemoteClients.Add(client);
+        }
     }
-}
-
-public sealed class RemoteClient
-{
-    public required uint Id { get; init; }
-    public required string Username { get; init; }
 }

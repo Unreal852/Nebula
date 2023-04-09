@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:viewModel="clr-namespace:Nebula.Desktop.ViewModel"
+             xmlns:net="clr-namespace:Nebula.Net;assembly=Nebula.Net"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Nebula.Desktop.View.PartyFlyoutView">
 	<Design.DataContext>
@@ -17,8 +18,8 @@
 			<ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5">
 				<ItemsControl ItemsSource="{Binding RemoteClients}">
 					<ItemsControl.DataTemplates>
-						<DataTemplate DataType="{x:Type viewModel:RemoteClient}">
-							<TextBlock Text="{Binding Username}" HorizontalAlignment="Center" FontSize="24"/>
+						<DataTemplate DataType="{x:Type net:ClientInfo}">
+							<TextBlock Text="{Binding Username}" HorizontalAlignment="Center" FontSize="18"/>
 						</DataTemplate>
 					</ItemsControl.DataTemplates>
 				</ItemsControl>

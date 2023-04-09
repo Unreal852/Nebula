@@ -32,7 +32,7 @@ public abstract class NetListener : INetEventListener
         _netPacketProcessor.RegisterNestedType<PlayerPositionRequestPacket>();
         _netPacketProcessor.RegisterNestedType<PlayerPositionResponsePacket>();
         _netPacketProcessor.RegisterNestedType<ClientReadyRequestPacket>();
-        _netPacketProcessor.RegisterNestedType<ClientInfo>();
+        _netPacketProcessor.RegisterNestedType(() => new ClientInfo());
     }
 
     public bool IsRunning => _netManager.IsRunning;

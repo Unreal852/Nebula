@@ -77,6 +77,15 @@ public class NetServerService : NetListener, INetServerService
         _netDataWriter.Reset();
     }
 
+    protected void BroadcastClientsList()
+    {
+        var connectedClients = _connectedClients.Values.Select(p => new ClientInfo { Id = (uint)p.Peer.Id, Username = p.Username }).ToArray();
+        var clientListPacket = new ClientsListPacket { Clients = connectedClients };
+        _netPacketProcessor.Write(_netDataWriter, clientListPacket);
+        _netManager.SendToAll(_netDataWriter, DeliveryMethod.ReliableOrdered);
+        _netDataWriter.Reset();
+    }
+
     public override void OnConnectionRequest(ConnectionRequest request)
     {
         if (_netManager.ConnectedPeersCount >= NetOptions!.ServerSlots)
@@ -93,10 +102,7 @@ public class NetServerService : NetListener, INetServerService
                 var clientPeer = new ClientPeer(netPeer, username);
                 _connectedClients.Add(netPeer.Id, clientPeer);
 
-                // var connectedClients = _connectedClients.Values.ToArray();
-
-                var clientConnectedPacket = new ClientConnectedPacket { Id = (uint)netPeer.Id, Username = username };
-                BroadcastPacket(ref clientConnectedPacket);
+                BroadcastClientsList();
             }
         }
         else
@@ -111,6 +117,7 @@ public class NetServerService : NetListener, INetServerService
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         _connectedClients.Remove(peer.Id);
+        BroadcastClientsList();
         _logger.Information("Peer {EndPoint} disconnected", $"{peer.EndPoint.Address}:{peer.EndPoint.Port}");
     }
 }

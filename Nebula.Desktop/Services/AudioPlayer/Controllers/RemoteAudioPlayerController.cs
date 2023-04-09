@@ -24,10 +24,10 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
         _audioPlayerService = audioPlayerService;
         _netClientService = netClientService;
 
-        _netClientService.SubscribePacket<YoutubeMusicResponsePacket>(OnReceiveYoutubeMusicResponse);
-        _netClientService.SubscribePacket<PlayerPlayResponsePacket>(OnReceivePlayerPlayResponse);
-        _netClientService.SubscribePacket<PlayerPauseResponsePacket>(OnReceivePlayerPauseResponse);
-        _netClientService.SubscribePacket<PlayerPositionResponsePacket>(OnReceivePlayerPositionResponse);
+        _netClientService.SubscribeNetPacket<YoutubeMusicResponsePacket>(OnReceiveYoutubeMusicResponse);
+        _netClientService.SubscribeNetPacket<PlayerPlayResponsePacket>(OnReceivePlayerPlayResponse);
+        _netClientService.SubscribeNetPacket<PlayerPauseResponsePacket>(OnReceivePlayerPauseResponse);
+        _netClientService.SubscribeNetPacket<PlayerPositionResponsePacket>(OnReceivePlayerPositionResponse);
         _netClientService.Disconnected += OnNetClientServiceDisconnected;
     }
 

@@ -42,9 +42,14 @@ public sealed class NetClientService : NetListener, INetClientService
         Disconnected?.Invoke(this, null);
     }
 
-    public void SubscribePacket<TPacket>(Action<TPacket> packetHandler) where TPacket : INetSerializable, new()
+    public void SubscribeNetPacket<TPacket>(Action<TPacket> packetHandler) where TPacket : INetSerializable, new()
     {
         _netPacketProcessor.SubscribeNetSerializable(packetHandler);
+    }
+
+    public void SubscribePacket<TPacket>(Action<TPacket> packetHandler) where TPacket : class, new()
+    {
+        _netPacketProcessor.SubscribeReusable(packetHandler);
     }
 
     public void SendPacket<TPacket>(ref TPacket packet, NetPeer user, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new()

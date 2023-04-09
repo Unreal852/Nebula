@@ -11,6 +11,7 @@ public interface INetClientService : INetService
 
     void Connect(NetOptions netOptions, string clientUsername);
     void Disconnect();
-    void SubscribePacket<TPacket>(Action<TPacket> packetHandler) where TPacket : INetSerializable, new();
+    void SubscribeNetPacket<TPacket>(Action<TPacket> packetHandler) where TPacket : INetSerializable, new();
+    void SubscribePacket<TPacket>(Action<TPacket> packetHandler) where TPacket : class, new();
     void SendPacket<TPacket>(ref TPacket packet, DeliveryMethod method = DeliveryMethod.ReliableOrdered) where TPacket : INetSerializable, new();
 }
