@@ -105,7 +105,7 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
 
     private void OnClientServiceDisconnected(object? sender, NetPeer? e)
     {
-        RemoteClients.Clear();
+        ClearRemoteClients();
         IsClientConnected = false;
     }
 
@@ -116,17 +116,20 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
             _logger.Warning("Received empty {PacketType}", nameof(ClientsListPacket));
             return;
         }
-        //RemoteClients = new(); // RemoteClients.Clear() does nothing ????? 
 
-        while (RemoteClients.Count != 0)
-        {
-            RemoteClients.RemoveAt(0);
-        }
+        ClearRemoteClients();
 
-        OnPropertyChanged(nameof(RemoteClients));
         foreach (var client in packet.Clients)
         {
             RemoteClients.Add(client);
+        }
+    }
+
+    private void ClearRemoteClients() // RemoteClients.Clear() does nothing ???, i use thing instead
+    {
+        while (RemoteClients.Count != 0)
+        {
+            RemoteClients.RemoveAt(0);
         }
     }
 }
