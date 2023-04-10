@@ -124,7 +124,7 @@ public class AudioPlayerService : IAudioPlayerService
         if (infos.Count == 0)
             // TODO: Maybe log this ? as it should not happen
             return;
-
+        _mediasQueue.Clear();
         _mediasQueue.AddRange(infos);
     }
 
