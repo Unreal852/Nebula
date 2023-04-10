@@ -79,10 +79,12 @@ public sealed class NetClientService : NetListener, INetClientService
     public override void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         ServerPeer = null;
+        NetOptions = null;
         _logger.Information("Disconnected from server | Reason: {Reason} | Data: {Data} | SocketError: {SocketError} ",
                 disconnectInfo.Reason,
                 disconnectInfo.AdditionalData.EndOfData ? "NULL" : disconnectInfo.AdditionalData.GetString(),
                 disconnectInfo.SocketErrorCode);
         Disconnected?.Invoke(this, peer);
+        _netManager.Stop();
     }
 }

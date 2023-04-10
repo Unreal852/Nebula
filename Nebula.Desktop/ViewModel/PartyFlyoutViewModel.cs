@@ -68,8 +68,8 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
     [RelayCommand]
     private async Task HostSession()
     {
-        await _netServerService.Start(_settingsService.Settings.GetNetOptions());
         IsServerHost = true;
+        await _netServerService.Start(_settingsService.Settings.GetNetOptions());
         JoinSession();
     }
 
@@ -84,6 +84,7 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
         if (IsServerHost)
         {
             await _netServerService.Stop();
+            IsServerHost = false;
         }
     }
 
@@ -106,7 +107,6 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
     {
         RemoteClients.Clear();
         IsClientConnected = false;
-        IsServerHost = false;
     }
 
     private void OnReceiveClientsListPacket(ClientsListPacket packet)
@@ -116,7 +116,13 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
             _logger.Warning("Received empty {PacketType}", nameof(ClientsListPacket));
             return;
         }
-        RemoteClients = new(); // RemoteClients.Clear() does nothing ????? 
+        //RemoteClients = new(); // RemoteClients.Clear() does nothing ????? 
+
+        while (RemoteClients.Count != 0)
+        {
+            RemoteClients.RemoveAt(0);
+        }
+
         OnPropertyChanged(nameof(RemoteClients));
         foreach (var client in packet.Clients)
         {
