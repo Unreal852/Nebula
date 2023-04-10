@@ -12,7 +12,7 @@ namespace Nebula.Desktop;
 
 public static class Program
 {
-    private static bool RegisterAvaloniaLogger = false;
+    private static readonly bool RegisterAvaloniaLogger = false;
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
