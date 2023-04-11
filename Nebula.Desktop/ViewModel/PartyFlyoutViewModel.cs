@@ -29,7 +29,6 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
     private readonly INetServerService _netServerService;
     private readonly INetClientService _netClientService;
     private readonly ISettingsService _settingsService;
-    private readonly ILogger _logger;
 
     [ObservableProperty]
     private bool _isClientConnected;
@@ -37,7 +36,7 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isServerHost;
 
-    public PartyFlyoutViewModel(ILogger logger, ISettingsService settingsService, IAudioPlayerService audioPlayerService,
+    public PartyFlyoutViewModel(ISettingsService settingsService, IAudioPlayerService audioPlayerService,
         INetServerService netServerService,
         INetClientService netClientService)
     {
@@ -113,7 +112,6 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
     {
         if (packet.Clients == null)
         {
-            _logger.Warning("Received empty {PacketType}", nameof(ClientsListPacket));
             return;
         }
 
