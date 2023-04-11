@@ -5,8 +5,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.ViewModel.Messages;
-using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 

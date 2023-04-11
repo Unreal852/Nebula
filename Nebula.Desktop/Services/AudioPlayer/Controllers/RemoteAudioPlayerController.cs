@@ -1,11 +1,11 @@
 ﻿using LiteNetLib;
 using Nebula.Common.Audio;
 using Nebula.Common.Medias;
+using Nebula.Desktop.Contracts;
 using Nebula.Net;
 using Nebula.Net.Packets.Requests;
 using Nebula.Net.Packets.Responses;
 using Nebula.Net.Services.Client;
-using Nebula.Services.Contracts;
 using Serilog;
 using System;
 
@@ -20,7 +20,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
 
     public RemoteAudioPlayerController(ILogger logger, IAudioPlayerService audioPlayerService, INetClientService netClientService)
     {
-        _logger = logger.ForContext("ClassContext", nameof(RemoteAudioPlayerController));
+        _logger = logger.WithPrefix(nameof(RemoteAudioPlayerController));
         _audioPlayerService = audioPlayerService;
         _netClientService = netClientService;
 

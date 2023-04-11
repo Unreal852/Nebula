@@ -1,6 +1,7 @@
 ﻿using Nebula.Common.Medias;
+using System;
 
-namespace Nebula.Services.Contracts;
+namespace Nebula.Desktop.Contracts;
 
 /// <summary>
 /// Manage the <see cref="IAudioPlayerService"/> behaviour

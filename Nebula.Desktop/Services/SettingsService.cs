@@ -1,8 +1,10 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.IO;
+using System.Text.Json;
 using Nebula.Common.Settings;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
 
-namespace Nebula.Services;
+namespace Nebula.Desktop.Services;
 
 public sealed class SettingsService : ISettingsService
 {

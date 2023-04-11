@@ -1,6 +1,7 @@
 ﻿using Nebula.Common.Settings;
+using System;
 
-namespace Nebula.Services.Contracts;
+namespace Nebula.Desktop.Contracts;
 
 public interface ISettingsService
 {

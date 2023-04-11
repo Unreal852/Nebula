@@ -1,11 +1,14 @@
-﻿using Nebula.Common.Extensions;
-using Nebula.Common.Medias;
+﻿using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
 using Serilog;
 using SerilogTimings.Extensions;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
-namespace Nebula.Services.Medias;
+namespace Nebula.Desktop.Services.Medias;
 
 public sealed class LocalMediasProviderService : IMediasProviderService
 {
@@ -40,17 +43,17 @@ public sealed class LocalMediasProviderService : IMediasProviderService
 
     public async IAsyncEnumerable<IMediaInfo> SearchMediasAsync(string searchQuery, int maxResults = 20)
     {
-        if(!string.IsNullOrWhiteSpace(_settingsService.Settings.LocalLibraryPath))
+        if (!string.IsNullOrWhiteSpace(_settingsService.Settings.LocalLibraryPath))
         {
-            using(_logger.TimeOperation(
+            using (_logger.TimeOperation(
                            "Searching in the local library... Query: '{Query}' MaxResults: '{MaxResults}'", searchQuery,
                            maxResults))
             {
-                foreach(var file in Directory.GetFiles(_settingsService.Settings.LocalLibraryPath, "*",
+                foreach (var file in Directory.GetFiles(_settingsService.Settings.LocalLibraryPath, "*",
                                  SearchOption.AllDirectories))
                 {
                     var fileName = Path.GetFileNameWithoutExtension(file);
-                    if(fileName.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
+                    if (fileName.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
                     {
                         var media = new MediaInfo()
                         {

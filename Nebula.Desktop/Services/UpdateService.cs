@@ -1,12 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Nebula.Common;
-using Nebula.Common.Extensions;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
 using Octokit;
 using Semver;
 using Serilog;
 
-namespace Nebula.Services;
+namespace Nebula.Desktop.Services;
 
 public class UpdateService : IUpdateService
 {

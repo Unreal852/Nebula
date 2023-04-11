@@ -9,8 +9,8 @@ using FluentAvalonia.UI.Controls;
 using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
 using Nebula.Common.Utils;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.ViewModel.Messages;
-using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 

@@ -4,7 +4,7 @@ using FluentAvalonia.Styling;
 using Nebula.Desktop.Styles.Themes;
 using Nebula.Common.Settings;
 using Avalonia.Media;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
 
 namespace Nebula.Desktop.Services.Theme;
 

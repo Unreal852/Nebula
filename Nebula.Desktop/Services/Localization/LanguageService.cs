@@ -5,8 +5,8 @@ using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Nebula.Common.Localization;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.Properties;
-using Nebula.Services.Contracts;
 
 namespace Nebula.Services.Localization;
 
@@ -18,7 +18,7 @@ public sealed class LanguageService : ILanguageService
     {
         _settingsService = settingsService;
 
-        if(_settingsService.Settings.Language == LanguageInfo.French)
+        if (_settingsService.Settings.Language == LanguageInfo.French)
             SetLanguage(LanguageInfo.French);
         else
             SetLanguage(LanguageInfo.English);
@@ -33,7 +33,7 @@ public sealed class LanguageService : ILanguageService
     {
         Thread.CurrentThread.CurrentUICulture = language.Culture;
 
-        if(LanguageDictionary != null)
+        if (LanguageDictionary != null)
         {
             Application.Current!.Resources.MergedDictionaries.Remove(LanguageDictionary);
             LanguageDictionary.Clear();
@@ -43,9 +43,9 @@ public sealed class LanguageService : ILanguageService
 
         var defaultResources = Resources.ResourceManager.GetResourceSet(CultureInfo.InvariantCulture, true, true);
 
-        foreach(DictionaryEntry entry in defaultResources!)
+        foreach (DictionaryEntry entry in defaultResources!)
         {
-            if(entry.Key == null)
+            if (entry.Key == null)
                 continue;
             LanguageDictionary.Add($"Loc{entry.Key}", Resources.ResourceManager.GetString((string)entry.Key, language.Culture));
         }

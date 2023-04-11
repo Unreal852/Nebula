@@ -8,7 +8,7 @@
              xmlns:converters="clr-namespace:Nebula.Desktop.Converters"
              xmlns:views="clr-namespace:Nebula.Desktop.View"
              xmlns:p="clr-namespace:Nebula.Desktop.Properties"
-             xmlns:contracts="clr-namespace:Nebula.Services.Contracts;assembly=Nebula.Services"
+			 xmlns:contracts="clr-namespace:Nebula.Desktop.Contracts"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Nebula.Desktop.View.TitleBarView">
 	<Design.DataContext>

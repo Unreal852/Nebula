@@ -2,9 +2,12 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Nebula.Services.Medias;
+namespace Nebula.Desktop.Services.Medias;
 
 public sealed partial class AllMediasProviderService : ObservableObject, IMediasProviderService
 {

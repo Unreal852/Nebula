@@ -1,6 +1,7 @@
 ﻿using Nebula.Common;
+using System.Threading.Tasks;
 
-namespace Nebula.Services.Contracts;
+namespace Nebula.Desktop.Contracts;
 
 public interface IUpdateService
 {

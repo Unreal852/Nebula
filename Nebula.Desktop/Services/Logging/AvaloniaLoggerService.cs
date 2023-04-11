@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using Nebula.Common.Extensions;
 using Serilog;
 
-namespace Nebula.Services.Logging;
+namespace Nebula.Desktop.Services.Logging;
+
 public sealed class AvaloniaLoggerService : TraceListener
 {
     private readonly ILogger _logger;

@@ -1,9 +1,13 @@
-﻿using Nebula.Common.Extensions;
-using Nebula.Services.Contracts;
+﻿using Nebula.Desktop.Contracts;
 using Realms;
 using Serilog;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace Nebula.Services;
+namespace Nebula.Desktop.Services;
 
 public class RealmDatabaseService : IDatabaseService
 {

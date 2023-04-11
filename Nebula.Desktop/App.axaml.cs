@@ -2,9 +2,9 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.DataTemplates;
 using Nebula.Net.Services;
-using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop;
 

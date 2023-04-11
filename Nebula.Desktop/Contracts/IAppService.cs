@@ -1,4 +1,4 @@
-﻿namespace Nebula.Services.Contracts;
+﻿namespace Nebula.Desktop.Contracts;
 
 public interface IAppService
 {

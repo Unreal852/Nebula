@@ -1,6 +1,9 @@
-﻿using Nebula.Common.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Nebula.Common.Medias;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
 using Serilog;
 using SerilogTimings.Extensions;
 using YoutubeExplode;
@@ -10,7 +13,7 @@ using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 using Playlist = Nebula.Common.Playlist.Playlist;
 
-namespace Nebula.Services.Medias;
+namespace Nebula.Desktop.Services.Medias;
 
 public sealed class YoutubeMediasProviderService : IMediasProviderService
 {
@@ -23,7 +26,7 @@ public sealed class YoutubeMediasProviderService : IMediasProviderService
 
     private YoutubeClient Client { get; } = new();
 
-    public Guid   ServiceId   { get; } = new("65381A09-4DB9-42A7-9DED-824E7469647A");
+    public Guid ServiceId { get; } = new("65381A09-4DB9-42A7-9DED-824E7469647A");
     public string ServiceName { get; } = "Youtube";
 
     public string ServiceIcon { get; }
@@ -50,11 +53,11 @@ public sealed class YoutubeMediasProviderService : IMediasProviderService
             var stream = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
             media = new MediaInfo
             {
-                    Id = video.Id.Value,
-                    Title = video.Title,
-                    Author = video.Author.ChannelTitle,
-                    Duration = video.Duration?.TotalSeconds ?? 0,
-                    StreamUri = stream.Url
+                Id = video.Id.Value,
+                Title = video.Title,
+                Author = video.Author.ChannelTitle,
+                Duration = video.Duration?.TotalSeconds ?? 0,
+                StreamUri = stream.Url
             };
             op.Complete();
         }
@@ -118,13 +121,13 @@ public sealed class YoutubeMediasProviderService : IMediasProviderService
     {
         return new MediaInfo
         {
-                Id = video.Id,
-                Title = video.Title,
-                Author = video.Author.ChannelTitle,
-                Duration = video.Duration?.TotalSeconds ?? 0,
-                ProviderId = ServiceId,
-                Thumbnail = GetThumbnails(video.Thumbnails).MediumRes,
-                StreamUri = null
+            Id = video.Id,
+            Title = video.Title,
+            Author = video.Author.ChannelTitle,
+            Duration = video.Duration?.TotalSeconds ?? 0,
+            ProviderId = ServiceId,
+            Thumbnail = GetThumbnails(video.Thumbnails).MediumRes,
+            StreamUri = null
         };
     }
 

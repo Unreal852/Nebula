@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Nebula.Desktop.Services;
-using Nebula.Services.Logging;
+using Nebula.Desktop.Services.Logging;
 using Serilog;
 
 namespace Nebula.Desktop;
@@ -69,22 +69,13 @@ public static class Program
     public static void ConfigureLogger()
     {
         const string outputTemplate
-                = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{ClassContext}] {Message:lj}{NewLine}{Exception}";
+                = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{Context}] {Message:lj}{NewLine}{Exception}";
         string filePath = Path.Combine(AppContext.BaseDirectory, "logs", "logs_.log");
         Log.Logger = new LoggerConfiguration()
                     .Enrich
-                    .WithProperty("ClassContext", "*")
-                    //#if RELEASE
-                    //                    .WriteTo.Sentry(
-                    //                                 dsn: "https://3bcd43f6dd3446efb6c34805c4f31eeb@o4504038153912320.ingest.sentry.io/4504038166102016",
-                    //                                 minimumBreadcrumbLevel: Serilog.Events.LogEventLevel.Warning,
-                    //                                 minimumEventLevel: Serilog.Events.LogEventLevel.Warning)
-                    //#endif
-                    .WriteTo.File(
-                             filePath,
-                             rollingInterval: RollingInterval.Day,
-                             retainedFileCountLimit: 5,
-                             outputTemplate: outputTemplate)
+                        .WithProperty("Context", "*")
+                    .WriteTo
+                        .File(filePath, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 5, outputTemplate: outputTemplate)
                     .CreateLogger();
     }
 }

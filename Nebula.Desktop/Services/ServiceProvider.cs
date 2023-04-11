@@ -5,15 +5,14 @@ using Nebula.Desktop.Services.Theme;
 using Nebula.Desktop.ViewModel;
 using Nebula.Net.Services.Client;
 using Nebula.Net.Services.Server;
-using Nebula.Services;
-using Nebula.Services.Contracts;
-using Nebula.Services.Audio;
 using Nebula.Services.Localization;
-using Nebula.Services.Logging;
-using Nebula.Services.Medias;
 using Serilog;
 using Jab;
 using Nebula.Net.Services;
+using Nebula.Desktop.Contracts;
+using Nebula.Desktop.Services.Medias;
+using Nebula.Desktop.Services.Audio;
+using Nebula.Desktop.Services.Logging;
 
 namespace Nebula.Desktop.Services;
 

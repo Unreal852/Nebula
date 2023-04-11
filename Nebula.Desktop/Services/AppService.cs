@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
 
 namespace Nebula.Desktop.Services;
 

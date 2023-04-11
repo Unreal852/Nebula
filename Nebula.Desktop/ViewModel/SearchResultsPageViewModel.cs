@@ -4,8 +4,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentAvalonia.UI.Controls;
 using Nebula.Common.Medias;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.Properties;
-using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 

@@ -6,8 +6,8 @@ using Nebula.Common.Audio;
 using Nebula.Common.Audio.Events;
 using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.Services.AudioPlayer.Controllers;
-using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.Services.AudioPlayer;
 

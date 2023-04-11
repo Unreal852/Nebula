@@ -3,13 +3,15 @@ using CSCore.MediaFoundation;
 using CSCore.SoundOut;
 using Nebula.Common.Audio;
 using Nebula.Common.Audio.Events;
-using Nebula.Common.Extensions;
 using Nebula.Common.Medias;
-using Nebula.Services.Contracts;
+using Nebula.Desktop.Contracts;
 using Serilog;
 using SerilogTimings.Extensions;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace Nebula.Services.Audio;
+namespace Nebula.Desktop.Services.Audio;
 
 public sealed class CsCoreAudioService : IAudioService
 {
@@ -57,25 +59,25 @@ public sealed class CsCoreAudioService : IAudioService
         set
         {
             _volume = value;
-            if(SoundOut != null)
+            if (SoundOut != null)
                 SoundOut.Volume = value;
         }
     }
 
     public void OpenMedia(IMediaInfo media)
     {
-        if(media.StreamUri == null)
+        if (media.StreamUri == null)
         {
             _logger.Information("Failed to open media ! The specified media stream uri is null");
             return;
         }
 
-        using(_logger.TimeOperation("Opening media with id '{MediaId}'", media.Id ?? "NaN"))
+        using (_logger.TimeOperation("Opening media with id '{MediaId}'", media.Id ?? "NaN"))
         {
             Prepare(media.StreamUri);
             var oldMedia = CurrentMedia;
             CurrentMedia = media;
-            if(CurrentMedia.Duration == 0) // TODO: Hacky way of settings the duration for local files
+            if (CurrentMedia.Duration == 0) // TODO: Hacky way of settings the duration for local files
                 CurrentMedia.Duration = MediaDecoder.GetLength().TotalSeconds;
             MediaChanged?.Invoke(this, new MediaChangedEventArgs(oldMedia, media));
         }
@@ -101,7 +103,7 @@ public sealed class CsCoreAudioService : IAudioService
     public void Shutdown()
     {
         Stop();
-        if(WorkerTask == null)
+        if (WorkerTask == null)
             return;
         _logger.Information("Stopping service...");
         CancellationTokenSource?.Cancel();
@@ -110,14 +112,14 @@ public sealed class CsCoreAudioService : IAudioService
 
     private void Prepare(string uri)
     {
-        if(SoundOut != null)
+        if (SoundOut != null)
         {
             SoundOut.Stopped -= OnPlaybackStopped;
             SoundOut.Dispose();
             SoundOut = null;
         }
 
-        if(MediaDecoder != null)
+        if (MediaDecoder != null)
         {
             MediaDecoder.Dispose();
             MediaDecoder = null;
@@ -133,7 +135,7 @@ public sealed class CsCoreAudioService : IAudioService
 
     private void InitializeWorkerTask()
     {
-        if(WorkerTask != null)
+        if (WorkerTask != null)
             return;
         _logger.Information("Starting service...");
         CancellationTokenSource = new CancellationTokenSource();
@@ -153,11 +155,11 @@ public sealed class CsCoreAudioService : IAudioService
         var lastPos = default(TimeSpan);
         try
         {
-            while(true)
+            while (true)
             {
                 token.ThrowIfCancellationRequested();
 
-                if(State == AudioServiceState.Playing && lastPos != Position)
+                if (State == AudioServiceState.Playing && lastPos != Position)
                 {
                     lastPos = Position;
                     PositionChangedHandler?.OnPositionChanged(in lastPos);
@@ -166,9 +168,9 @@ public sealed class CsCoreAudioService : IAudioService
                 Thread.Sleep(50);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            if(e is not OperationCanceledException) _logger.Error(e, "Service error");
+            if (e is not OperationCanceledException) _logger.Error(e, "Service error");
         }
         finally
         {

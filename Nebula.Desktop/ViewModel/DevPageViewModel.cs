@@ -7,16 +7,16 @@ using CommunityToolkit.Mvvm.Input;
 using FluentAvalonia.UI.Controls;
 using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.Properties;
-using Nebula.Services.Contracts;
-using Nebula.Services.Medias;
+using Nebula.Desktop.Services.Medias;
 
 namespace Nebula.Desktop.ViewModel;
 
 public sealed partial class DevPageViewModel : ViewModelPageBase
 {
     private readonly IAudioPlayerService _audioPlayerService;
-    private readonly IDatabaseService    _databaseService;
+    private readonly IDatabaseService _databaseService;
 
     [ObservableProperty]
     private bool _isClientConnected;

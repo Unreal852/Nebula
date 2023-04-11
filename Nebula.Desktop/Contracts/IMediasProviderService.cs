@@ -1,7 +1,10 @@
 ﻿using Nebula.Common.Medias;
 using Nebula.Common.Playlist;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Nebula.Services.Contracts;
+namespace Nebula.Desktop.Contracts;
 
 public interface IMediasProviderService
 {

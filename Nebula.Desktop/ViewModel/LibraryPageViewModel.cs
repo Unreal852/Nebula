@@ -4,8 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using FluentAvalonia.UI.Controls;
 using Nebula.Common.Playlist;
+using Nebula.Desktop.Contracts;
 using Nebula.Desktop.ViewModel.Messages;
-using Nebula.Services.Contracts;
 
 namespace Nebula.Desktop.ViewModel;
 
