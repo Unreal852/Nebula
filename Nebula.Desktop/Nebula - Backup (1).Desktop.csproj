@@ -84,9 +84,4 @@
     <ItemGroup>
       <UpToDateCheckInput Remove="View\PartyFlyoutView.axaml" />
     </ItemGroup>
-    <ItemGroup>
-      <Compile Include="Services\Medias\AllMediasProviderService.cs" />
-      <Compile Include="Services\Medias\LocalMediasProviderService.cs" />
-      <Compile Include="Services\Medias\YoutubeMediasProviderService.cs" />
-    </ItemGroup>
 </Project>
