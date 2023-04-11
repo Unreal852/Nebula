@@ -1,4 +1,5 @@
 ﻿using Mono.Nat;
+using Nebula.Common.Extensions;
 using Nebula.Net.Nat;
 using Serilog;
 
@@ -10,7 +11,7 @@ public sealed class NatMapperService : INatMapperService
 
     public NatMapperService(ILogger logger)
     {
-        _logger = logger.ForContext("ClassContext", nameof(NatMapperService));
+        _logger = logger.WithContext(nameof(NatMapperService));
     }
 
     public async Task<NatMapping?> Map(Protocol protocol, int port, string mappingName)

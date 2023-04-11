@@ -19,7 +19,7 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
 
     public RemoteAudioPlayerController(ILogger logger, IAudioPlayerService audioPlayerService, INetClientService netClientService)
     {
-        _logger = logger.WithPrefix(nameof(RemoteAudioPlayerController));
+        _logger = logger.WithContext(nameof(RemoteAudioPlayerController));
         _audioPlayerService = audioPlayerService;
         _netClientService = netClientService;
 

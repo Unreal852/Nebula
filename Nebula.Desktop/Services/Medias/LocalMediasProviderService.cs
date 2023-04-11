@@ -18,7 +18,7 @@ public sealed class LocalMediasProviderService : IMediasProviderService
 
     public LocalMediasProviderService(ILogger logger, ISettingsService settingsService)
     {
-        _logger = logger.WithPrefix(nameof(LocalMediasProviderService));
+        _logger = logger.WithContext(nameof(LocalMediasProviderService));
         _settingsService = settingsService;
     }
 

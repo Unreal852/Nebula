@@ -21,7 +21,7 @@ public sealed class SettingsService : ISettingsService
 
     public SettingsService(ILogger logger)
     {
-        _logger = logger.WithPrefix(nameof(SettingsService));
+        _logger = logger.WithContext(nameof(SettingsService));
         _settingsPath = Path.Combine(AppContext.BaseDirectory, "settings", "appsettings.json");
         Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
         LoadOrCreateSettings();

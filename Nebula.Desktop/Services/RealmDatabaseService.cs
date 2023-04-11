@@ -16,7 +16,7 @@ public class RealmDatabaseService : IDatabaseService
 
     public RealmDatabaseService(ILogger logger)
     {
-        _logger = logger.WithPrefix(nameof(RealmDatabaseService));
+        _logger = logger.WithContext(nameof(RealmDatabaseService));
         var dbPath = Path.Combine(AppContext.BaseDirectory, "database", "db.realm");
         Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
         var realmConfig = new RealmConfiguration(dbPath);

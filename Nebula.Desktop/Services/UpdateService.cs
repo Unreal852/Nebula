@@ -20,7 +20,7 @@ public class UpdateService : IUpdateService
 
     public UpdateService(ILogger logger)
     {
-        _logger = logger.WithPrefix(nameof(UpdateService));
+        _logger = logger.WithContext(nameof(UpdateService));
         _httpClient = new(new SocketsHttpHandler { PooledConnectionLifetime = TimeSpan.FromMinutes(1) });
         var product = new ProductHeaderValue(RepositoryName);
         var apiConn = new ApiConnection(new Connection(product));

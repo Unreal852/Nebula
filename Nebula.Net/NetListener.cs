@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using LiteNetLib;
 using LiteNetLib.Utils;
+using Nebula.Common.Extensions;
 using Nebula.Net.Packets.Requests;
 using Nebula.Net.Packets.Responses;
 using Serilog;
@@ -18,7 +19,7 @@ public abstract class NetListener : INetEventListener
 
     protected NetListener(ILogger logger, string? loggerContext = null)
     {
-        _logger = logger.ForContext("ClassContext", loggerContext ?? nameof(NetListener));
+        _logger = logger.WithContext(loggerContext ?? nameof(NetListener));
         _netManager = new NetManager(this) { UnsyncedEvents = true, AutoRecycle = true };
         _netDataWriter = new NetDataWriter();
         _netPacketProcessor = new NetPacketProcessor();

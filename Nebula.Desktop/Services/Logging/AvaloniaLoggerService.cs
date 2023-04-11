@@ -9,7 +9,7 @@ public sealed class AvaloniaLoggerService : TraceListener
 
     public AvaloniaLoggerService(ILogger logger)
     {
-        _logger = logger.WithPrefix("Avalonia");
+        _logger = logger.WithContext("Avalonia");
     }
 
     public override void Write(string? message)

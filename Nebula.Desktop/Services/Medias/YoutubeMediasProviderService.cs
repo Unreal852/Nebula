@@ -21,7 +21,7 @@ public sealed class YoutubeMediasProviderService : IMediasProviderService
 
     public YoutubeMediasProviderService(ILogger logger)
     {
-        _logger = logger.WithPrefix(nameof(YoutubeMediasProviderService));
+        _logger = logger.WithContext(nameof(YoutubeMediasProviderService));
     }
 
     private YoutubeClient Client { get; } = new();

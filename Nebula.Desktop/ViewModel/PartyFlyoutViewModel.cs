@@ -40,7 +40,6 @@ public sealed partial class PartyFlyoutViewModel : ViewModelBase
         INetServerService netServerService,
         INetClientService netClientService)
     {
-        _logger = logger;
         _settingsService = settingsService;
         _audioPlayerService = audioPlayerService;
         _netServerService = netServerService;

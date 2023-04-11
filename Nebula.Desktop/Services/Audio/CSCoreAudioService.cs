@@ -24,7 +24,7 @@ public sealed class CsCoreAudioService : IAudioService
 
     public CsCoreAudioService(ILogger logger)
     {
-        _logger = logger.WithPrefix(nameof(CsCoreAudioService));
+        _logger = logger.WithContext(nameof(CsCoreAudioService));
     }
 
     private ISoundOut? SoundOut { get; set; }
