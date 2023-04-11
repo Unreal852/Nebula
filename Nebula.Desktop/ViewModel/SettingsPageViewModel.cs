@@ -123,22 +123,19 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
 
     partial void OnCurrentApplicationThemeChanged(ThemeVariant value)
     {
-        _themeService.ActualTheme = value;
         _settingsService.Settings.Theme = value.Key.ToString() ?? "Default";
-        _settingsService.SaveSettings();
+        _themeService.ActualTheme = value;
     }
 
     partial void OnCurrentApplicationLanguageChanged(LanguageInfo value)
     {
-        _languageService.SetLanguage(value);
         _settingsService.Settings.Language = value;
-        _settingsService.SaveSettings();
+        _languageService.SetLanguage(value);
     }
 
     partial void OnCurrentAccentColorChanged(Color value)
     {
         _themeService.ActualAccentColor = _settingsService.Settings.AccentColor = value.ToUint32();
-        _settingsService.SaveSettings();
     }
 
     partial void OnLocalLibraryPathChanged(string value)
@@ -146,7 +143,6 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         if (string.IsNullOrWhiteSpace(value) || !Directory.Exists(value))
             return;
         _settingsService.Settings.LocalLibraryPath = value;
-        _settingsService.SaveSettings();
     }
 
     partial void OnPartyServerIpChanged(string value)
@@ -154,13 +150,11 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         if (!IPAddress.TryParse(value, out _))
             return;
         _settingsService.Settings.PartyServerIp = value;
-        _settingsService.SaveSettings();
     }
 
     partial void OnPartyServerPortChanged(int value)
     {
         _settingsService.Settings.PartyServerPort = value;
-        _settingsService.SaveSettings();
     }
 
     partial void OnPartyUsernameChanged(string value)
@@ -168,6 +162,10 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         if (string.IsNullOrWhiteSpace(value) || value.Length < 3)
             return;
         _settingsService.Settings.PartyUsername = value;
+    }
+
+    public override void OnNavigatingFrom()
+    {
         _settingsService.SaveSettings();
     }
 }
