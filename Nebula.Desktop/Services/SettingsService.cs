@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using Nebula.Common.Settings;
 using Nebula.Desktop.Contracts;
+using Serilog;
 
 namespace Nebula.Desktop.Services;
 
@@ -15,10 +16,12 @@ public sealed class SettingsService : ISettingsService
         WriteIndented = true
     };
 
+    private readonly ILogger _logger;
     private readonly string _settingsPath = default!;
 
-    public SettingsService()
+    public SettingsService(ILogger logger)
     {
+        _logger = logger.WithPrefix(nameof(SettingsService));
         _settingsPath = Path.Combine(AppContext.BaseDirectory, "settings", "appsettings.json");
         Directory.CreateDirectory(Path.GetDirectoryName(_settingsPath)!);
         LoadOrCreateSettings();
@@ -33,7 +36,15 @@ public sealed class SettingsService : ISettingsService
         if (File.Exists(_settingsPath))
         {
             var fileContent = File.ReadAllText(_settingsPath);
-            Settings = JsonSerializer.Deserialize<AppSettings>(fileContent, _serializerOptions) ?? throw new Exception("Failed to read app settings");
+            try
+            {
+                Settings = JsonSerializer.Deserialize<AppSettings>(fileContent, _serializerOptions) ?? throw new Exception("Failed to read app settings");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Failed to read settings. Resetting to default");
+                ResetSettings();
+            }
         }
         else
         {

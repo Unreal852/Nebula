@@ -16,7 +16,6 @@ public sealed class RemoteAudioPlayerController : IAudioPlayerController
     private readonly ILogger _logger;
     private readonly IAudioPlayerService _audioPlayerService;
     private readonly INetClientService _netClientService;
-    private bool _isInitialized;
 
     public RemoteAudioPlayerController(ILogger logger, IAudioPlayerService audioPlayerService, INetClientService netClientService)
     {

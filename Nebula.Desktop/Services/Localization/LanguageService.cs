@@ -18,8 +18,8 @@ public sealed class LanguageService : ILanguageService
     {
         _settingsService = settingsService;
 
-        if (_settingsService.Settings.Language == LanguageInfo.French)
-            SetLanguage(LanguageInfo.French);
+        if (LanguageInfo.TryFromValue(_settingsService.Settings.Language, out var language))
+            SetLanguage(language);
         else
             SetLanguage(LanguageInfo.English);
     }

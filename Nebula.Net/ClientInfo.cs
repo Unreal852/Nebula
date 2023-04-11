@@ -5,7 +5,7 @@ namespace Nebula.Net;
 public class ClientInfo : INetSerializable
 {
     public uint Id { get; set; }
-    public string Username { get; set; }
+    public string Username { get; set; } = null!;
 
     public void Deserialize(NetDataReader reader)
     {

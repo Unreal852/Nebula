@@ -9,7 +9,7 @@ public sealed partial class MediaInfo : IMediaInfo, IEmbeddedObject
 
     public static IMediaInfo FromId(string id) => new MediaInfo { Id = id };
 
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     public string? Author { get; set; }
     public string? Id { get; set; }
     public string? StreamUri { get; set; }

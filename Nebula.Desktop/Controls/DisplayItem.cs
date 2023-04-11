@@ -9,43 +9,24 @@ using FluentAvalonia.UI.Controls;
 
 namespace Nebula.Desktop.Controls;
 
+#pragma warning disable
+
 public sealed class DisplayItem : TemplatedControl
 {
-    public static readonly StyledProperty<string> HeaderProperty =
-            AvaloniaProperty.Register<DisplayItem, string>(nameof(Header));
+    public static readonly StyledProperty<string> HeaderProperty = AvaloniaProperty.Register<DisplayItem, string>(nameof(Header));
+    public static readonly StyledProperty<string> DescriptionProperty = AvaloniaProperty.Register<DisplayItem, string>(nameof(Description));
+    public static readonly StyledProperty<FAIconElement> IconProperty = AvaloniaProperty.Register<DisplayItem, FAIconElement>(nameof(Icon));
+    public static readonly StyledProperty<bool> NavigatesProperty = AvaloniaProperty.Register<DisplayItem, bool>(nameof(Navigates));
+    public static readonly StyledProperty<Control> ActionButtonProperty = AvaloniaProperty.Register<DisplayItem, Control>(nameof(ActionButton));
+    public static readonly StyledProperty<bool> ExpandsProperty = AvaloniaProperty.Register<DisplayItem, bool>(nameof(Expands));
+    public static readonly StyledProperty<object> ContentProperty = ContentControl.ContentProperty.AddOwner<DisplayItem>()!;
+    public static readonly StyledProperty<bool> IsExpandedProperty = Expander.IsExpandedProperty.AddOwner<DisplayItem>();
+    public static readonly StyledProperty<ICommand> NavigationCommandProperty = AvaloniaProperty.Register<DisplayItem, ICommand>(nameof(NavigationCommand));
+    public static readonly StyledProperty<object?> NavigationCommandParameterProperty = AvaloniaProperty.Register<DisplayItem, object?>(nameof(NavigationCommandParameter));
+    public static readonly RoutedEvent<RoutedEventArgs> NavigationRequestedEvent = RoutedEvent.Register<DisplayItem, RoutedEventArgs>(nameof(NavigationRequested), RoutingStrategies.Bubble);
 
-    public static readonly StyledProperty<string> DescriptionProperty =
-            AvaloniaProperty.Register<DisplayItem, string>(nameof(Description));
-
-    public static readonly StyledProperty<FAIconElement> IconProperty =
-            AvaloniaProperty.Register<DisplayItem, FAIconElement>(nameof(Icon));
-
-    public static readonly StyledProperty<bool> NavigatesProperty =
-            AvaloniaProperty.Register<DisplayItem, bool>(nameof(Navigates));
-
-    public static readonly StyledProperty<Control> ActionButtonProperty =
-            AvaloniaProperty.Register<DisplayItem, Control>(nameof(ActionButton));
-
-    public static readonly StyledProperty<bool> ExpandsProperty =
-            AvaloniaProperty.Register<DisplayItem, bool>(nameof(Expands));
-
-    public static readonly StyledProperty<object> ContentProperty =
-            ContentControl.ContentProperty.AddOwner<DisplayItem>()!;
-
-    public static readonly StyledProperty<bool> IsExpandedProperty =
-            Expander.IsExpandedProperty.AddOwner<DisplayItem>();
-
-    public static readonly StyledProperty<ICommand> NavigationCommandProperty =
-            AvaloniaProperty.Register<DisplayItem, ICommand>(nameof(NavigationCommand));
-
-    public static readonly StyledProperty<object?> NavigationCommandParameterProperty =
-            AvaloniaProperty.Register<DisplayItem, object?>(nameof(NavigationCommandParameter));
-
-    public static readonly RoutedEvent<RoutedEventArgs> NavigationRequestedEvent =
-            RoutedEvent.Register<DisplayItem, RoutedEventArgs>(nameof(NavigationRequested), RoutingStrategies.Bubble);
-
-    private bool   _isPressed;
-    private bool   _isExpanded;
+    private bool _isPressed;
+    private bool _isExpanded;
     private Border _layoutRoot;
 
     public string Header

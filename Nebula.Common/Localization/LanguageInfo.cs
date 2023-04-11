@@ -1,37 +1,18 @@
 ﻿using System.Globalization;
-using System.Text.Json.Serialization;
+using Ardalis.SmartEnum;
 
 namespace Nebula.Common.Localization;
 
-public sealed class LanguageInfo
+public sealed class LanguageInfo : SmartEnum<LanguageInfo, string>
 {
-    public static readonly LanguageInfo French = new() { Name = "Français", Code = "fr" };
-    public static readonly LanguageInfo English = new() { Name = "English", Code = "en" };
-
-    public static IEnumerable<LanguageInfo> Languages
-    {
-        get
-        {
-            yield return French;
-            yield return English;
-        }
-    }
+    public static readonly LanguageInfo French = new("Français", "fr");
+    public static readonly LanguageInfo English = new("English", "en");
 
     private CultureInfo? _culture;
 
-    public required string Name { get; init; }
-    public required string Code { get; init; }
-
-    [JsonIgnore]
-    public CultureInfo Culture => _culture ??= new CultureInfo(Code);
-
-    public static bool operator==(LanguageInfo left, LanguageInfo right)
+    private LanguageInfo(string name, string code) : base(name, code)
     {
-        return left.Code == right.Code;
     }
 
-    public static bool operator !=(LanguageInfo left, LanguageInfo right)
-    {
-        return left.Code != right.Code;
-    }
+    public CultureInfo Culture => _culture ??= new CultureInfo(Value);
 }

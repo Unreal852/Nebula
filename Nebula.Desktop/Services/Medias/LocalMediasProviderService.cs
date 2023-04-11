@@ -41,7 +41,9 @@ public sealed class LocalMediasProviderService : IMediasProviderService
         throw new NotImplementedException();
     }
 
+#pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
     public async IAsyncEnumerable<IMediaInfo> SearchMediasAsync(string searchQuery, int maxResults = 20)
+#pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
     {
         if (!string.IsNullOrWhiteSpace(_settingsService.Settings.LocalLibraryPath))
         {
@@ -49,8 +51,7 @@ public sealed class LocalMediasProviderService : IMediasProviderService
                            "Searching in the local library... Query: '{Query}' MaxResults: '{MaxResults}'", searchQuery,
                            maxResults))
             {
-                foreach (var file in Directory.GetFiles(_settingsService.Settings.LocalLibraryPath, "*",
-                                 SearchOption.AllDirectories))
+                foreach (var file in Directory.GetFiles(_settingsService.Settings.LocalLibraryPath, "*", SearchOption.AllDirectories))
                 {
                     var fileName = Path.GetFileNameWithoutExtension(file);
                     if (fileName.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))

@@ -82,7 +82,7 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         CurrentApplicationTheme = _themeService.ActualTheme;
         CurrentAccentColor = _themeService.ActualAccentColor.HasValue ? Color.FromUInt32(_themeService.ActualAccentColor.Value) : Colors.Transparent;
 
-        ApplicationLanguages = LanguageInfo.Languages.ToArray();
+        ApplicationLanguages = LanguageInfo.List.ToArray();
         CurrentApplicationLanguage = _languageService.CurrentLanguage;
 
         LocalLibraryPath = _settingsService.Settings.LocalLibraryPath;
