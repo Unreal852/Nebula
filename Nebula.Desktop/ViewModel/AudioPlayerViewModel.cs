@@ -11,14 +11,14 @@ namespace Nebula.Desktop.ViewModel;
 public sealed partial class AudioPlayerViewModel : ViewModelBase, IPositionChangedHandler
 {
     private readonly IAudioPlayerService _audioPlayerService;
-    private readonly IAudioService       _audioService;
+    private readonly IAudioService _audioService;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentMediaTitle), nameof(CurrentMediaAuthor), nameof(CurrentMediaDuration))]
     private IMediaInfo? _currentMedia;
 
     [ObservableProperty]
-    private double _currentMediaPosition;
+    private TimeSpan _currentMediaPosition;
 
     [ObservableProperty]
     private bool _canForward;
@@ -48,9 +48,9 @@ public sealed partial class AudioPlayerViewModel : ViewModelBase, IPositionChang
         _audioService.StateChanged += OnStateChanged;
     }
 
-    public string CurrentMediaTitle    => CurrentMedia?.GetFormattedTitle() ?? string.Empty;
-    public string CurrentMediaAuthor   => CurrentMedia?.Author              ?? string.Empty;
-    public double CurrentMediaDuration => CurrentMedia?.Duration            ?? 0;
+    public string CurrentMediaTitle => CurrentMedia?.GetFormattedTitle() ?? string.Empty;
+    public string CurrentMediaAuthor => CurrentMedia?.Author ?? string.Empty;
+    public TimeSpan CurrentMediaDuration => TimeSpan.FromSeconds(CurrentMedia?.Duration ?? 0);
 
     private void OnStateChanged(object? sender, Common.Audio.Events.AudioServiceStateChangedEventArgs e)
     {
@@ -78,7 +78,10 @@ public sealed partial class AudioPlayerViewModel : ViewModelBase, IPositionChang
 
     public void OnPositionChanged(in TimeSpan position)
     {
-        CurrentMediaPosition = position.TotalSeconds;
+        if (CurrentMediaPosition.Seconds == position.Seconds)
+            return;
+        // Temporary fix, just need to create a custom converter
+        CurrentMediaPosition = new TimeSpan(position.Hours, position.Minutes, position.Seconds);
     }
 
     public void SetPosition(in TimeSpan span)
