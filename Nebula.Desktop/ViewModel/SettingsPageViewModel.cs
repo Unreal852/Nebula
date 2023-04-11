@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentAvalonia.Styling;
@@ -26,19 +27,19 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
     private readonly IUpdateService _updateService;
 
     [ObservableProperty]
-    private IReadOnlyList<string> _applicationThemes = default!;
+    private IReadOnlyList<ThemeVariant> _applicationThemes = default!;
+
+    [ObservableProperty]
+    private Color _currentAccentColor;
+
+    [ObservableProperty]
+    private ThemeVariant _currentApplicationTheme = ThemeVariant.Default;
 
     [ObservableProperty]
     private IReadOnlyList<LanguageInfo> _applicationLanguages = default!;
 
     [ObservableProperty]
     private LanguageInfo _currentApplicationLanguage = default!;
-
-    [ObservableProperty]
-    private Color _currentAccentColor;
-
-    [ObservableProperty]
-    private string _currentApplicationTheme = string.Empty;
 
     [ObservableProperty]
     private string _localLibraryPath = string.Empty;
@@ -56,8 +57,7 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
     private UpdateInfo? _updateVersion;
 
     public SettingsPageViewModel(IAppService appService, IThemeService themeService, ILanguageService languageService,
-                                 IUpdateService updateService,
-                                 ISettingsService settingsService)
+                                 IUpdateService updateService, ISettingsService settingsService)
     {
         _appService = appService;
         _themeService = themeService;
@@ -79,10 +79,8 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         AppVersion = _appService.GetAppVersion();
 
         ApplicationThemes = _themeService.AvailableThemes;
-        CurrentApplicationTheme = _themeService.RequestedTheme;
-        CurrentAccentColor = _themeService.RequestedAccentColor.HasValue
-                ? Color.FromUInt32(_themeService.RequestedAccentColor.Value)
-                : Colors.Transparent;
+        CurrentApplicationTheme = _themeService.ActualTheme;
+        CurrentAccentColor = _themeService.ActualAccentColor.HasValue ? Color.FromUInt32(_themeService.ActualAccentColor.Value) : Colors.Transparent;
 
         ApplicationLanguages = LanguageInfo.Languages.ToArray();
         CurrentApplicationLanguage = _languageService.CurrentLanguage;
@@ -123,17 +121,10 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
         }
     }
 
-    partial void OnCurrentApplicationThemeChanged(string value)
+    partial void OnCurrentApplicationThemeChanged(ThemeVariant value)
     {
-        var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-        if (thm == null)
-        {
-            Log.Error("Failed to retrieve {Service} service", typeof(FluentAvaloniaTheme));
-            return;
-        }
-
-        thm.RequestedTheme = value;
-        _settingsService.Settings.Theme = value;
+        _themeService.ActualTheme = value;
+        _settingsService.Settings.Theme = value.Key.ToString() ?? "Default";
         _settingsService.SaveSettings();
     }
 
@@ -146,15 +137,7 @@ public sealed partial class SettingsPageViewModel : ViewModelPageBase
 
     partial void OnCurrentAccentColorChanged(Color value)
     {
-        var thm = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-        if (thm == null)
-        {
-            Log.Error("Failed to retrieve {Service} service", typeof(FluentAvaloniaTheme));
-            return;
-        }
-
-        thm.CustomAccentColor = value;
-        _settingsService.Settings.AccentColor = value.ToUint32();
+        _themeService.ActualAccentColor = _settingsService.Settings.AccentColor = value.ToUint32();
         _settingsService.SaveSettings();
     }
 

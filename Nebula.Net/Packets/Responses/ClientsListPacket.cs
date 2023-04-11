@@ -2,5 +2,5 @@
 
 public class ClientsListPacket
 {
-    public ClientInfo[] Clients { get; set; }
+    public ClientInfo[] Clients { get; set; } = null!;
 }
