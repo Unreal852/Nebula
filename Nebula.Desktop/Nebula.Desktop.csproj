@@ -40,7 +40,7 @@
         <PackageReference Include="CSCore" Version="1.2.1.2" />
         <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-preview6" />
         <PackageReference Include="Jab" Version="0.8.6" PrivateAssets="All" />
-        <PackageReference Include="Octokit" Version="5.0.3" />
+        <PackageReference Include="Octokit" Version="5.0.4" />
         <PackageReference Include="Semver" Version="2.3.0" />
         <PackageReference Include="Serilog" Version="3.0.0-dev-01958" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00947" />
